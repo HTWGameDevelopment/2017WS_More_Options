@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import javafx.geometry.Pos;
 
 public class MoreOptions extends ApplicationAdapter {
+	private InputManager inputManager = new InputManager();
 	SpriteBatch batch;
 	Texture img;
 	Engine e;
@@ -22,6 +23,7 @@ public class MoreOptions extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 
 		e = new Engine();
+		Gdx.input.setInputProcessor(inputManager);
 
 		Entity playerEntity = new Entity();
 		playerEntity.add(new InputComponent());
@@ -31,7 +33,7 @@ public class MoreOptions extends ApplicationAdapter {
 
 		e.addEntity(playerEntity);
 
-		e.addSystem(new InputSystem());
+		e.addSystem(InputSystem.getInstance());
 		e.addSystem(new MovementSystem());
 
 	}
@@ -44,15 +46,17 @@ public class MoreOptions extends ApplicationAdapter {
 
 		ImmutableArray<Entity> entities = e.getEntitiesFor(f);
 
+		InputSystem p = InputSystem.getInstance();
 
+		// gitSystem.out.println( "" + p.up + "|" + p.down + "|" + p.left + "|" + p.right);
 
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
 		for(Entity e: entities) {
-			PositionComponent p = e.getComponent(PositionComponent.class);
-			batch.draw(img, p.x, p.y);
+			PositionComponent po = e.getComponent(PositionComponent.class);
+			batch.draw(img, po.x, po.y);
 		}
 
 		batch.end();
