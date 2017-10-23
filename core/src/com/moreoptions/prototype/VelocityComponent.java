@@ -9,6 +9,7 @@ public class VelocityComponent implements Component{
 
     float velX, velY;
 
-    //TEST
+
+    //TEST1
 
 }
