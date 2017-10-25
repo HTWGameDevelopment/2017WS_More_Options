@@ -12,14 +12,13 @@ import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
  */
 
 public class InputSystem extends EntitySystem {
+
     private static InputSystem instance = new InputSystem();
 
-    public float speed = 5.0f;
-
-    public boolean up = false;
-    public boolean down = false;
-    public boolean left = false;
-    public boolean right = false;
+    private boolean up = false;
+    private boolean down = false;
+    private boolean left = false;
+    private boolean right = false;
 
     public static InputSystem getInstance() {
         if(instance == null) {
@@ -44,26 +43,56 @@ public class InputSystem extends EntitySystem {
             VelocityComponent v = e.getComponent(VelocityComponent.class);
 
             if (up && down) {
-                v.velY = 0;
+                v.setVelY(0);
             } else if (up) {
-                v.velY = speed;
+                v.setVelY(v.getSpeed());
             } else if (down) {
-                v.velY = -speed;
+                v.setVelY(-v.getSpeed());
             } else if (!up && !down) {
-                v.velY = 0;
+                v.setVelY(0);
             }
 
             if (left && right) {
-                v.velX = 0;
+                v.setVelX(0);
             } else if (left) {
-                v.velX = -speed;
+                v.setVelX(-v.getSpeed());
             } else if (right) {
-                v.velX = speed;
+                v.setVelX(v.getSpeed());
             } else if (!left && !right) {
-                v.velX = 0;
+                v.setVelX(0);
             }
-
         }
+    }
 
+    public boolean isUp() {
+        return up;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
     }
 }

@@ -32,7 +32,7 @@ public class MoreOptions extends ApplicationAdapter {
 		Entity playerEntity = new Entity();
 		playerEntity.add(new PlayerComponent());
 		playerEntity.add(new PositionComponent());
-		playerEntity.add(new VelocityComponent());
+		playerEntity.add(new VelocityComponent(500f));
 
 
 		e.addEntity(playerEntity);
@@ -59,7 +59,7 @@ public class MoreOptions extends ApplicationAdapter {
 
 		for(Entity e: entities) {
 			PositionComponent po = e.getComponent(PositionComponent.class);
-			batch.draw(img, po.x, po.y);
+			batch.draw(img, po.getX(), po.getY());
 		}
 
 		batch.end();

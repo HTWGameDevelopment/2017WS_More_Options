@@ -7,7 +7,34 @@ import com.badlogic.ashley.core.Component;
  */
 public class VelocityComponent implements Component{
 
-    public float velX, velY;
+    private float velX, velY;
+    private float speed;
 
+    public VelocityComponent(float i) {
+        speed = i;
+    }
 
+    public float getVelX() {
+        return velX;
+    }
+
+    public void setVelX(float velX) {
+        this.velX = velX;
+    }
+
+    public float getVelY() {
+        return velY;
+    }
+
+    public void setVelY(float velY) {
+        this.velY = velY;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
 }

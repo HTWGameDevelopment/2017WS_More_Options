@@ -12,22 +12,22 @@ public class InputManager implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.UP: {
-                InputSystem.getInstance().up = true;
+                InputSystem.getInstance().setUp(true);
                 break;
             }
 
             case Input.Keys.DOWN: {
-                InputSystem.getInstance().down = true;
+                InputSystem.getInstance().setDown(true);
                 break;
             }
 
             case Input.Keys.LEFT: {
-                InputSystem.getInstance().left = true;
+                InputSystem.getInstance().setLeft(true);
                 break;
             }
 
             case Input.Keys.RIGHT: {
-                InputSystem.getInstance().right = true;
+                InputSystem.getInstance().setRight(true);
                 break;
             }
 
@@ -39,22 +39,22 @@ public class InputManager implements InputProcessor {
     public boolean keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.UP: {
-                InputSystem.getInstance().up = false;
+                InputSystem.getInstance().setUp(false);
                 break;
             }
 
             case Input.Keys.DOWN: {
-                InputSystem.getInstance().down = false;
+                InputSystem.getInstance().setDown(false);
                 break;
             }
 
             case Input.Keys.LEFT: {
-                InputSystem.getInstance().left = false;
+                InputSystem.getInstance().setLeft(false);
                 break;
             }
 
             case Input.Keys.RIGHT: {
-                InputSystem.getInstance().right = false;
+                InputSystem.getInstance().setRight(false);
                 break;
             }
 
