@@ -1,4 +1,4 @@
-package com.moreoptions.prototype;
+package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
 
@@ -7,9 +7,7 @@ import com.badlogic.ashley.core.Component;
  */
 public class VelocityComponent implements Component{
 
-    float velX, velY;
+    public float velX, velY;
 
-
-    //TEST1
 
 }

@@ -9,7 +9,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import javafx.geometry.Pos;
+import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
+import com.moreoptions.prototype.gameEngine.systems.MovementSystem;
+import com.moreoptions.prototype.gameEngine.systems.InputSystem;
 
 public class MoreOptions extends ApplicationAdapter {
 	private InputManager inputManager = new InputManager();
@@ -26,7 +30,7 @@ public class MoreOptions extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(inputManager);
 
 		Entity playerEntity = new Entity();
-		playerEntity.add(new InputComponent());
+		playerEntity.add(new PlayerComponent());
 		playerEntity.add(new PositionComponent());
 		playerEntity.add(new VelocityComponent());
 
@@ -35,7 +39,6 @@ public class MoreOptions extends ApplicationAdapter {
 
 		e.addSystem(InputSystem.getInstance());
 		e.addSystem(new MovementSystem());
-
 	}
 
 	@Override

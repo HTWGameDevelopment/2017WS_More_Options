@@ -2,6 +2,7 @@ package com.moreoptions.prototype;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.moreoptions.prototype.gameEngine.systems.InputSystem;
 
 /**
  * Created by Bodo on 23.10.2017.

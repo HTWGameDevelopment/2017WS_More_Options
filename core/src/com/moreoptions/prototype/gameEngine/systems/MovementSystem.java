@@ -1,7 +1,9 @@
-package com.moreoptions.prototype;
+package com.moreoptions.prototype.gameEngine.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 
 /**
  * Created by Dennis on 23.10.2017.

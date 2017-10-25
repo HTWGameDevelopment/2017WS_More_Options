@@ -1,11 +1,11 @@
-package com.moreoptions.prototype;
+package com.moreoptions.prototype.gameEngine.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
+import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 
 /**
  * Created by Dennis on 23.10.2017.
@@ -32,7 +32,7 @@ public class InputSystem extends EntitySystem {
 
     }
 
-    Family family = Family.all(InputComponent.class).get();
+    Family family = Family.all(PlayerComponent.class).get();
 
     @Override
     public void update(float deltaTime) {
@@ -62,10 +62,6 @@ public class InputSystem extends EntitySystem {
             } else if (!left && !right) {
                 v.velX = 0;
             }
-
-
-
-
 
         }
 
