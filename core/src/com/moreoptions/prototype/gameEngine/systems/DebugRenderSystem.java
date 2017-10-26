@@ -4,21 +4,17 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.moreoptions.prototype.gameEngine.components.DebugColorComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 
 /**
- * Created by Dennis on 23.10.2017.
+ * Basic ShapeRenderer
  */
 public class DebugRenderSystem extends EntitySystem{
 
-    Family f = Family.all(PositionComponent.class).get();
-    ShapeRenderer renderer = new ShapeRenderer();
+    private Family f = Family.all(DebugColorComponent.class).all(PositionComponent.class).get();
+    private ShapeRenderer renderer = new ShapeRenderer();
 
-
-
-
-    //hard implementation, drawing a 5 radius circle around every entity with a positionComponent
-    //TODO: implement this properly. this implementation is just for fast demonstration
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -26,12 +22,12 @@ public class DebugRenderSystem extends EntitySystem{
         renderer.setColor(0,0,1,1);
         for(Entity e : getEngine().getEntitiesFor(f)) {
             PositionComponent p = e.getComponent(PositionComponent.class);
+            DebugColorComponent dc = e.getComponent(DebugColorComponent.class);
+            renderer.setColor(dc.getColor());
             renderer.circle(p.getX(),p.getY(),5);
         }
         renderer.end();
     }
-
-
 
 }
 

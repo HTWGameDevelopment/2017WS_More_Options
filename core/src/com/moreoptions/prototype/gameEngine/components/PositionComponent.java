@@ -3,11 +3,20 @@ package com.moreoptions.prototype.gameEngine.components;
 import com.badlogic.ashley.core.Component;
 
 /**
- * Created by Dennis on 23.10.2017.
+ * Component related to position in our gameworld
  */
 public class PositionComponent implements Component {
 
     private float x,y;
+
+    public PositionComponent() {
+
+    }
+
+    public PositionComponent(float x, float y) {
+        setX(x);
+        setY(y);
+    }
 
     public float getX() {
         return x;

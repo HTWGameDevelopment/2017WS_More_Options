@@ -4,9 +4,13 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * Created by denwe on 26.10.2017.
+ * Component that holds color-information
  */
 public class DebugColorComponent implements Component {
+
+    public DebugColorComponent(Color color) {
+        this.color = color;
+    }
 
     private Color color;
 
