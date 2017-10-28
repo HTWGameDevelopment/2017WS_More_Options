@@ -8,7 +8,6 @@ import java.util.Random;
  * @author Andreas
  */
 
-// TODO: special rooms should not be allowed to be next to each other (except secret room & starting room)
 public class Map {
     private static final int STARTING_ROOM = 1;
     private static final int NORMAL_ROOM = 2;
@@ -129,7 +128,7 @@ public class Map {
         // boss room
         if (roomCounter == maxRooms+1) {
             if (!roomIsOccupied(x, y)) {
-                if (getNumberOfAdjacentRooms(x, y) == 1) {
+                if (getNumberOfAdjacentRooms(x, y) == 1 && !isAdjacentToSpecialRoom(x, y)) {
                     makeRoom(x, y, BOSS_ROOM);
 
                     return true;
@@ -140,7 +139,7 @@ public class Map {
         // vendor room
         if (roomCounter == maxRooms+2) {
             if (!roomIsOccupied(x, y)) {
-                if (getNumberOfAdjacentRooms(x, y) == 1) {
+                if (getNumberOfAdjacentRooms(x, y) == 1 && !isAdjacentToSpecialRoom(x, y)) {
                     makeRoom(x, y, VENDOR_ROOM);
 
                     return true;
@@ -151,7 +150,7 @@ public class Map {
         // item room
         if (roomCounter == maxRooms+3) {
             if (!roomIsOccupied(x, y)) {
-                if (getNumberOfAdjacentRooms(x, y) == 1) {
+                if (getNumberOfAdjacentRooms(x, y) == 1 && !isAdjacentToSpecialRoom(x, y)) {
                     makeRoom(x, y, ITEM_ROOM);
 
                     return true;
@@ -162,7 +161,7 @@ public class Map {
         // secret room
         if (roomCounter == maxRooms+4) {
             if (!roomIsOccupied(x, y)) {
-                if (getNumberOfAdjacentRooms(x, y) >= 2) {
+                if (getNumberOfAdjacentRooms(x, y) >= 3) {
                     makeRoom(x, y, SECRET_ROOM);
 
                     return true;
@@ -257,7 +256,7 @@ public class Map {
     }
 
     /**
-     * prints the map to the shell
+     * prints the map to the shell.
      */
     private void printMap() {
         for (int i = 0; i < width; i++) {
@@ -271,4 +270,34 @@ public class Map {
             System.out.println();
         }
     }
+
+    /**
+     * checks if an adjacent room is a special room that is not the secret room.
+     * @param x x-coordinate of the room
+     * @param y y-coordinate of the room
+     * @return true is there is an adjacent special room.
+     */
+    private boolean isAdjacentToSpecialRoom(int x, int y) {
+        // check left
+        if (map[x-1][y] > 2 && map[x-1][y] != 6) {
+            return true;
+        }
+
+        // check top
+        if (map[x][y+1] > 2 && map[x][y+1] != 6) {
+            return true;
+        }
+
+        // check right
+        if (map[x+1][y] > 2 && map[x+1][y] != 6) {
+            return true;
+        }
+        // check bottom
+        if (map[x][y-1] > 2 && map[x][y-1] != 6) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
