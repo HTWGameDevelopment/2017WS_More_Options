@@ -17,6 +17,10 @@ public class GameInputProcessor implements InputProcessor {
 
         InputState p1 = GameState.getInstance().getPlayerOne().getInputState();
 
+        if(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode) == null) {
+            return true;
+        }
+
         switch(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode)) {
             case P1_MOVE_UP:
                 p1.setMoveUp(true);
@@ -62,6 +66,10 @@ public class GameInputProcessor implements InputProcessor {
     public boolean keyUp(int keycode) {
 
         InputState p1 = GameState.getInstance().getPlayerOne().getInputState();
+
+        if(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode) == null) {
+            return true;
+        }
 
         switch(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode)) {
             case P1_MOVE_UP:

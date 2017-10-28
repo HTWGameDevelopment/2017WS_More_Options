@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.DebugColorComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 
@@ -12,8 +13,15 @@ import com.moreoptions.prototype.gameEngine.components.PositionComponent;
  */
 public class DebugRenderSystem extends EntitySystem{
 
-    private Family f = Family.all(DebugColorComponent.class).all(PositionComponent.class).get();
-    private ShapeRenderer renderer = new ShapeRenderer();
+    private Family f = Family.all(DebugColorComponent.class)
+            .all(PositionComponent.class)
+            .all(CollisionComponent.class)
+            .get();
+    private ShapeRenderer renderer;
+
+    public DebugRenderSystem(ShapeRenderer renderer) {
+        this.renderer = renderer;
+    }
 
     @Override
     public void update(float deltaTime) {
@@ -23,8 +31,19 @@ public class DebugRenderSystem extends EntitySystem{
         for(Entity e : getEngine().getEntitiesFor(f)) {
             PositionComponent p = e.getComponent(PositionComponent.class);
             DebugColorComponent dc = e.getComponent(DebugColorComponent.class);
+            CollisionComponent cc = e.getComponent(CollisionComponent.class);
+
             renderer.setColor(dc.getColor());
-            renderer.circle(p.getX(),p.getY(),5);
+
+            switch(cc.getShape()) {
+                case CIRCLE:
+                    renderer.circle(p.getX(),p.getY(),cc.getSize());
+                    break;
+                case RECTANGLE:
+                    renderer.rect(p.getX(),p.getY(),cc.getSize(),cc.getSize());
+                    break;
+            }
+
         }
         renderer.end();
     }
