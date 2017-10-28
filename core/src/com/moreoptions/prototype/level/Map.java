@@ -77,21 +77,21 @@ public class Map {
      */
     private boolean selectRoom() {
         Random random = new Random();
-        int xCord;
-        int yCord;
+        int xCoord;
+        int yCoord;
 
         if (isStartingRoom) {
-            xCord = width / 2;
-            yCord = height / 2;
+            xCoord = width / 2;
+            yCoord = height / 2;
             isStartingRoom = false;
 
-            assignRoom(xCord, yCord);
+            assignRoom(xCoord, yCoord);
 
         } else if (roomCounter <= maxRooms+4) {
-            xCord = random.nextInt(width - 1) + 1;
-            yCord = random.nextInt(height - 1) + 1;
+            xCoord = random.nextInt(width - 1) + 1;
+            yCoord = random.nextInt(height - 1) + 1;
 
-            assignRoom(xCord, yCord);
+            assignRoom(xCoord, yCoord);
         }
         return true;
     }
