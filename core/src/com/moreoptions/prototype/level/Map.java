@@ -7,16 +7,15 @@ import java.util.Random;
  *
  * @author Andreas
  */
-public class Map {
 
-    /*
-        1 --> Starting Room
-        2 --> Normal Room
-        3 --> Boss Room
-        4 --> Vendor Room
-        5 --> Item Room
-        6 --> Secret Room
-     */
+// TODO: special rooms should not be allowed to be next to each other (except secret room & starting room)
+public class Map {
+    private static final int STARTING_ROOM = 1;
+    private static final int NORMAL_ROOM = 2;
+    private static final int BOSS_ROOM = 3;
+    private static final int VENDOR_ROOM = 4;
+    private static final int ITEM_ROOM = 5;
+    private static final int SECRET_ROOM = 6;
 
     private int[][] map;
     private int width = 11;
@@ -24,7 +23,9 @@ public class Map {
 
     private boolean isStartingRoom = true;
 
+
     private int roomCounter = 0;
+
     private int maxRooms = 15;
 
     public Map() {
@@ -64,7 +65,8 @@ public class Map {
      * fills the map with a number of rooms.
      */
     private void fillMap() {
-        while (roomCounter <= maxRooms) {
+        // TODO: better closure for while loop (not maxRooms + X)
+        while (roomCounter <= maxRooms + 4) {
             selectRoom();
         }
     }
@@ -86,7 +88,7 @@ public class Map {
 
             assignRoom(xCord, yCord);
 
-        } else {
+        } else if (roomCounter <= maxRooms+4) {
             xCord = random.nextInt(width - 1) + 1;
             yCord = random.nextInt(height - 1) + 1;
 
@@ -102,54 +104,95 @@ public class Map {
      * @return true if successful.
      */
     private boolean assignRoom(int x, int y) {
+        // starting room
         if (roomCounter == 0) {
-            makeRoom(x,y);
+            makeRoom(x,y, STARTING_ROOM);
             return true;
         }
 
-        if (!adjacentLeftEmpty(x,y) || !adjacentRightEmpty(x,y)
-                || !adjacentBottomEmpty(x,y) || !adjacentTopEmpty(x,y)) {
+        // normal rooms
+        if (roomCounter <= maxRooms) {
+            if (!adjacentLeftEmpty(x, y) || !adjacentRightEmpty(x, y)
+                    || !adjacentBottomEmpty(x, y) || !adjacentTopEmpty(x, y)) {
 
-            if (!roomIsOccupied(x,y)) {
-                if (getNumberOfAdjacentRooms(x, y) < 2) {
-                    makeRoom(x,y);
+                if (!roomIsOccupied(x, y)) {
+                    if (getNumberOfAdjacentRooms(x, y) < 2) {
+                        makeRoom(x, y, NORMAL_ROOM);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        // TODO: make this better
+
+        // boss room
+        if (roomCounter == maxRooms+1) {
+            if (!roomIsOccupied(x, y)) {
+                if (getNumberOfAdjacentRooms(x, y) == 1) {
+                    makeRoom(x, y, BOSS_ROOM);
+
                     return true;
                 }
             }
-            return false;
         }
+
+        // vendor room
+        if (roomCounter == maxRooms+2) {
+            if (!roomIsOccupied(x, y)) {
+                if (getNumberOfAdjacentRooms(x, y) == 1) {
+                    makeRoom(x, y, VENDOR_ROOM);
+
+                    return true;
+                }
+            }
+        }
+
+        // item room
+        if (roomCounter == maxRooms+3) {
+            if (!roomIsOccupied(x, y)) {
+                if (getNumberOfAdjacentRooms(x, y) == 1) {
+                    makeRoom(x, y, ITEM_ROOM);
+
+                    return true;
+                }
+            }
+        }
+
+        // secret room
+        if (roomCounter == maxRooms+4) {
+            if (!roomIsOccupied(x, y)) {
+                if (getNumberOfAdjacentRooms(x, y) >= 2) {
+                    makeRoom(x, y, SECRET_ROOM);
+
+                    return true;
+                }
+            }
+        }
+
 
         return false;
     }
 
-        /*
-        1 --> Starting Room
-        2 --> Normal Room
-        3 --> Boss Room
-        4 --> Vendor Room
-        5 --> Item Room
-        6 --> Secret Room
-     */
-
     /**
-     *
+     * assigns a number to a room according to it's purpose
+     * starting room    --> 1
+     * normal room      --> 2
+     * boss room        --> 3
+     * vendor room      --> 4
+     * item room        --> 5
+     * secret room      --> 6
      * @param x x-coordinate
      * @param y y-coordinate
      * @return true if successful; otherwise false
      */
-    private boolean makeRoom(int x, int y) {
-        // 1 is assigned to the starting room
-        if (roomCounter == 0) {
-            map[x][y] = 1;
+    private boolean makeRoom(int x, int y, int roomNumberCommand) {
+        map[x][y] = roomNumberCommand;
+        if (roomCounter <= maxRooms + 4) {
             roomCounter++;
-            return true;
-        } else if (roomCounter <= maxRooms) {
-            // 2 is assigned to normal rooms
-            map[x][y] = 2;
-            roomCounter++;
-            return true;
         }
-        return false;
+
+        return true;
     }
 
     /**
@@ -159,11 +202,7 @@ public class Map {
      * @return true if there is an adjacent room to the left.
      */
     private boolean adjacentLeftEmpty(int x, int y) {
-        if (x == 0 || map[x-1][y] == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (x == 0 || map[x-1][y] == 0);
     }
 
     /**
@@ -173,11 +212,7 @@ public class Map {
      * @return true if there is an adjacent room to the right.
      */
     private boolean adjacentRightEmpty(int x, int y) {
-        if (x == width || map[x+1][y] == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (x == width || map[x+1][y] == 0);
     }
 
     /**
@@ -187,12 +222,7 @@ public class Map {
      * @return true if there is an adjacent room to the top.
      */
     private boolean adjacentTopEmpty(int x, int y) {
-        if (y == height || map[x][y+1] == 0) {
-
-            return true;
-        } else {
-            return false;
-        }
+        return (y == height || map[x][y+1] == 0);
     }
 
     /**
@@ -202,12 +232,7 @@ public class Map {
      * @return true if there is an adjacent room to the bottom.
      */
     private boolean adjacentBottomEmpty(int x, int y) {
-        if (y == 0 || map[x][y-1] == 0) {
-
-            return true;
-        } else {
-            return false;
-        }
+        return (y == 0 || map[x][y-1] == 0);
     }
 
     /**
@@ -235,7 +260,6 @@ public class Map {
      * prints the map to the shell
      */
     private void printMap() {
-        System.out.println("");
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (map[i][j] == 0) {
