@@ -13,6 +13,8 @@ public class Player {
 
     private Controller controller;
 
+    private PlayerStatistics stats;
+
     Player() {
         inputState = new InputState();
     }

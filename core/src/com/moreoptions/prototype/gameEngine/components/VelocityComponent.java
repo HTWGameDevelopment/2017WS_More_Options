@@ -3,15 +3,17 @@ package com.moreoptions.prototype.gameEngine.components;
 import com.badlogic.ashley.core.Component;
 
 /**
- * Created by Dennis on 23.10.2017.
+ * Component that holds information pertaining to acceleration / deceleration of entities.
  */
 public class VelocityComponent implements Component{
 
     private float velX, velY;
     private float speed;
+    private float deceleration;
 
-    public VelocityComponent(float i) {
-        speed = i;
+    public VelocityComponent(float speed, float deceleration) {
+        this.speed = speed;
+        this.deceleration = deceleration;
     }
 
     public float getVelX() {
@@ -36,5 +38,9 @@ public class VelocityComponent implements Component{
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public float getDeceleration() {
+        return deceleration;
     }
 }

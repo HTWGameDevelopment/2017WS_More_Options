@@ -9,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.InputState;
+import com.moreoptions.prototype.gameEngine.data.Player;
 
 /**
  * System that manipulates Entities based on Player Input
@@ -37,30 +38,35 @@ public class InputSystem extends EntitySystem {
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(family);
 
         for(Entity e : entities) {
-            if(e.getComponent(PlayerComponent.class).getId() == 1) {
-                VelocityComponent v = e.getComponent(VelocityComponent.class);
-                InputState p1 = GameState.getInstance().getPlayerOne().getInputState();
+            updateVelocity(e);
+        }
 
-                if (p1.isMoveUp() && p1.isMoveDown()) {
-                    v.setVelY(0);
-                } else if (p1.isMoveUp()) {
-                    v.setVelY(v.getSpeed());
-                } else if (p1.isMoveDown()) {
-                    v.setVelY(-v.getSpeed());
-                } else if (!p1.isMoveUp() && !p1.isMoveDown()) {
-                    v.setVelY(0);
-                }
+    }
 
-                if (p1.isMoveLeft() && p1.isMoveRight()) {
-                    v.setVelX(0);
-                } else if (p1.isMoveLeft()) {
-                    v.setVelX(-v.getSpeed());
-                } else if (p1.isMoveRight()) {
-                    v.setVelX(v.getSpeed());
-                } else if (!p1.isMoveLeft() && !p1.isMoveRight()) {
-                    v.setVelX(0);
-                }
-            }
+    private void updateVelocity(Entity e) {
+        Player p = e.getComponent(PlayerComponent.class).getPlayer();
+        VelocityComponent v = e.getComponent(VelocityComponent.class);
+
+        InputState playerInput = p.getInputState();
+
+        if (playerInput.isMoveUp() && playerInput.isMoveDown()) {
+            v.setVelY(v.getVelY() * v.getDeceleration());
+        } else if (playerInput.isMoveUp()) {
+            v.setVelY(v.getSpeed());
+        } else if (playerInput.isMoveDown()) {
+            v.setVelY(-v.getSpeed());
+        } else if (!playerInput.isMoveUp() && !playerInput.isMoveDown()) {
+            v.setVelY(v.getVelY() * v.getDeceleration());
+        }
+
+        if (playerInput.isMoveLeft() && playerInput.isMoveRight()) {
+            v.setVelX(v.getVelX() * v.getDeceleration());
+        } else if (playerInput.isMoveLeft()) {
+            v.setVelX(-v.getSpeed());
+        } else if (playerInput.isMoveRight()) {
+            v.setVelX(v.getSpeed());
+        } else if (!playerInput.isMoveLeft() && !playerInput.isMoveRight()) {
+            v.setVelX(v.getVelX() * v.getDeceleration());
         }
     }
 }
