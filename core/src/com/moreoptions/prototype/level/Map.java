@@ -278,26 +278,9 @@ public class Map {
      * @return true is there is an adjacent special room.
      */
     private boolean isAdjacentToSpecialRoom(int x, int y) {
-        // check left
-        if (map[x-1][y] > 2 && map[x-1][y] != 6) {
-            return true;
-        }
-
-        // check top
-        if (map[x][y+1] > 2 && map[x][y+1] != 6) {
-            return true;
-        }
-
-        // check right
-        if (map[x+1][y] > 2 && map[x+1][y] != 6) {
-            return true;
-        }
-        // check bottom
-        if (map[x][y-1] > 2 && map[x][y-1] != 6) {
-            return true;
-        }
-
-        return false;
+        return (map[x - 1][y] > 2 && map[x - 1][y] != 6 ||
+                map[x][y + 1] > 2 && map[x][y + 1] != 6 ||
+                map[x + 1][y] > 2 && map[x + 1][y] != 6 ||
+                map[x][y - 1] > 2 && map[x][y - 1] != 6);
     }
-
 }
