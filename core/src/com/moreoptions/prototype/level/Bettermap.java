@@ -23,18 +23,15 @@ public class Bettermap {
 
     private Room[][] map;
     private List<Room> occupiedRooms;
+    private List<Room> suitableSpecialRooms;
 
     private int width;
     private int height;
 
     private int maxRooms;
 
-    private boolean containsBossRoom = false;
-    private boolean containsVendorRoom = false;
-    private boolean containsItemRoom = false;
-    private boolean containsSecretRoom = false;
 
-    // TODO: check bounds
+    // TODO: check what happens if no secret room can be assigned
 
     public Bettermap(int width, int height, int maxRooms) {
         this.width = width;
@@ -42,6 +39,7 @@ public class Bettermap {
         this.maxRooms = maxRooms;
         this.map = new Room[width][height];
         this.occupiedRooms = new ArrayList<Room>();
+        this.suitableSpecialRooms = new ArrayList<Room>();
 
         createMap();
 
@@ -51,25 +49,43 @@ public class Bettermap {
     }
 
     private void makeRooms() {
+        int adjacentRoomCounter;
+
         makeStartingRoom();
 
         makeNormalRooms();
 
-        while(!containsBossRoom) {
-            makeBossRoom();
+
+
+        for (int i = 1; i < width; i++) {
+            for (int j = 1; j < height; j++) {
+                System.out.println("test");
+                adjacentRoomCounter = getNumberOfAdjacentRooms(i, j);
+
+                if (roomIsOccupied(i, j) && adjacentRoomCounter == 1) {
+                    suitableSpecialRooms.add(map[i][j]);
+                }
+            }
         }
 
-        while(!containsVendorRoom) {
-            makeVendorRoom();
+
+        makeSpecialRooms(suitableSpecialRooms.size());
+
+    }
+
+    private void makeSpecialRooms(int number) {
+        if (number < 3) {
+            new Bettermap(width, height, maxRooms);
         }
 
-        while(!containsItemRoom) {
-            makeItemRoom();
-        }
+        makeBossRoom();
 
-        while(!containsSecretRoom) {
-            makeSecretRoom();
-        }
+        makeVendorRoom();
+
+        makeItemRoom();
+
+        makeSecretRoom();
+
     }
 
     private void makeStartingRoom() {
@@ -95,99 +111,128 @@ public class Bettermap {
 
             switch(direction) {
                 case NORTH:
-                    nextRoom = new Room(randomRoom.getXCoord(), randomRoom.getYCoord()+1, NORMAL_ROOM);
-
-                    if (roomIsOccupied(randomRoom.getXCoord(), randomRoom.getYCoord()+1)
-                            || getNumberOfAdjacentRooms(randomRoom.getXCoord(), randomRoom.getYCoord()+1) >= 2) {
+                    // check top bounds
+                    if (randomRoom.getYCoord() == height - 1) {
+                        makeNormalRooms();
                         break;
                     } else {
-                        map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1] = nextRoom;
-                        occupiedRooms.add(nextRoom);
+                        nextRoom = new Room(randomRoom.getXCoord(), randomRoom.getYCoord() + 1, NORMAL_ROOM);
 
-                        break;
+                        if (nextRoom.getYCoord() > height) {
+                            makeNormalRooms();
+                        }
+                        if (roomIsOccupied(randomRoom.getXCoord(), randomRoom.getYCoord() + 1)
+                                || getNumberOfAdjacentRooms(randomRoom.getXCoord(), randomRoom.getYCoord() + 1) >= 2) {
+                            break;
+                        } else {
+                            map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1] = nextRoom;
+                            occupiedRooms.add(nextRoom);
+
+                            break;
+                        }
                     }
 
                 case EAST:
-                    nextRoom = new Room(randomRoom.getXCoord()+1, randomRoom.getYCoord(), NORMAL_ROOM);
-
-                    if (roomIsOccupied(randomRoom.getXCoord()+1, randomRoom.getYCoord())
-                            || getNumberOfAdjacentRooms(randomRoom.getXCoord()+1, randomRoom.getYCoord()) >= 2) {
-
+                    // check east bounds
+                    if (randomRoom.getXCoord() == width - 1) {
+                        makeNormalRooms();
                         break;
                     } else {
+                        nextRoom = new Room(randomRoom.getXCoord() + 1, randomRoom.getYCoord(), NORMAL_ROOM);
+                        if (nextRoom.getXCoord() > width) {
+                            makeNormalRooms();
+                        }
+                        if (roomIsOccupied(randomRoom.getXCoord() + 1, randomRoom.getYCoord())
+                                || getNumberOfAdjacentRooms(randomRoom.getXCoord() + 1, randomRoom.getYCoord()) >= 2) {
 
-                        map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()] = nextRoom;
-                        occupiedRooms.add(nextRoom);
+                            break;
+                        } else {
 
-                        break;
+                            map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()] = nextRoom;
+                            occupiedRooms.add(nextRoom);
+
+                            break;
+                        }
                     }
 
                 case SOUTH:
-                    nextRoom = new Room(randomRoom.getXCoord(), randomRoom.getYCoord()-1, NORMAL_ROOM);
-
-                    if (roomIsOccupied(randomRoom.getXCoord(), randomRoom.getYCoord()-1)
-                            || getNumberOfAdjacentRooms(randomRoom.getXCoord(), randomRoom.getYCoord()-1) >= 2) {
-
+                    if (randomRoom.getYCoord() == 0) {
+                        makeNormalRooms();
                         break;
                     } else {
+                        nextRoom = new Room(randomRoom.getXCoord(), randomRoom.getYCoord() - 1, NORMAL_ROOM);
 
-                        map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1] = nextRoom;
-                        occupiedRooms.add(nextRoom);
+                        if ( nextRoom.getYCoord() == 0) {
+                            makeNormalRooms();
+                        }
 
-                        break;
+                        if (roomIsOccupied(randomRoom.getXCoord(), randomRoom.getYCoord() - 1)
+                                || getNumberOfAdjacentRooms(randomRoom.getXCoord(), randomRoom.getYCoord() - 1) >= 2) {
+
+                            break;
+                        } else {
+
+                            map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1] = nextRoom;
+                            occupiedRooms.add(nextRoom);
+
+                            break;
+                        }
                     }
 
                 case WEST:
-                    nextRoom = new Room(randomRoom.getXCoord()-1, randomRoom.getYCoord(), NORMAL_ROOM);
-
-                    if (roomIsOccupied(randomRoom.getXCoord()-1, randomRoom.getYCoord())
-                            || getNumberOfAdjacentRooms(randomRoom.getXCoord()-1, randomRoom.getYCoord()) >= 2) {
-
+                    if (randomRoom.getXCoord() == 0) {
+                        makeNormalRooms();
                         break;
                     } else {
+                        nextRoom = new Room(randomRoom.getXCoord() - 1, randomRoom.getYCoord(), NORMAL_ROOM);
 
-                        map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()] = nextRoom;
-                        occupiedRooms.add(nextRoom);
+                        if (nextRoom.getXCoord() == 0) {
+                            makeNormalRooms();
+                        }
 
-                        break;
+                        if (roomIsOccupied(randomRoom.getXCoord() - 1, randomRoom.getYCoord())
+                                || getNumberOfAdjacentRooms(randomRoom.getXCoord() - 1, randomRoom.getYCoord()) >= 2) {
+
+                            break;
+                        } else {
+
+                            map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()] = nextRoom;
+                            occupiedRooms.add(nextRoom);
+
+                            break;
+                        }
                     }
             }
         }
     }
 
     private void makeBossRoom() {
-        Room bossRoom = getRandomOccupiedRoom();
+        Random random = new Random();
+        int bossRoomIndex = random.nextInt(suitableSpecialRooms.size());
 
-        if ((getNumberOfAdjacentRooms(bossRoom.getXCoord(), bossRoom.getYCoord()) == 1)
-                && !isAdjacentToSpecialRoom(bossRoom.getXCoord(), bossRoom.getYCoord())
-                && !roomIsSpecialRoom(bossRoom.getXCoord(), bossRoom.getYCoord())) {
-            bossRoom.setKind(BOSS_ROOM);
-            containsBossRoom = true;
-        }
+        suitableSpecialRooms.get(bossRoomIndex).setKind(BOSS_ROOM);
+
+        suitableSpecialRooms.remove(suitableSpecialRooms.get(bossRoomIndex));
+
     }
 
-
-
     private void makeVendorRoom() {
-        Room vendorRoom = getRandomOccupiedRoom();
+        Random random = new Random();
+        int vendorRoomIndex = random.nextInt(suitableSpecialRooms.size());
 
-        if (getNumberOfAdjacentRooms(vendorRoom.getXCoord(), vendorRoom.getYCoord()) == 1
-                && !isAdjacentToSpecialRoom(vendorRoom.getXCoord(), vendorRoom.getYCoord())
-                && !roomIsSpecialRoom(vendorRoom.getXCoord(), vendorRoom.getYCoord())) {
-            vendorRoom.setKind(VENDOR_ROOM);
-            containsVendorRoom = true;
-        }
+        suitableSpecialRooms.get(vendorRoomIndex).setKind(VENDOR_ROOM);
+
+        suitableSpecialRooms.remove(suitableSpecialRooms.get(vendorRoomIndex));
     }
 
     private void makeItemRoom() {
-        Room itemRoom = getRandomOccupiedRoom();
+        Random random = new Random();
+        int itemRoomIndex = random.nextInt(suitableSpecialRooms.size());
 
-        if (getNumberOfAdjacentRooms(itemRoom.getXCoord(), itemRoom.getYCoord()) == 1
-                && !isAdjacentToSpecialRoom(itemRoom.getXCoord(), itemRoom.getYCoord())
-                && !roomIsSpecialRoom(itemRoom.getXCoord(), itemRoom.getYCoord())) {
-            itemRoom.setKind(ITEM_ROOM);
-            containsItemRoom = true;
-        }
+        suitableSpecialRooms.get(itemRoomIndex).setKind(ITEM_ROOM);
+
+        suitableSpecialRooms.remove(suitableSpecialRooms.get(itemRoomIndex));
+
     }
 
     private void makeSecretRoom() {
@@ -201,7 +246,6 @@ public class Bettermap {
                 if (map[randomRoom.getXCoord()][randomRoom.getYCoord()+1].getKind() == 0) {
                     if (getNumberOfAdjacentRooms(randomRoom.getXCoord(), randomRoom.getYCoord()+1 ) > 2) {
                         map[randomRoom.getXCoord()][randomRoom.getYCoord()+1].setKind(SECRET_ROOM);
-                        containsSecretRoom = true;
                     }
                 }
 
@@ -211,7 +255,6 @@ public class Bettermap {
                 if (map[randomRoom.getXCoord()+1][randomRoom.getYCoord()].getKind() == 0) {
                     if (getNumberOfAdjacentRooms(randomRoom.getXCoord()+1, randomRoom.getYCoord()) > 2) {
                         map[randomRoom.getXCoord()+1][randomRoom.getYCoord()].setKind(SECRET_ROOM);
-                        containsSecretRoom = true;
                     }
                 }
                 break;
@@ -220,7 +263,6 @@ public class Bettermap {
                 if (map[randomRoom.getXCoord()][randomRoom.getYCoord()-1].getKind() == 0) {
                     if (getNumberOfAdjacentRooms(randomRoom.getXCoord(), randomRoom.getYCoord()-1) > 2) {
                         map[randomRoom.getXCoord()][randomRoom.getYCoord()-1].setKind(SECRET_ROOM);
-                        containsSecretRoom = true;
                     }
                 }
                 break;
@@ -229,11 +271,9 @@ public class Bettermap {
                 if (map[randomRoom.getXCoord()-1][randomRoom.getYCoord()].getKind() == 0) {
                     if (getNumberOfAdjacentRooms(randomRoom.getXCoord()-1, randomRoom.getYCoord()) > 2) {
                         map[randomRoom.getXCoord()-1][randomRoom.getYCoord()].setKind(SECRET_ROOM);
-                        containsSecretRoom = true;
                     }
                 }
                 break;
-
         }
     }
 
@@ -262,7 +302,108 @@ public class Bettermap {
     }
 
     private int getNumberOfAdjacentRooms(int x, int y) {
+        // System.out.println("test");
         int adjacentRoomsCounter = 0;
+
+        // check left border
+        if (x == 0) {
+            // check for bottom left
+            if (y == 0) {
+                adjacentRoomsCounter = checkRightAndTopField(x, y);
+                // check for top left
+            } else if (y == height - 1) {
+                adjacentRoomsCounter = checkRightAndBottomField(x, y);
+            } else {
+                adjacentRoomsCounter = checkNotLeftSide(x, y);
+            }
+        }
+
+        // check right border
+        if (x == width - 1) {
+            // check for bottom right
+            if (y == 0) {
+                adjacentRoomsCounter = checkLeftAndTopFields(x, y);
+                // check for top right
+            } else if (y == height - 1) {
+                adjacentRoomsCounter = checkLeftAndBottomFields(x, y);
+            } else {
+                adjacentRoomsCounter = checkNotRightSide(x, y);
+            }
+        }
+
+        // check top border
+        if (y == height - 1) {
+            // check for top left
+            if (x == 0) {
+                adjacentRoomsCounter = checkRightAndBottomField(x, y);
+                // check for top right
+            } else if (x == width - 1) {
+                adjacentRoomsCounter = checkLeftAndBottomFields(x, y);
+            } else {
+                adjacentRoomsCounter = checkNotTopSide(x, y);
+            }
+        }
+
+        // check bottom border
+        if (y == 0) {
+            // check for bottom left
+            if (x == 0) {
+                adjacentRoomsCounter = checkRightAndTopField(x, y);
+                // check for bottom right
+            } else if (x == width - 1) {
+                adjacentRoomsCounter = checkLeftAndTopFields(x, y);
+            } else {
+                adjacentRoomsCounter = checkNotBottomSide(x, y);
+            }
+        }
+
+        // check normal case
+        if (x > 0 && y > 0) {
+            adjacentRoomsCounter = checkAllNeighbouringFields(x, y);
+        }
+
+        return adjacentRoomsCounter;
+    }
+
+    private int checkNotBottomSide(int x, int y) {
+        int adjacentRoomsCounter = 0;
+
+        if (adjacentLeftOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentRightOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentTopOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        return adjacentRoomsCounter;
+    }
+
+    private int checkNotTopSide(int x, int y) {
+        int adjacentRoomsCounter = 0;
+
+        if (adjacentBottomOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentRightOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentLeftOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        return adjacentRoomsCounter;
+    }
+
+    private int checkNotRightSide(int x, int y) {
+        int adjacentRoomsCounter = 0;
+
         if (adjacentLeftOccupied(x, y)) {
             adjacentRoomsCounter++;
         }
@@ -270,6 +411,62 @@ public class Bettermap {
         if (adjacentTopOccupied(x, y)) {
             adjacentRoomsCounter++;
         }
+
+        if (adjacentBottomOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        return adjacentRoomsCounter;
+    }
+
+    private int checkLeftAndBottomFields(int x, int y) {
+        int adjacentRoomsCounter = 0;
+
+        if (adjacentLeftOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentBottomOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        return adjacentRoomsCounter;
+    }
+
+    private int checkLeftAndTopFields(int x, int y) {
+        int adjacentRoomsCounter = 0;
+
+        if (adjacentLeftOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentTopOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        return adjacentRoomsCounter;
+    }
+
+    private int checkNotLeftSide(int x, int y) {
+        int adjacentRoomsCounter = 0;
+
+        if (adjacentBottomOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentTopOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentRightOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        return adjacentRoomsCounter;
+    }
+
+    private int checkRightAndBottomField(int x, int y) {
+        int adjacentRoomsCounter = 0;
 
         if (adjacentRightOccupied(x, y)) {
             adjacentRoomsCounter++;
@@ -282,34 +479,72 @@ public class Bettermap {
         return adjacentRoomsCounter;
     }
 
+    private int checkRightAndTopField(int x, int y) {
+        int adjacentRoomsCounter = 0;
+
+        if (adjacentRightOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentTopOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        return adjacentRoomsCounter;
+    }
+
+    private int checkAllNeighbouringFields(int x, int y) {
+        int adjacentRoomsCounter = 0;
+
+        if (adjacentBottomOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentLeftOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentTopOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        if (adjacentRightOccupied(x, y)) {
+            adjacentRoomsCounter++;
+        }
+
+        return adjacentRoomsCounter;
+
+    }
+
     private boolean adjacentLeftOccupied(int x, int y) {
+        if (x == 0) {
+            return false;
+        }
         return (map[x-1][y].getKind() > 0);
     }
 
     private boolean adjacentRightOccupied(int x, int y) {
+        if (x == width - 1) {
+            return false;
+        }
         return (map[x+1][y].getKind() > 0);
     }
 
     private boolean adjacentTopOccupied(int x, int y) {
+        if (y == height - 1) {
+            return false;
+        }
         return (map[x][y+1].getKind() > 0);
     }
 
     private boolean adjacentBottomOccupied(int x, int y) {
+        if (y == 0) {
+            return false;
+        }
         return (map[x][y-1].getKind() > 0);
     }
 
     private boolean roomIsOccupied(int x, int y) {
         return (map[x][y].getKind() != 0);
-    }
-
-    private boolean roomIsSpecialRoom(int xCoord, int yCoord) {
-        return (map[xCoord][yCoord].getKind() > 2);
-    }
-
-    private boolean isAdjacentToSpecialRoom(int x, int y) {
-        return (map[x-1][y].getKind() > 2 && map[x-1][y].getKind() != 6 ||
-                map[x][y+1].getKind() > 2 && map[x][y+1].getKind() != 6 ||
-                map[x+1][y].getKind() > 2 && map[x+1][y].getKind() != 6 ||
-                map[x][y-1].getKind() > 2 && map[x][y-1].getKind() != 6);
     }
 }

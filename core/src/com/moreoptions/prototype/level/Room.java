@@ -15,13 +15,17 @@ public class Room {
     private int xCoord;
     private int yCoord;
     private int kind;
+    private int neighbours;
 
+    private boolean isSuitableForSpecialRoom;
     private boolean isOccupied;
 
     public Room(int x, int y, int kind) {
         this.xCoord = x;
         this.yCoord = y;
         this.kind = kind;
+        this.neighbours = 0;
+        this.isSuitableForSpecialRoom = false;
         this.isOccupied = false;
     }
 
@@ -58,4 +62,19 @@ public class Room {
     }
 
 
+    public void setNeighbours(int neighbours) {
+        this.neighbours = neighbours;
+    }
+
+    public int getNeighbours() {
+        return neighbours;
+    }
+
+    public boolean isSuitableForSpecialRoom() {
+        return isSuitableForSpecialRoom;
+    }
+
+    public void setSuitableForSpecialRoom(boolean suitableForSpecialRoom) {
+        isSuitableForSpecialRoom = suitableForSpecialRoom;
+    }
 }
