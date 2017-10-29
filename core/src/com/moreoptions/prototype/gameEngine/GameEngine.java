@@ -6,6 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Room;
@@ -29,6 +32,7 @@ public class GameEngine extends Engine {
 
     ShapeRenderer renderer;
     OrthographicCamera camera;
+    FitViewport fv;
 
     private GameEngine() {
 
@@ -37,14 +41,25 @@ public class GameEngine extends Engine {
 
     private void demoSetup() {
 
-        camera = new OrthographicCamera(480,288);
-        camera.position.set(480/2,288/2,0);
+        int testw = 15 *32;
+        int testh = 9 * 32;
+
+
+        camera = new OrthographicCamera(640,640);
+        camera.position.set(15*32/2,9*32/2,0);
+
+        fv = new FitViewport(15*32 , 9*32, camera);
         camera.update();
+        fv.update(testw,testh);
         renderer = new ShapeRenderer();
+        Gdx.graphics.setWindowedMode(testw,testh);
+
 
         renderer.setProjectionMatrix(camera.combined);
 
-        Gdx.input.setInputProcessor(new GameInputProcessor());
+        GameInputProcessor processor;
+        processor = new GameInputProcessor(camera);
+        Gdx.input.setInputProcessor(processor);
 
 
         Room r = new Room();
@@ -55,7 +70,7 @@ public class GameEngine extends Engine {
         Entity playerEntity = new Entity();
         playerEntity.add(new PlayerComponent(GameState.getInstance().getPlayerOne()));
         playerEntity.add(new PositionComponent(50,50));
-        playerEntity.add(new VelocityComponent(350f,0.75f));
+        playerEntity.add(new VelocityComponent(150f,0.75f));
         playerEntity.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
         playerEntity.add(new CollisionComponent(CollisionComponent.Shape.CIRCLE, 10));
 
@@ -71,5 +86,9 @@ public class GameEngine extends Engine {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+    }
+
+    public void resize(int width, int height) {
+        fv.update(width,height);
     }
 }

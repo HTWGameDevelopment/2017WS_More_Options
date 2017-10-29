@@ -20,14 +20,12 @@ import com.moreoptions.prototype.gameEngine.systems.MovementSystem;
 import com.moreoptions.prototype.gameEngine.systems.InputSystem;
 
 public class MoreOptions extends ApplicationAdapter {
-	private GameInputProcessor inputManager = new GameInputProcessor();
 
 	private GameEngine engine;
 	
 	@Override
 	public void create () {
         engine = GameEngine.getInstance();
-		Gdx.input.setInputProcessor(inputManager);
 	}
 
 	@Override
@@ -41,6 +39,12 @@ public class MoreOptions extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-	    //Dispose engine
+
 	}
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        engine.resize(width,height);
+    }
 }

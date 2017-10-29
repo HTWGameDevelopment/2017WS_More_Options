@@ -1,6 +1,8 @@
 package com.moreoptions.prototype.gameEngine.input;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 
@@ -10,7 +12,11 @@ import com.moreoptions.prototype.gameEngine.data.InputState;
  */
 public class GameInputProcessor implements InputProcessor {
 
+    private OrthographicCamera camera;
 
+    public GameInputProcessor(OrthographicCamera camera) {
+        this.camera = camera;
+    }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -120,6 +126,9 @@ public class GameInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        System.out.println(camera.unproject(new Vector3(screenX,screenY,0)));
+
         return false;
     }
 
