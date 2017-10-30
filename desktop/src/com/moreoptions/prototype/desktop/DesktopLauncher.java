@@ -10,7 +10,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		// new Map();
 
-		new Bettermap(10, 10, 50);
+		new Map(10, 10, 10);
 		// LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		// new LwjglApplication(new MoreOptions(), config);
 	}
