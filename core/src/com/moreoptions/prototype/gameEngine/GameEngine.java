@@ -69,7 +69,7 @@ public class GameEngine extends Engine {
 
         Entity playerEntity = new Entity();
         playerEntity.add(new PlayerComponent(GameState.getInstance().getPlayerOne()));
-        playerEntity.add(new PositionComponent(50,50));
+        playerEntity.add(new PositionComponent(100,100));
         playerEntity.add(new VelocityComponent(150f,0.75f));
         playerEntity.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
         playerEntity.add(new CollisionComponent(CollisionComponent.Shape.CIRCLE, 10));

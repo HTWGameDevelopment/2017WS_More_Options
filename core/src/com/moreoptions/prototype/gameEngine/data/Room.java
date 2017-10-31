@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.DebugColorComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.components.TileComponent;
 
 import java.util.ArrayList;
 
@@ -87,17 +88,22 @@ public class Room {
                 int positionY = i * tileSize;
                 int positionX = (height-j) * tileSize;
 
-                System.out.println("Created with:" + positionX);
-                System.out.println("Created with:" + positionY);
-
                 Entity e = new Entity();
 
                 PositionComponent p = new PositionComponent(positionX, positionY);
                 CollisionComponent c = new CollisionComponent(CollisionComponent.Shape.RECTANGLE, tileSize);
 
+
                 DebugColorComponent dc;
-                if(k==0)  dc= new DebugColorComponent(new Color(57 / 255f, 150/255f,125/255f, 1));
-                else  dc= new DebugColorComponent(new Color(0 / 255f, 0/255f,125/255f, 1));
+                if(k==0) {
+                    dc= new DebugColorComponent(new Color(57 / 255f, 150/255f,125/255f, 1));
+                }
+                else {
+                    dc= new DebugColorComponent(new Color(0 / 255f, 0/255f,125/255f, 1));
+                    TileComponent tc = new TileComponent(k, true);
+                    e.add(tc);
+                }
+
 
                 e.add(p).add(c).add(dc);
 

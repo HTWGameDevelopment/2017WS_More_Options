@@ -56,7 +56,7 @@ public class InputSystem extends EntitySystem {
         } else if (playerInput.isMoveDown()) {
             v.setVelY(-v.getSpeed());
         } else if (!playerInput.isMoveUp() && !playerInput.isMoveDown()) {
-            v.setVelY(v.getVelY() * v.getDeceleration());
+            v.setVelY(v.getVelY() * v.getDeceleration()); //TODO move this to own system?
         }
 
         if (playerInput.isMoveLeft() && playerInput.isMoveRight()) {
