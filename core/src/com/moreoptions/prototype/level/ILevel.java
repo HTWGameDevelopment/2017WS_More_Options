@@ -33,9 +33,9 @@ public interface ILevel {
 
     void makeRoomWest(int x, int y, int kind);
 
-    void getRoomsWithOneNeighbour();
-
     void countNeighbours();
+
+    void getPossibleSecretRooms();
 
     boolean checkNorthOutside(int y);
 

@@ -69,12 +69,4 @@ public class Room {
     public int getNeighbours() {
         return neighbours;
     }
-
-    public boolean isSuitableForSpecialRoom() {
-        return isSuitableForSpecialRoom;
-    }
-
-    public void setSuitableForSpecialRoom(boolean suitableForSpecialRoom) {
-        isSuitableForSpecialRoom = suitableForSpecialRoom;
-    }
 }

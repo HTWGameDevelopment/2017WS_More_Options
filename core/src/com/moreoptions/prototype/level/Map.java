@@ -31,7 +31,8 @@ public class Map implements ILevel{
     private Room[][] map;
 
     private List<Room> existingRooms;
-    private List<Room> singleNeighbourRooms;
+    private List<Room> possibleSecretRooms;
+    private List<Room> possibleSecretRoomsSecondary;
 
     private int maxRooms;
 
@@ -46,7 +47,8 @@ public class Map implements ILevel{
 
         this.map = new Room[width][height];
         this.existingRooms = new ArrayList<Room>();
-        this.singleNeighbourRooms = new ArrayList<Room>();
+        this.possibleSecretRooms = new ArrayList<Room>();
+        this.possibleSecretRoomsSecondary = new ArrayList<Room>();
 
         this.maxRooms = maxRooms;
 
@@ -78,22 +80,19 @@ public class Map implements ILevel{
     @Override
     public void makeSpecialRooms() {
         countNeighbours();
-        getRoomsWithOneNeighbour();
 
         makeBossRoom();
 
         countNeighbours();
-        getRoomsWithOneNeighbour();
 
         makeItemRoom();
 
         countNeighbours();
-        getRoomsWithOneNeighbour();
 
         makeVendorRoom();
 
         countNeighbours();
-        getRoomsWithOneNeighbour();
+        getPossibleSecretRooms();
 
         makeSecretRoom();
     }
@@ -144,67 +143,73 @@ public class Map implements ILevel{
     @Override
     public void makeBossRoom() {
         /*
-        get all rooms with one neighbour
-        get a random room from that list
-        get a random direction
 
-        try to make the room
-        while (false) do
-            go direction
-            check for bounds, occupied and neighbours
-            make room
-            add room to lists and map
+        while(no boss room)
+            get random occupied room
+            get random direction
+
+            switch(direction)
+                case
+                    check if room to be would be outside the bounds
+                    check if room to be only has 1 neighbour
+                    check if room to be is unoccupied
+                    make the room
          */
 
         Random random = new Random();
         while (!containsBossRoom) {
-            int roomIndex = random.nextInt(singleNeighbourRooms.size());
+            int roomIndex = random.nextInt(existingRooms.size());
 
             int direction = random.nextInt(4);
-            Room randomRoom = singleNeighbourRooms.get(roomIndex);
+
+            Room randomRoom = existingRooms.get(roomIndex);
 
             switch (direction) {
                 case NORTH:
-                    if (checkNorthOutside(randomRoom.getYCoord())) {
-                        break;
-                    } else if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getKind() != 0) {
-                        break;
-                    } else {
-                        makeRoomNorth(randomRoom.getXCoord(), randomRoom.getYCoord() + 1, BOSS_ROOM);
-                        containsBossRoom = true;
+                    // if inside the map
+                    if (!checkNorthOutside(randomRoom.getYCoord())) {
+                        // if room to be has 1 neighbour
+                        if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getNeighbours() == 1) {
+                            // if room to be is still empty
+                            if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getKind() == 0) {
+                                // make the room
+                                makeRoomNorth(randomRoom.getXCoord(), randomRoom.getYCoord(), BOSS_ROOM);
+                                containsBossRoom = true;
+                            }
+                        }
                     }
                     break;
 
                 case EAST:
-                    if (checkEastOutside(randomRoom.getXCoord())) {
-                        break;
-                    } else if (map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()].getKind() != 0) {
-                        break;
-                    } else {
-                        makeRoomEast(randomRoom.getXCoord() + 1, randomRoom.getYCoord(), BOSS_ROOM);
-                        containsBossRoom = true;
+                    if (!checkEastOutside(randomRoom.getXCoord())) {
+                        if (map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()].getKind() == 0) {
+                                makeRoomEast(randomRoom.getXCoord(), randomRoom.getYCoord(), BOSS_ROOM);
+                                containsBossRoom = true;
+                            }
+                        }
                     }
                     break;
 
                 case SOUTH:
-                    if (checkSouthOutside(randomRoom.getYCoord())) {
-                        break;
-                    } else if (map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1].getKind() != 0) {
-                        break;
-                    } else {
-                        makeRoomSouth(randomRoom.getXCoord(), randomRoom.getYCoord() - 1, BOSS_ROOM);
-                        containsBossRoom = true;
+                    if (!checkSouthOutside(randomRoom.getYCoord())) {
+                        if (map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1].getKind() == 0) {
+                                makeRoomSouth(randomRoom.getXCoord(), randomRoom.getYCoord(), BOSS_ROOM);
+                                containsBossRoom = true;
+                            }
+                        }
                     }
                     break;
 
                 case WEST:
-                    if (checkWestOutside(randomRoom.getXCoord())) {
-                        break;
-                    } else if (map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()].getKind() != 0) {
-                        break;
-                    } else {
-                        makeRoomWest(randomRoom.getXCoord() - 1, randomRoom.getYCoord(), BOSS_ROOM);
-                        containsBossRoom = true;
+                    if (! checkWestOutside(randomRoom.getXCoord())) {
+                        if (map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()].getKind() == 0) {
+                                makeRoomWest(randomRoom.getXCoord(), randomRoom.getYCoord(), BOSS_ROOM);
+                                containsBossRoom = true;
+                            }
+                        }
                     }
                     break;
             }
@@ -214,35 +219,156 @@ public class Map implements ILevel{
     @Override
     public void makeVendorRoom() {
 
+        Random random = new Random();
+        while (!containsVendorRoom) {
+            int roomIndex = random.nextInt(existingRooms.size());
+
+            int direction = random.nextInt(4);
+
+            Room randomRoom = existingRooms.get(roomIndex);
+
+            switch (direction) {
+                case NORTH:
+                    // if inside the map
+                    if (!checkNorthOutside(randomRoom.getYCoord())) {
+                        // if room to be has 1 neighbour
+                        if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getNeighbours() == 1) {
+                            // if room to be is still empty
+                            if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getKind() == 0) {
+                                // make the room
+                                makeRoomNorth(randomRoom.getXCoord(), randomRoom.getYCoord(), VENDOR_ROOM);
+                                containsVendorRoom = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case EAST:
+                    if (!checkEastOutside(randomRoom.getXCoord())) {
+                        if (map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()].getKind() == 0) {
+                                makeRoomEast(randomRoom.getXCoord(), randomRoom.getYCoord(), VENDOR_ROOM);
+                                containsVendorRoom = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case SOUTH:
+                    if (!checkSouthOutside(randomRoom.getYCoord())) {
+                        if (map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1].getKind() == 0) {
+                                makeRoomSouth(randomRoom.getXCoord(), randomRoom.getYCoord(), VENDOR_ROOM);
+                                containsVendorRoom = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case WEST:
+                    if (! checkWestOutside(randomRoom.getXCoord())) {
+                        if (map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()].getKind() == 0) {
+                                makeRoomWest(randomRoom.getXCoord(), randomRoom.getYCoord(), VENDOR_ROOM);
+                                containsVendorRoom = true;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
     public void makeItemRoom() {
+        Random random = new Random();
+        while (!containsItemRoom) {
+            int roomIndex = random.nextInt(existingRooms.size());
 
+            int direction = random.nextInt(4);
+
+            Room randomRoom = existingRooms.get(roomIndex);
+
+            switch (direction) {
+                case NORTH:
+                    if (!checkNorthOutside(randomRoom.getYCoord())) {
+                        if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getKind() == 0) {
+                                makeRoomNorth(randomRoom.getXCoord(), randomRoom.getYCoord(), ITEM_ROOM);
+                                containsItemRoom = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case EAST:
+                    if (!checkEastOutside(randomRoom.getXCoord())) {
+                        if (map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord() + 1][randomRoom.getYCoord()].getKind() == 0) {
+                                makeRoomEast(randomRoom.getXCoord(), randomRoom.getYCoord(), ITEM_ROOM);
+                                containsItemRoom = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case SOUTH:
+                    if (!checkSouthOutside(randomRoom.getYCoord())) {
+                        if (map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord()][randomRoom.getYCoord() - 1].getKind() == 0) {
+                                makeRoomSouth(randomRoom.getXCoord(), randomRoom.getYCoord(), ITEM_ROOM);
+                                containsItemRoom = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case WEST:
+                    if (! checkWestOutside(randomRoom.getXCoord())) {
+                        if (map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()].getNeighbours() == 1) {
+                            if (map[randomRoom.getXCoord() - 1][randomRoom.getYCoord()].getKind() == 0) {
+                                makeRoomWest(randomRoom.getXCoord(), randomRoom.getYCoord(), ITEM_ROOM);
+                                containsItemRoom = true;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
     public void makeSecretRoom() {
+        Random random = new Random();
+        int tries = 0;
 
+
+            while (!containsSecretRoom) {
+                if (possibleSecretRooms.size() != 0) {
+                    int secretRoomIndex = random.nextInt(possibleSecretRooms.size());
+                    Room secretRoom = possibleSecretRooms.get(secretRoomIndex);
+
+                    map[secretRoom.getXCoord()][secretRoom.getYCoord()].setKind(SECRET_ROOM);
+                    existingRooms.add(secretRoom);
+                    containsSecretRoom = true;
+
+                } else if (possibleSecretRooms.size() == 0) {
+                    getSecretRoomWithTwoNeighbours();
+                    int secretRoomIndex = random.nextInt(possibleSecretRoomsSecondary.size());
+                    Room secretRoom = possibleSecretRoomsSecondary.get(secretRoomIndex);
+                    map[secretRoom.getXCoord()][secretRoom.getYCoord()].setKind(SECRET_ROOM);
+                    existingRooms.add(secretRoom);
+                    containsSecretRoom = true;
+
+                }  else {
+                    System.out.println("couldn't find suitable secret room --> won't be generated");
+                    containsSecretRoom = true;
+                }
+            }
     }
 
     @Override
     public void printMap() {
-        int counter = 0;
-
-        countNeighbours();
-
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                System.out.println("index: " + counter + ", X: " + i + ", Y: " + j + ", neighbours: " + map[i][j].getNeighbours() + ", kind: " + map[i][j].getKind());
-                counter++;
-            }
-        }
-
-        getRoomsWithOneNeighbour();
-
-        System.out.println("size: " + singleNeighbourRooms.size());
-
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 System.out.print(" " + map[x][y].getKind() + " ");
@@ -254,12 +380,8 @@ public class Map implements ILevel{
     @Override
     public void makeRoomNorth(int x, int y, int kind) {
         Room room;
-        if (checkNorthOutside(y)) {
-            // do nothing
-        } else {
-            if (map[x][y + 1].getKind() != 0) {
-                // do nothing
-            } else {
+        if (!checkNorthOutside(y)) {
+            if (map[x][y + 1].getKind() == 0) {
                 room = new Room(x, y + 1, kind);
                 map[x][y + 1] = room;
                 existingRooms.add(room);
@@ -270,12 +392,8 @@ public class Map implements ILevel{
     @Override
     public void makeRoomEast(int x, int y, int kind) {
         Room room;
-        if (checkEastOutside(x)) {
-            // do nothing
-        } else {
-            if (map[x + 1][y].getKind() != 0) {
-                // do nothing
-            } else {
+        if (!checkEastOutside(x)) {
+            if (map[x + 1][y].getKind() == 0) {
                 room = new Room(x + 1, y, kind);
                 map[x + 1][y] = room;
                 existingRooms.add(room);
@@ -286,12 +404,8 @@ public class Map implements ILevel{
     @Override
     public void makeRoomSouth(int x, int y, int kind) {
         Room room;
-        if (checkSouthOutside(y)) {
-            // do nothing
-        } else {
-            if (map[x][y - 1].getKind() != 0) {
-                // do nothing
-            } else {
+        if (!checkSouthOutside(y)) {
+            if (map[x][y - 1].getKind() == 0) {
                 room = new Room(x, y - 1, kind);
                 map[x][y - 1] = room;
                 existingRooms.add(room);
@@ -302,12 +416,8 @@ public class Map implements ILevel{
     @Override
     public void makeRoomWest(int x, int y, int kind) {
         Room room;
-        if (checkWestOutside(x)) {
-            // do nothing
-        } else {
-            if (map[x - 1][y].getKind() != 0) {
-                // do nothing
-            } else {
+        if (!checkWestOutside(x)) {
+            if (map[x - 1][y].getKind() == 0) {
                 room = new Room(x - 1, y, kind);
                 map[x - 1][y] = room;
                 existingRooms.add(room);
@@ -336,19 +446,6 @@ public class Map implements ILevel{
     }
 
     @Override
-    public void getRoomsWithOneNeighbour() {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (map[x][y].getKind() != 0) {
-                    if (map[x][y].getNeighbours() == 1) {
-                        singleNeighbourRooms.add(map[x][y]);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     public void countNeighbours() {
         int neighbours = 0;
         for (int x = 0; x < width; x++) {
@@ -361,14 +458,14 @@ public class Map implements ILevel{
                     }
                 }
 
-                // east
+                    // east
                 if (!checkEastOutside(x)) {
                     if (map[x + 1][y].getKind() != 0) {
                         neighbours++;
                     }
                 }
 
-                // south
+                    // south
                 if (!checkSouthOutside(y)) {
                     if (map[x][y - 1].getKind() != 0) {
                         neighbours++;
@@ -376,7 +473,7 @@ public class Map implements ILevel{
                 }
 
 
-                // west
+                    // west
                 if (!checkWestOutside(x)) {
                     if (map[x - 1][y].getKind() != 0) {
                         neighbours++;
@@ -386,6 +483,31 @@ public class Map implements ILevel{
                 // setNeighbours
                 map[x][y].setNeighbours(neighbours);
                 neighbours = 0;
+            }
+        }
+    }
+
+    @Override
+    public void getPossibleSecretRooms() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (map[x][y].getKind() == 0) {
+                    if (map[x][y].getNeighbours() > 2) {
+                        possibleSecretRooms.add(map[x][y]);
+                    }
+                }
+            }
+        }
+    }
+
+    private void getSecretRoomWithTwoNeighbours() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (map[x][y].getKind() == 0) {
+                    if (map[x][y].getNeighbours() == 2) {
+                        possibleSecretRoomsSecondary.add(map[x][y]);
+                    }
+                }
             }
         }
     }
