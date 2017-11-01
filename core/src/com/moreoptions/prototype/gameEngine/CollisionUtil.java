@@ -37,4 +37,13 @@ public class CollisionUtil {
     }
 
 
+    public static int getVertexCount(Circle c, Rectangle r) {
+        int vertexCount = 0;
+        if(c.contains(r.x,r.y)) vertexCount++;
+        if(c.contains(r.x + GameEngine.getInstance().getTileSize(),r.y)) vertexCount++;
+        if(c.contains(r.x + GameEngine.getInstance().getTileSize(),r.y + GameEngine.getInstance().getTileSize())) vertexCount++;
+        if(c.contains(r.x,r.y + GameEngine.getInstance().getTileSize())) vertexCount++;
+
+        return vertexCount;
+    }
 }

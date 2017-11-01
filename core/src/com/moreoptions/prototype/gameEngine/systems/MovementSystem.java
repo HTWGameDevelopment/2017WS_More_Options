@@ -2,14 +2,21 @@ package com.moreoptions.prototype.gameEngine.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.moreoptions.prototype.gameEngine.CollisionUtil;
+import com.moreoptions.prototype.gameEngine.GameEngine;
 import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.TileComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
+
+import java.awt.geom.Point2D;
 
 /**
  * The job of this movement-system is to:
@@ -27,6 +34,7 @@ public class MovementSystem extends EntitySystem {
 
     Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class).exclude(TileComponent.class).get();
     Family tilesFamily = Family.all(TileComponent.class).get();
+    private float TILE_SIZE = 32;
 
     @Override
     public void update(float deltaTime) {
@@ -37,58 +45,46 @@ public class MovementSystem extends EntitySystem {
 
         ImmutableArray<Entity> tiles = getEngine().getEntitiesFor(tilesFamily);
 
-        for(Entity t : tiles) {
+        for (Entity t : tiles) {
             try {
                 Rectangle r = EntityTools.getTileHitbox(t);
                 Circle c = EntityTools.getEntityHitbox(e);
 
-                if(Intersector.overlaps(c,r)) {
-                    PositionComponent pp = posMapper.get(e);
-                    CollisionComponent cp = colMapper.get(e);
+                if (Intersector.overlaps(c, r)) { //THEY OVERLAP? WE NEED TO INVESTIGATE THIS FURTHER
+                    PositionComponent tile = posMapper.get(t);
+                    PositionComponent entityPos = posMapper.get(e);
+                    boolean top = (c.y > tile.getY()) ? true : false;
+                    if (top) {
+                        if (c.x > tile.getX() && c.x < tile.getX() + TILE_SIZE) {
+                            float overlap = tile.getY() + TILE_SIZE - entityPos.getY() + c.radius;
+                            entityPos.setY(entityPos.getY() + overlap);
+                        } else {
+                            if (c.y < tile.getY() + TILE_SIZE) {
+                                entityPos.setY(tile.getY() + TILE_SIZE + c.radius);
+                            } else {
 
-                    PositionComponent tilepp = posMapper.get(t);
+                                while (Intersector.overlaps(c, r)) {
+                                    entityPos.setY(entityPos.getY() + 0.1f);
+                                    c = EntityTools.getEntityHitbox(e);
 
-                    if(cp.getOldY() > tilepp.getY() + 32) {
-                        float tileY = tilepp.getY() + 32;
-
-                        //Calc distance:
-
-                        float distance = tileY - pp.getY() - cp.getSize();
-
-
-
-                        // WENN EIN VERTEX IM DREIECK IST
-
-                        float radius = cp.getSize();
-
-                        float a = pp.getY() - tileY;
-
-                        float b = (float) Math.sqrt(a * a + radius * radius);
-
-
-                        float test = tilepp.getX() - pp.getX();
-                        System.out.println(tilepp.getX() + "- " + pp.getX() + " = " + test);
-
-
-
-                        System.out.println("a: "+a + " radius: "+radius+ " b: " + b + " |" + test);
-
-                        System.out.println(pp.getY() + (b-test) - pp.getY() );
-
-
-                        pp.setY(pp.getY() + (b-test-radius));
-
-
-
-
-
+                                }
+                            }
+                        }
                     } else {
-                        float tileY = tilepp.getY();
-                        float overlap = pp.getY()- tileY + cp.getSize();
-                        pp.setY(pp.getY()-overlap);
+                        if (c.x > tile.getX() && c.x < tile.getX() + TILE_SIZE) {
+                            float overlap = tile.getY() - entityPos.getY() - c.radius;
+                            entityPos.setY(entityPos.getY() + overlap);
+                        } else {
+                            if (c.y > tile.getY()) {
+                                entityPos.setY(tile.getY() - c.radius);
+                            } else {
+                                while (Intersector.overlaps(c, r)) {
+                                    entityPos.setY(entityPos.getY() - 0.1f);
+                                    c = EntityTools.getEntityHitbox(e);
+                                }
+                            }
+                        }
                     }
-                } else {
-                    //Check if we passed trough a tile between frames
                 }
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -97,33 +93,48 @@ public class MovementSystem extends EntitySystem {
     }
 
     private void fixXCollision(Entity e) {
-
         ImmutableArray<Entity> tiles = getEngine().getEntitiesFor(tilesFamily);
 
-        for(Entity t : tiles) {
+        for (Entity t : tiles) {
             try {
                 Rectangle r = EntityTools.getTileHitbox(t);
                 Circle c = EntityTools.getEntityHitbox(e);
-                if(Intersector.overlaps(c,r)) {
 
-                    PositionComponent pp = posMapper.get(e);
-                    CollisionComponent cp = colMapper.get(e);
+                if (Intersector.overlaps(c, r)) { //THEY OVERLAP? WE NEED TO INVESTIGATE THIS FURTHER
+                    PositionComponent tile = posMapper.get(t);
+                    PositionComponent entityPos = posMapper.get(e);
+                    boolean right = (c.x > tile.getX()) ? true : false;
+                    if (right) {
+                        if (c.y > tile.getY() && c.y < (tile.getY() + TILE_SIZE)) {
+                            float overlap = tile.getX() + TILE_SIZE - entityPos.getX() + c.radius;
+                            entityPos.setX(entityPos.getX() + overlap);
+                        } /*else {
+                            if (c.x < tile.getX() + TILE_SIZE) {
+                                entityPos.setX(tile.getX() + TILE_SIZE + c.radius);
+                            } else {
 
-                    PositionComponent tilepp = posMapper.get(t);
+                                while (Intersector.overlaps(c, r)) {
+                                    entityPos.setX(entityPos.getX() + 0.1f);
+                                    c = EntityTools.getEntityHitbox(e);
 
-                    if(cp.getOldX() > tilepp.getX() + 32) {
-                        float tileX = tilepp.getX() + 32;
-                        float overlap = tileX - pp.getX() + cp.getSize();
-                        pp.setX(pp.getX()+overlap);
-
+                                }
+                            }
+                        }*/
                     } else {
-                        float tileX = tilepp.getX();
-                        float overlap = pp.getX()- tileX + cp.getSize();
-                        pp.setX(pp.getX()-overlap);
-
+                        if (c.y > tile.getY() && c.y < tile.getY() + TILE_SIZE) {
+                            float overlap = tile.getX() - entityPos.getX() - c.radius;
+                            entityPos.setX(entityPos.getX() + overlap);
+                        } /*else {
+                            if (c.x < tile.getX()) {
+                                entityPos.setX(tile.getX() - c.radius);
+                            } else {
+                                while (Intersector.overlaps(c, r)) {
+                                    entityPos.setX(entityPos.getX() - 0.1f);
+                                    c = EntityTools.getEntityHitbox(e);
+                                }
+                            }
+                        }*/
                     }
-                } else  {
-                    //Check if we passed trough a tile between frames
                 }
             } catch (Exception e1) {
                 e1.printStackTrace();

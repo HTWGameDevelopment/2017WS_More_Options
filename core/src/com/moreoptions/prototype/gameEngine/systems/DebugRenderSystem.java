@@ -52,7 +52,7 @@ public class DebugRenderSystem extends EntitySystem{
             PositionComponent p = e.getComponent(PositionComponent.class);
             CollisionComponent cc = e.getComponent(CollisionComponent.class);
 
-            renderer.setColor(Color.RED);
+            renderer.setColor(Color.CYAN);
 
             switch(cc.getShape()) {
                 case CIRCLE:

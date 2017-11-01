@@ -91,4 +91,8 @@ public class GameEngine extends Engine {
     public void resize(int width, int height) {
         fv.update(width,height);
     }
+
+    public float getTileSize() {
+        return 32;
+    }
 }
