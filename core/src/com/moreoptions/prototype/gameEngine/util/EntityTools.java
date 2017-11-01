@@ -13,8 +13,6 @@ import javafx.geometry.Pos;
  */
 public class EntityTools {
 
-
-
     public static Rectangle getTileHitbox(Entity e) throws Exception {
         CollisionComponent c = e.getComponent(CollisionComponent.class);
         if(c.getShape() != CollisionComponent.Shape.RECTANGLE) throw new Exception("Not a rectangle hitbox");

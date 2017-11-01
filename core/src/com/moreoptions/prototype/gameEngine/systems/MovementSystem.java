@@ -5,15 +5,11 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-import com.moreoptions.prototype.gameEngine.CollisionUtil;
 import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.TileComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 /**
  * The job of this movement-system is to:
@@ -54,8 +50,37 @@ public class MovementSystem extends EntitySystem {
 
                     if(cp.getOldY() > tilepp.getY() + 32) {
                         float tileY = tilepp.getY() + 32;
-                        float overlap = tileY - pp.getY() + cp.getSize();
-                        pp.setY(pp.getY()+overlap);
+
+                        //Calc distance:
+
+                        float distance = tileY - pp.getY() - cp.getSize();
+
+
+
+                        // WENN EIN VERTEX IM DREIECK IST
+
+                        float radius = cp.getSize();
+
+                        float a = pp.getY() - tileY;
+
+                        float b = (float) Math.sqrt(a * a + radius * radius);
+
+
+                        float test = tilepp.getX() - pp.getX();
+                        System.out.println(tilepp.getX() + "- " + pp.getX() + " = " + test);
+
+
+
+                        System.out.println("a: "+a + " radius: "+radius+ " b: " + b + " |" + test);
+
+                        System.out.println(pp.getY() + (b-test) - pp.getY() );
+
+
+                        pp.setY(pp.getY() + (b-test-radius));
+
+
+
+
 
                     } else {
                         float tileY = tilepp.getY();
