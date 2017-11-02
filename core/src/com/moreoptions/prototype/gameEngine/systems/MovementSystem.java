@@ -174,13 +174,94 @@ public class MovementSystem extends EntitySystem {
                             entityPos.setX(entityPos.getX() + overlap);
                         } else {
                             //Check top, bot, do collisionstuff
+                            boolean top = (c.y > tile.getY()) ? true : false;
+                            if(top) {
+                                Vector2 a = new Vector2(tile.getX()+32, tile.getY()+32);
+                                Vector2 b = new Vector2(tile.getX()+32, tile.getY());
+
+                                Vector2 center = new Vector2(entityPos.getX(), entityPos.getY());
+                                float radius = c.radius;
+
+                                //Get List of Intersectionvectors
+
+                                List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a,b,center, radius);
+
+                                Vector2 re = (tr.isEmpty()) ? null : tr.get(0);
+                                if(re == null) continue;
+                                for(Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a,b,center, radius)) {
+                                    if(re.x > v.x) re = v;
+                                }
+
+                                entityPos.setX(entityPos.getX() + (tile.getX()+32 - re.x));
+                                entityPos.setY(entityPos.getY()+0.5f);
+
+                            } else {
+                                Vector2 a = new Vector2(tile.getX(), tile.getY()+32);
+                                Vector2 b = new Vector2(tile.getX(), tile.getY());
+
+                                Vector2 center = new Vector2(entityPos.getX(), entityPos.getY());
+                                float radius = c.radius;
+
+                                //Get List of Intersectionvectors
+
+                                List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a,b,center, radius);
+
+                                Vector2 re = (tr.isEmpty()) ? null : tr.get(0);
+                                if(re == null) continue;
+                                for(Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a,b,center, radius)) {
+                                    if(re.x < v.x) re = v;
+                                }
+
+                                entityPos.setX(entityPos.getX() - (re.x- tile.getX()));
+                                entityPos.setY(entityPos.getY()+0.5f);
+                            }
                         }
                     } else {
                         if (c.y > tile.getY() && c.y < tile.getY() + TILE_SIZE) {
                             float overlap = tile.getX() - entityPos.getX() - c.radius;
                             entityPos.setX(entityPos.getX() + overlap);
                         } else {
-                            //Check top, bot, do collisionstuff
+                            boolean top = (c.y > tile.getY()) ? true : false;
+                            if(top) {
+                                Vector2 a = new Vector2(tile.getX(), tile.getY()+32);
+                                Vector2 b = new Vector2(tile.getX(), tile.getY());
+
+                                Vector2 center = new Vector2(entityPos.getX(), entityPos.getY());
+                                float radius = c.radius;
+
+                                //Get List of Intersectionvectors
+
+                                List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a,b,center, radius);
+
+                                Vector2 re = (tr.isEmpty()) ? null : tr.get(0);
+                                if(re == null) continue;
+                                for(Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a,b,center, radius)) {
+                                    if(re.x > v.x) re = v;
+                                }
+
+                                entityPos.setX(entityPos.getX() - (re.x - tile.getX()));
+                                entityPos.setY(entityPos.getY()+0.5f);
+
+                            } else {
+                                Vector2 a = new Vector2(tile.getX(), tile.getY()+32);
+                                Vector2 b = new Vector2(tile.getX(), tile.getY());
+
+                                Vector2 center = new Vector2(entityPos.getX(), entityPos.getY());
+                                float radius = c.radius;
+
+                                //Get List of Intersectionvectors
+
+                                List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a,b,center, radius);
+
+                                Vector2 re = (tr.isEmpty()) ? null : tr.get(0);
+                                if(re == null) continue;
+                                for(Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a,b,center, radius)) {
+                                    if(re.x < v.x) re = v;
+                                }
+
+                                entityPos.setX(entityPos.getX() - (re.x- tile.getX()));
+                                entityPos.setY(entityPos.getY()+0.5f);
+                            }
                         }
                     }
                 }
