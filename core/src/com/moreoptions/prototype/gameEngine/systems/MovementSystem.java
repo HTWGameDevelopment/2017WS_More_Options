@@ -172,7 +172,10 @@ public class MovementSystem extends EntitySystem {
                         if (c.y > tile.getY() && c.y < (tile.getY() + TILE_SIZE)) {
                             float overlap = tile.getX() + TILE_SIZE - entityPos.getX() + c.radius;
                             entityPos.setX(entityPos.getX() + overlap);
-                        } else {
+                        } //else if(c.x < tile.getX()+32) {
+                            //entityPos.setX(tile.getX()+ 32 + c.radius);
+                    //    }
+                    else {
                             //Check top, bot, do collisionstuff
                             boolean top = (c.y > tile.getY()) ? true : false;
                             if(top) {
@@ -220,7 +223,10 @@ public class MovementSystem extends EntitySystem {
                         if (c.y > tile.getY() && c.y < tile.getY() + TILE_SIZE) {
                             float overlap = tile.getX() - entityPos.getX() - c.radius;
                             entityPos.setX(entityPos.getX() + overlap);
-                        } else {
+                        } //else if(c.x > tile.getX()) {
+                          // entityPos.setX(tile.getX() - c.radius);
+                        //}
+                            else {
                             boolean top = (c.y > tile.getY()) ? true : false;
                             if(top) {
                                 Vector2 a = new Vector2(tile.getX(), tile.getY()+32);
@@ -260,7 +266,7 @@ public class MovementSystem extends EntitySystem {
                                 }
 
                                 entityPos.setX(entityPos.getX() - (re.x- tile.getX()));
-                                entityPos.setY(entityPos.getY()+0.5f);
+                                entityPos.setY(entityPos.getY()-0.5f);
                             }
                         }
                     }
