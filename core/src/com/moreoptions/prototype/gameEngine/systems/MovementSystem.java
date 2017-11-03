@@ -4,9 +4,12 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.*;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
+import javax.swing.text.Position;
 import java.util.List;
 
 /**
@@ -25,141 +28,141 @@ public class MovementSystem extends EntitySystem {
 
     Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class).exclude(TileComponent.class).get();
     Family tilesFamily = Family.all(TileComponent.class).get();
-    private float TILE_SIZE = 32;
+    private float TILE_SIZE = Consts.TILE_SIZE;
 
     @Override
     public void update(float deltaTime) {
         moveAllEntities(deltaTime);
     }
 
-    private boolean fixYCollision(Entity e) {
+    /**
+     * Fixes collision between an Entity and Entity with a Tile Component on the Y-Axis by moving the entity away. The distance the entity is moved is decided in 6 ways
+     *
+     * If Entity center is between bounds of Tile it is moved away the entity radius from the bounds
+     *
+     * If Entity center is outside bounds of Tile it is moved away by the distance to the furthest away point of intersection of the nearest bound
+     * @param e
+     */
+    private void fixYCollision(Entity e, Entity tile) {
 
-        ImmutableArray<Entity> tiles = getEngine().getEntitiesFor(tilesFamily);
+        Rectangle r = EntityTools.getTileHitbox(tile);
+        Circle c = EntityTools.getEntityHitbox(e);
 
-        for (Entity t : tiles) {
-            try {
-                Rectangle r = EntityTools.getTileHitbox(t);
-                Circle c = EntityTools.getEntityHitbox(e);
+        PositionComponent entityPosition = e.getComponent(PositionComponent.class);
 
-                if (Intersector.overlaps(c, r)) { //THEY OVERLAP? WE NEED TO INVESTIGATE THIS FURTHER
-                    PositionComponent tile = posMapper.get(t);
-                    PositionComponent entityPos = posMapper.get(e);
-                    boolean top = (entityPos.getY() > tile.getY()) ? true : false;
-                    if (top) {
-                        if (c.x > tile.getX() && c.x < tile.getX() + TILE_SIZE) {
-                            float overlap = tile.getY() + TILE_SIZE - entityPos.getY() + c.radius;
-                            entityPos.setY(entityPos.getY() + overlap);
-                            return true;
-                        } else {
-                                //Get Point of Collision
-                                boolean right = (c.x > tile.getX()) ? true : false;
-                                if(right) {
-                                    //COming from top right
-                                    //get right boundary
-                                    Vector2 a = new Vector2(tile.getX()+32,tile.getY()+32);
-                                    Vector2 b = new Vector2(tile.getX()+32,tile.getY());
-                                    Vector2 d = new Vector2(entityPos.getX(),entityPos.getY());
+        if (Intersector.overlaps(c, r)) {                                                                               //Check if overlap exists. If it does, fix.
+            boolean top = (c.y > r.y) ? true : false;                                                                   //Are we approaching from TOP or BOT?
+            if (top) {
+                if (c.x > r.x && c.x < r.x + TILE_SIZE) {
+                    float overlap = r.y + TILE_SIZE - c.y + c.radius;
+                    entityPosition.setY(entityPosition.getY() + overlap);
+                } else {
+                    //Get Point of Collision
+                    boolean right = (c.x > r.x) ? true : false;
+                    if (right) {
+                        //COming from top right
+                        //get right boundary
+                        Vector2 a = new Vector2(r.x + TILE_SIZE, r.y + TILE_SIZE);
+                        Vector2 b = new Vector2(r.x + TILE_SIZE, r.y);
+                        Vector2 d = new Vector2(c.x, c.y);
 
-                                    float radius = c.radius;
+                        float radius = c.radius;
 
-                                    //Need the one with the lowest Y value
-                                    List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a,b,d, radius);
+                        //Need the one with the lowest Y value
+                        List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius);
 
-                                    Vector2 re = tr.get(0);
-                                    for(Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a,b,d, radius)) {
-                                        if(re.y > v.y) re = v;
-                                    }
+                        Vector2 re = tr.get(0);
+                        for (Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius)) {
+                            if (re.y > v.y) re = v;
+                        }
 
-                                    entityPos.setY(entityPos.getY() + (tile.getY()+32-re.y));
-                                    entityPos.setX(entityPos.getX() + 0.5f);
-                                    return true;
-
-                                } else {
-                                    Vector2 a = new Vector2(tile.getX(),tile.getY()+32);
-                                    Vector2 b = new Vector2(tile.getX(),tile.getY());
-                                    Vector2 d = new Vector2(entityPos.getX(),entityPos.getY());
-
-                                    float radius = c.radius;
-
-                                    //Need the one with the lowest Y value
-                                    List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a,b,d, radius);
-
-                                    Vector2 re = tr.get(0);
-                                    for(Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a,b,d, radius)) {
-                                        if(re.y > v.y) re = v;
-                                    }
-
-                                    entityPos.setY(entityPos.getY() + (tile.getY()+32-re.y));
-                                    entityPos.setX(entityPos.getX() - 0.5f);
-                                    return true;
-                                }
-
-                            }
+                        entityPosition.setY(c.y + (r.y + 32 - re.y));
+                        entityPosition.setX(c.x + 0.5f);
 
                     } else {
-                        if (c.x > tile.getX() && c.x < tile.getX() + TILE_SIZE) {
-                            float overlap = tile.getY() - entityPos.getY() - c.radius;
-                            entityPos.setY(entityPos.getY() + overlap);
-                            return true;
-                        } else {
-                             //Get Point of Collision
-                                boolean right = (c.x > tile.getX()) ? true : false;
-                                if (right) {
-                                    //COming from top right
-                                    //get right boundary
-                                    Vector2 a = new Vector2(tile.getX() + 32, tile.getY() + 32);
-                                    Vector2 b = new Vector2(tile.getX() + 32, tile.getY());
-                                    Vector2 d = new Vector2(entityPos.getX(), entityPos.getY());
+                        Vector2 a = new Vector2(tile.getX(), tile.getY() + 32);
+                        Vector2 b = new Vector2(tile.getX(), tile.getY());
+                        Vector2 d = new Vector2(entityPos.getX(), entityPos.getY());
 
-                                    float radius = c.radius;
+                        float radius = c.radius;
 
-                                    //Need the one with the lowest Y value
-                                    List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius);
+                        //Need the one with the lowest Y value
+                        List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius);
 
-                                    Vector2 re = tr.get(0);
-                                    for (Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius)) {
-                                        if (re.y < v.y) re = v;
-                                    }
-
-                                    entityPos.setY(entityPos.getY() - (re.y - tile.getY()));
-                                    entityPos.setX(entityPos.getX() + 0.5f);
-                                    return true;
-
-                                } else {
-                                    Vector2 a = new Vector2(tile.getX(), tile.getY() + 32);
-                                    Vector2 b = new Vector2(tile.getX(), tile.getY());
-                                    Vector2 d = new Vector2(entityPos.getX(), entityPos.getY());
-
-                                    float radius = c.radius;
-
-                                    //Need the one with the highest Y value
-                                    List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius);
-
-                                    Vector2 re = tr.get(0);
-                                    for (Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius)) {
-                                        if (re.y < v.y) re = v;
-                                    }
-
-                                    entityPos.setY(entityPos.getY() - (re.y - tile.getY()));
-                                    entityPos.setX(entityPos.getX() - 0.5f);
-                                    return true;
-                                }
-                            }
+                        Vector2 re = tr.get(0);
+                        for (Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius)) {
+                            if (re.y > v.y) re = v;
                         }
+
+                        entityPos.setY(entityPos.getY() + (tile.getY() + 32 - re.y));
+                        entityPos.setX(entityPos.getX() - 0.5f);
+                        return true;
                     }
 
-            } catch (Exception e1) {
-                e1.printStackTrace();
+                }
+
+            } else {
+                if (c.x > tile.getX() && c.x < tile.getX() + TILE_SIZE) {
+                    float overlap = tile.getY() - entityPos.getY() - c.radius;
+                    entityPos.setY(entityPos.getY() + overlap);
+                    return true;
+                } else {
+                    //Get Point of Collision
+                    boolean right = (c.x > tile.getX()) ? true : false;
+                    if (right) {
+                        //COming from top right
+                        //get right boundary
+                        Vector2 a = new Vector2(tile.getX() + 32, tile.getY() + 32);
+                        Vector2 b = new Vector2(tile.getX() + 32, tile.getY());
+                        Vector2 d = new Vector2(entityPos.getX(), entityPos.getY());
+
+                        float radius = c.radius;
+
+                        //Need the one with the lowest Y value
+                        List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius);
+
+                        Vector2 re = tr.get(0);
+                        for (Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius)) {
+                            if (re.y < v.y) re = v;
+                        }
+
+                        entityPos.setY(entityPos.getY() - (re.y - tile.getY()));
+                        entityPos.setX(entityPos.getX() + 0.5f);
+                        return true;
+
+                    } else {
+                        Vector2 a = new Vector2(tile.getX(), tile.getY() + 32);
+                        Vector2 b = new Vector2(tile.getX(), tile.getY());
+                        Vector2 d = new Vector2(entityPos.getX(), entityPos.getY());
+
+                        float radius = c.radius;
+
+                        //Need the one with the highest Y value
+                        List<Vector2> tr = CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius);
+
+                        Vector2 re = tr.get(0);
+                        for (Vector2 v : CollisionUtil.getCircleLineIntersectionPoint(a, b, d, radius)) {
+                            if (re.y < v.y) re = v;
+                        }
+
+                        entityPos.setY(entityPos.getY() - (re.y - tile.getY()));
+                        entityPos.setX(entityPos.getX() - 0.5f);
+                        return true;
+                    }
+                }
             }
         }
-        return false;
+
+
     }
+
 
     private void fixXCollision(Entity e) {
         ImmutableArray<Entity> tiles = getEngine().getEntitiesFor(tilesFamily);
 
         for (Entity t : tiles) {
             try {
+
                 Rectangle r = EntityTools.getTileHitbox(t);
                 Circle c = EntityTools.getEntityHitbox(e);
 
