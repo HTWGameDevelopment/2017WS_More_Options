@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,10 +23,12 @@ import com.moreoptions.prototype.gameEngine.systems.InputSystem;
 public class MoreOptions extends ApplicationAdapter {
 
 	private GameEngine engine;
+	private FPSLogger logger;
 	
 	@Override
 	public void create () {
         engine = GameEngine.getInstance();
+        logger = new FPSLogger();
 	}
 
 	@Override
@@ -34,6 +37,7 @@ public class MoreOptions extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         engine.update(Gdx.graphics.getDeltaTime());
+        logger.log();
 
 	}
 	
