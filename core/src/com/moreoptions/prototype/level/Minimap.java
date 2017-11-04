@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Implementation for a randomly generated map
+ * Implementation for a randomly generated minimap
  *
- * @author Andreas
+ * @author Andreas Bonny
  */
 
-public class Map implements ILevel{
+public class Minimap implements IMinimap {
 
     private static final int EMPTY_ROOM = 0;
     private static final int STARTING_ROOM = 1;
@@ -41,7 +41,7 @@ public class Map implements ILevel{
     private boolean containsVendorRoom = false;
     private boolean containsSecretRoom = false;
 
-    public Map(int width, int height, int maxRooms) {
+    public Minimap(int width, int height, int maxRooms) {
         this.width = width;
         this.height = height;
 
@@ -59,6 +59,9 @@ public class Map implements ILevel{
         printMap();
     }
 
+    /**
+     * fills the map with "empty" rooms which will not be accessible by the player
+     */
     @Override
     public void createMap() {
         for (int x = 0; x < width; x++) {
@@ -68,6 +71,9 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * calls the methods responsible for generating the different rooms in each minimap
+     */
     @Override
     public void makeRooms() {
         makeStartingRoom();
@@ -77,6 +83,12 @@ public class Map implements ILevel{
         makeSpecialRooms();
     }
 
+    /**
+     * calls the methods which create the special rooms
+     *
+     * in between each call is a method that counts the amount of neighbours each room has in order so that
+     * a special room is only accessible by one side
+     */
     @Override
     public void makeSpecialRooms() {
         countNeighbours();
@@ -97,6 +109,9 @@ public class Map implements ILevel{
         makeSecretRoom();
     }
 
+    /**
+     * creates a predetermined amount of normal rooms
+     */
     @Override
     public void makeNormalRooms() {
         Random random = new Random();
@@ -130,6 +145,9 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * creates the room in which the player will be placed upon start of each level
+     */
     @Override
     public void makeStartingRoom() {
         int x = width / 2;
@@ -140,10 +158,13 @@ public class Map implements ILevel{
         existingRooms.add(startingRoom);
     }
 
+    /**
+     * creates the room in which the boss of each level will be placed
+     */
     @Override
     public void makeBossRoom() {
-        /*
 
+        /*
         while(no boss room)
             get random occupied room
             get random direction
@@ -216,6 +237,9 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * creates the room in which the player can spend resources in order to gain benefits
+     */
     @Override
     public void makeVendorRoom() {
 
@@ -229,13 +253,9 @@ public class Map implements ILevel{
 
             switch (direction) {
                 case NORTH:
-                    // if inside the map
                     if (!checkNorthOutside(randomRoom.getYCoord())) {
-                        // if room to be has 1 neighbour
                         if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getNeighbours() == 1) {
-                            // if room to be is still empty
                             if (map[randomRoom.getXCoord()][randomRoom.getYCoord() + 1].getKind() == 0) {
-                                // make the room
                                 makeRoomNorth(randomRoom.getXCoord(), randomRoom.getYCoord(), VENDOR_ROOM);
                                 containsVendorRoom = true;
                             }
@@ -279,6 +299,9 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * creates a room in which an item or some other benefit will be spawned
+     */
     @Override
     public void makeItemRoom() {
         Random random = new Random();
@@ -337,36 +360,42 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * creates a room which has multiple neighbours which will not be visible without some special means
+     */
     @Override
     public void makeSecretRoom() {
         Random random = new Random();
-        int tries = 0;
 
+        while (!containsSecretRoom) {
+            if (possibleSecretRooms.size() != 0) {
+                int secretRoomIndex = random.nextInt(possibleSecretRooms.size());
+                Room secretRoom = possibleSecretRooms.get(secretRoomIndex);
 
-            while (!containsSecretRoom) {
-                if (possibleSecretRooms.size() != 0) {
-                    int secretRoomIndex = random.nextInt(possibleSecretRooms.size());
-                    Room secretRoom = possibleSecretRooms.get(secretRoomIndex);
+                map[secretRoom.getXCoord()][secretRoom.getYCoord()].setKind(SECRET_ROOM);
+                existingRooms.add(secretRoom);
+                containsSecretRoom = true;
 
-                    map[secretRoom.getXCoord()][secretRoom.getYCoord()].setKind(SECRET_ROOM);
-                    existingRooms.add(secretRoom);
-                    containsSecretRoom = true;
+            } else if (possibleSecretRooms.size() == 0) {
+                getSecretRoomWithTwoNeighbours();
 
-                } else if (possibleSecretRooms.size() == 0) {
-                    getSecretRoomWithTwoNeighbours();
+                if (possibleSecretRoomsSecondary.size() != 0) {
                     int secretRoomIndex = random.nextInt(possibleSecretRoomsSecondary.size());
                     Room secretRoom = possibleSecretRoomsSecondary.get(secretRoomIndex);
                     map[secretRoom.getXCoord()][secretRoom.getYCoord()].setKind(SECRET_ROOM);
                     existingRooms.add(secretRoom);
                     containsSecretRoom = true;
-
-                }  else {
-                    System.out.println("couldn't find suitable secret room --> won't be generated");
-                    containsSecretRoom = true;
                 }
+            }  else {
+                System.out.println("couldn't find suitable secret room --> won't be generated");
+                containsSecretRoom = true;
             }
+        }
     }
 
+    /**
+     * prints the map to the terminal
+     */
     @Override
     public void printMap() {
         for (int x = 0; x < width; x++) {
@@ -377,6 +406,12 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * creates a room north from a position on the map
+     * @param x x-coordinate from the room the new room will originate
+     * @param y y-coordinate from the room the new room will originate
+     * @param kind the kind of room that will be generated
+     */
     @Override
     public void makeRoomNorth(int x, int y, int kind) {
         Room room;
@@ -389,6 +424,12 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * creates a room east from a position on the map
+     * @param x x-coordinate from the room the new room will originate
+     * @param y y-coordinate from the room the new room will originate
+     * @param kind the kind of room that will be generated
+     */
     @Override
     public void makeRoomEast(int x, int y, int kind) {
         Room room;
@@ -401,6 +442,12 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * creates a room south from a position on the map
+     * @param x x-coordinate from the room the new room will originate
+     * @param y y-coordinate from the room the new room will originate
+     * @param kind the kind of room that will be generated
+     */
     @Override
     public void makeRoomSouth(int x, int y, int kind) {
         Room room;
@@ -413,6 +460,12 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * creates a room west from a position on the map
+     * @param x x-coordinate from the room the new room will originate
+     * @param y y-coordinate from the room the new room will originate
+     * @param kind the kind of room that will be generated
+     */
     @Override
     public void makeRoomWest(int x, int y, int kind) {
         Room room;
@@ -425,26 +478,50 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * checks if the room is at the northern bound of the map
+     * @param y y-coordinate of the room to be checked
+     * @return true if it is at the northern bound
+     */
     @Override
     public boolean checkNorthOutside(int y) {
         return (y == height - 1);
     }
 
+    /**
+     * checks if the room is at the eastern bound of the map
+     * @param x x-coordinate of the room to be checked
+     * @return true if it is at the eastern bound
+     */
     @Override
     public boolean checkEastOutside(int x) {
         return (x == width - 1);
     }
 
+    /**
+     * checks if the room is at the southern bound of the map
+     * @param y y-coordinate of the room to be checked
+     * @return true if it is at the southern bound
+     */
     @Override
     public boolean checkSouthOutside(int y) {
         return (y == 0);
     }
 
+    /**
+     * checks if the room is at the western bound of the map
+     * @param x x-coordinate of the room to be checked
+     * @return true if it is at the western bound
+     */
     @Override
     public boolean checkWestOutside(int x) {
         return (x == 0);
     }
 
+    /**
+     * counts the amount of neighbours a room has and sets that amount of rooms
+     * in the room class
+     */
     @Override
     public void countNeighbours() {
         int neighbours = 0;
@@ -487,6 +564,9 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * gets the best suitable empty rooms for the generation of the secret room (3+ neighbours)
+     */
     @Override
     public void getPossibleSecretRooms() {
         for (int x = 0; x < width; x++) {
@@ -500,6 +580,9 @@ public class Map implements ILevel{
         }
     }
 
+    /**
+     * gets the second best suitable empty rooms for the generation of the secret room (2 neighbours)
+     */
     private void getSecretRoomWithTwoNeighbours() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
