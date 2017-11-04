@@ -215,25 +215,4 @@ public class CollisionUtil {
         return Arrays.asList(p1, p2);
     }
 
-    public static float getYOverlap(Circle c, Rectangle r) {
-        float circleY = c.y;
-        float rectangleY = r.y;
-
-        float radius = c.radius;
-
-        if(Intersector.overlaps(c,r))
-            return (rectangleY - circleY) + radius;
-        return 0;
-    }
-
-
-    public static int getVertexCount(Circle c, Rectangle r) {
-        int vertexCount = 0;
-        if(c.contains(r.x,r.y)) vertexCount++;
-        if(c.contains(r.x + GameEngine.getInstance().getTileSize(),r.y)) vertexCount++;
-        if(c.contains(r.x + GameEngine.getInstance().getTileSize(),r.y + GameEngine.getInstance().getTileSize())) vertexCount++;
-        if(c.contains(r.x,r.y + GameEngine.getInstance().getTileSize())) vertexCount++;
-
-        return vertexCount;
-    }
 }
