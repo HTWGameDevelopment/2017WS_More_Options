@@ -16,6 +16,7 @@ import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.DebugRenderSystem;
 import com.moreoptions.prototype.gameEngine.systems.InputSystem;
 import com.moreoptions.prototype.gameEngine.systems.MovementSystem;
+import com.moreoptions.prototype.gameEngine.systems.TimedSystem;
 
 /**
  *
@@ -79,6 +80,7 @@ public class GameEngine extends Engine {
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());
         addSystem(new DebugRenderSystem(renderer));
+        addSystem(new TimedSystem());
 
 
     }
@@ -90,5 +92,9 @@ public class GameEngine extends Engine {
 
     public void resize(int width, int height) {
         fv.update(width,height);
+    }
+
+    public float getTileSize() {
+        return 32;
     }
 }

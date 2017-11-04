@@ -51,6 +51,7 @@ public class InputSystem extends EntitySystem {
 
         if (playerInput.isMoveUp() && playerInput.isMoveDown()) {
             v.setVelY(v.getVelY() * v.getDeceleration());
+
         } else if (playerInput.isMoveUp()) {
             v.setVelY(v.getSpeed());
         } else if (playerInput.isMoveDown()) {
