@@ -50,26 +50,26 @@ public class InputSystem extends EntitySystem {
         InputState playerInput = p.getInputState();
 
         if (playerInput.isMoveUp() && playerInput.isMoveDown()) {
-            //v.setVelY(v.getVelY() * v.getDeceleration());
+            v.setVelY(v.getVelY() * v.getDeceleration());
             v.setVelY(0);
         } else if (playerInput.isMoveUp()) {
             v.setVelY(v.getSpeed());
         } else if (playerInput.isMoveDown()) {
             v.setVelY(-v.getSpeed());
         } else if (!playerInput.isMoveUp() && !playerInput.isMoveDown()) {
-            //v.setVelY(v.getVelY() * v.getDeceleration()); //TODO move this to own system?
+            v.setVelY(v.getVelY() * v.getDeceleration()); //TODO move this to own system?
             v.setVelY(0);
         }
 
         if (playerInput.isMoveLeft() && playerInput.isMoveRight()) {
-            //v.setVelX(v.getVelX() * v.getDeceleration());
+            v.setVelX(v.getVelX() * v.getDeceleration());
             v.setVelX(0);
         } else if (playerInput.isMoveLeft()) {
             v.setVelX(-v.getSpeed());
         } else if (playerInput.isMoveRight()) {
             v.setVelX(v.getSpeed());
         } else if (!playerInput.isMoveLeft() && !playerInput.isMoveRight()) {
-            //v.setVelX(v.getVelX() * v.getDeceleration());
+            v.setVelX(v.getVelX() * v.getDeceleration());
             v.setVelX(0);
         }
     }
