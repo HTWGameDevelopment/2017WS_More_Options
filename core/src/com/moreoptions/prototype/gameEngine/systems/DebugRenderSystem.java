@@ -28,7 +28,6 @@ public class DebugRenderSystem extends EntitySystem{
     private ComponentMapper<DebugCircleComponent> am = ComponentMapper.getFor(DebugCircleComponent.class);
 
 
-
     public DebugRenderSystem(ShapeRenderer renderer) {
         this.renderer = renderer;
     }

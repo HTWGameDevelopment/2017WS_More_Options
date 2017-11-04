@@ -26,8 +26,8 @@ public class CollisionUtil {
         if(left && ((c.y <= (r.y + r.height) && c.y >= r.y))) return -(c.x - r.x + c.radius);
         if(!left && ((c.y <= (r.y + r.height) && c.y >= r.y))) return Math.abs(r.x + r.width - c.x + c.radius);
         //Then check if the maximum correction is needed
-        if(left && (c.x > r.x)) return -(c.x - r.x + c.radius);
-        if(!left && (c.x < r.x + r.width)) return Math.abs(r.x + r.width - c.x + c.radius);
+        if(left && (c.x > (r.x+c.radius))) return -(c.x - r.x + c.radius);
+        if(!left && (c.x < r.x + r.width - c.radius)) return Math.abs(r.x + r.width - c.x + c.radius);
 
         //Then check the nearest upper or lower bound ( left one if approaching from left, right one if approaching from right).
         //Take the intersection furthest away and correct the distance between bound.x to intersection + radius into the direction were coming from.
@@ -92,8 +92,8 @@ public class CollisionUtil {
         if(bot && ((c.x <= (r.x + r.width) && c.x >= r.x))) return -(c.y - r.y + c.radius);
         if(!bot && ((c.x <= (r.x + r.width) && c.x >= r.x))) return Math.abs(r.y + r.height - c.y + c.radius);
         //Then check if the maximum correction is needed
-        if(bot && (c.y > r.y)) return -(c.y - r.y + c.radius);
-        if(!bot && (c.y < r.y + r.height)) return Math.abs(r.y + r.height - c.y + c.radius);
+        if(bot && (c.y > r.y+c.radius)) return -(c.y - r.y + c.radius);
+        if(!bot && (c.y < r.y + (r.height - c.radius))) return Math.abs(r.y + r.height - c.y + c.radius);
 
         //Then check the nearest upper or lower bound ( left one if approaching from left, right one if approaching from right).
         //Take the intersection furthest away and correct the distance between bound.x to intersection + radius into the direction were coming from.
@@ -132,6 +132,8 @@ public class CollisionUtil {
 
             //TWO points of intersection, because intersect a line and a circle
             List<Vector2> intersections = getCircleLineIntersectionPoint(startA,startB,endA,endB,c.x,c.y,c.radius);
+
+            if(intersections.isEmpty()) return 0;
 
             float pointA = intersections.get(0).y;
             float pointB = intersections.get(1).y;
