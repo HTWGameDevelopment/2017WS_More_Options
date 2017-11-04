@@ -1,9 +1,11 @@
 package com.moreoptions.prototype.level;
 
 /**
- * Created by Andreas on 30.10.2017.
+ * interface for the minimap
+ *
+ * @author Andreas Bonny
  */
-public interface ILevel {
+public interface IMinimap {
 
     void createMap();
 
