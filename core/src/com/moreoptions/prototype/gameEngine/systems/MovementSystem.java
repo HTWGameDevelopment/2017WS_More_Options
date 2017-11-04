@@ -28,6 +28,7 @@ public class MovementSystem extends EntitySystem {
 
     Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class).exclude(TileComponent.class).get();
     Family tilesFamily = Family.all(TileComponent.class).get();
+    ImmutableArray<Entity> entities;
     private float TILE_SIZE = Consts.TILE_SIZE;
 
     @Override
@@ -43,7 +44,7 @@ public class MovementSystem extends EntitySystem {
      * If Entity center is outside bounds of Tile it is moved away by the distance to the furthest away point of intersection of the nearest bound
      * @param e
      */
-    private void fixYCollision(Entity e, Entity tile) {
+    /*private void fixYCollision(Entity e, Entity tile) {
 
         Rectangle r = EntityTools.getTileHitbox(tile);
         Circle c = EntityTools.getEntityHitbox(e);
@@ -154,7 +155,7 @@ public class MovementSystem extends EntitySystem {
         }
 
 
-    }
+    }*/
 
 
     private void fixXCollision(Entity e) {
@@ -302,7 +303,7 @@ public class MovementSystem extends EntitySystem {
      */
     private void moveAllEntities(float deltaTime) {
 
-        ImmutableArray<Entity> entities = getEngine().getEntitiesFor(posColl);
+        entities = getEngine().getEntitiesFor(posColl);
 
         for(Entity e : entities) {
             VelocityComponent vel = velMapper.get(e);
@@ -313,15 +314,37 @@ public class MovementSystem extends EntitySystem {
             col.setOldX(pos.getX());
             col.setOldY(pos.getY());
 
-            float distanceMovedX = (vel.getVelX() * deltaTime);
             pos.setX(pos.getX() + vel.getVelX() * deltaTime);
-            if(distanceMovedX != 0) fixXCollision(e);
-            //Step Y
-            float distanceMovedY = (vel.getVelY() * deltaTime);
+            test(e,col.getOldX(), col.getOldY());
             pos.setY(pos.getY() + vel.getVelY() * deltaTime);
-            if(distanceMovedY != 0) fixYCollision(e);
+            test2(e,col.getOldX(), col.getOldY());
+
+            //Add smooth edge movement
         }
     }
+
+    private void test(Entity e, float x,float y) {
+            for(Entity t : getEngine().getEntitiesFor(tilesFamily)) {
+                try {
+                    float r = CollisionUtil.getXOverlap(EntityTools.getEntityHitbox(e), EntityTools.getTileHitbox(t),x,y);
+                    e.getComponent(PositionComponent.class).setX(e.getComponent(PositionComponent.class).getX() + r);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+    }
+
+    private void test2(Entity e, float x,float y) {
+        for(Entity t : getEngine().getEntitiesFor(tilesFamily)) {
+            try {
+                float r = CollisionUtil.getYOverlap(EntityTools.getEntityHitbox(e), EntityTools.getTileHitbox(t),x,y);
+                e.getComponent(PositionComponent.class).setY(e.getComponent(PositionComponent.class).getY() + r);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
 
     private void createDebugLine(Vector2 start, Vector2 end, float x) {
         Entity e = new Entity();
