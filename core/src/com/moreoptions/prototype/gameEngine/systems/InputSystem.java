@@ -4,21 +4,20 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Game;
 import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
+import com.moreoptions.prototype.gameEngine.data.GameState;
+import com.moreoptions.prototype.gameEngine.data.InputState;
+import com.moreoptions.prototype.gameEngine.data.Player;
 
 /**
- * Created by Dennis on 23.10.2017.
+ * System that manipulates Entities based on Player Input
  */
 
 public class InputSystem extends EntitySystem {
 
     private static InputSystem instance = new InputSystem();
-
-    private boolean up = false;
-    private boolean down = false;
-    private boolean left = false;
-    private boolean right = false;
 
     public static InputSystem getInstance() {
         if(instance == null) {
@@ -31,7 +30,7 @@ public class InputSystem extends EntitySystem {
 
     }
 
-    Family family = Family.all(PlayerComponent.class).get();
+    private Family family = Family.all(PlayerComponent.class).get();
 
     @Override
     public void update(float deltaTime) {
@@ -39,60 +38,35 @@ public class InputSystem extends EntitySystem {
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(family);
 
         for(Entity e : entities) {
-
-            VelocityComponent v = e.getComponent(VelocityComponent.class);
-
-            if (up && down) {
-                v.setVelY(0);
-            } else if (up) {
-                v.setVelY(v.getSpeed());
-            } else if (down) {
-                v.setVelY(-v.getSpeed());
-            } else if (!up && !down) {
-                v.setVelY(0);
-            }
-
-            if (left && right) {
-                v.setVelX(0);
-            } else if (left) {
-                v.setVelX(-v.getSpeed());
-            } else if (right) {
-                v.setVelX(v.getSpeed());
-            } else if (!left && !right) {
-                v.setVelX(0);
-            }
+            updateVelocity(e);
         }
+
     }
 
-    public boolean isUp() {
-        return up;
-    }
+    private void updateVelocity(Entity e) {
+        Player p = e.getComponent(PlayerComponent.class).getPlayer();
+        VelocityComponent v = e.getComponent(VelocityComponent.class);
 
-    public void setUp(boolean up) {
-        this.up = up;
-    }
+        InputState playerInput = p.getInputState();
 
-    public boolean isDown() {
-        return down;
-    }
+        if (playerInput.isMoveUp() && playerInput.isMoveDown()) {
+            v.setVelY(v.getVelY() * v.getDeceleration());
+        } else if (playerInput.isMoveUp()) {
+            v.setVelY(v.getSpeed());
+        } else if (playerInput.isMoveDown()) {
+            v.setVelY(-v.getSpeed());
+        } else if (!playerInput.isMoveUp() && !playerInput.isMoveDown()) {
+            v.setVelY(v.getVelY() * v.getDeceleration()); //TODO move this to own system?
+        }
 
-    public void setDown(boolean down) {
-        this.down = down;
-    }
-
-    public boolean isLeft() {
-        return left;
-    }
-
-    public void setLeft(boolean left) {
-        this.left = left;
-    }
-
-    public boolean isRight() {
-        return right;
-    }
-
-    public void setRight(boolean right) {
-        this.right = right;
+        if (playerInput.isMoveLeft() && playerInput.isMoveRight()) {
+            v.setVelX(v.getVelX() * v.getDeceleration());
+        } else if (playerInput.isMoveLeft()) {
+            v.setVelX(-v.getSpeed());
+        } else if (playerInput.isMoveRight()) {
+            v.setVelX(v.getSpeed());
+        } else if (!playerInput.isMoveLeft() && !playerInput.isMoveRight()) {
+            v.setVelX(v.getVelX() * v.getDeceleration());
+        }
     }
 }

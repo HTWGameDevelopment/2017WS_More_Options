@@ -2,40 +2,138 @@ package com.moreoptions.prototype.gameEngine.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+import com.moreoptions.prototype.gameEngine.CollisionUtil;
+import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.components.TileComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
+import com.moreoptions.prototype.gameEngine.util.EntityTools;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
- * Created by Dennis on 23.10.2017.
+ * The job of this movement-system is to:
+ * -Move Entities
+ * -Resolve Collisions with immovable entities, entities that _do_not_ move. makes us unable to pass bounds, or run over rocks.
+ *
+ * Maybe implement a spacial map to not iterate x²
+ *
  */
 public class MovementSystem extends EntitySystem {
 
+    ComponentMapper<CollisionComponent> colMapper   = ComponentMapper.getFor(CollisionComponent.class);
+    ComponentMapper<PositionComponent>  posMapper   = ComponentMapper.getFor(PositionComponent.class);
+    ComponentMapper<VelocityComponent>  velMapper   = ComponentMapper.getFor(VelocityComponent.class);
 
-
+    Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class).exclude(TileComponent.class).get();
+    Family tilesFamily = Family.all(TileComponent.class).get();
 
     @Override
     public void update(float deltaTime) {
+        moveAllEntities(deltaTime);
+    }
 
-        Family family = Family.all(PositionComponent.class, VelocityComponent.class).get();
+    private void fixYCollision(Entity e) {
 
-        ImmutableArray<Entity> entities = getEngine().getEntitiesFor(family);
+        ImmutableArray<Entity> tiles = getEngine().getEntitiesFor(tilesFamily);
 
+        for(Entity t : tiles) {
+            try {
+                Rectangle r = EntityTools.getTileHitbox(t);
+                Circle c = EntityTools.getEntityHitbox(e);
+
+                if(Intersector.overlaps(c,r)) {
+                    PositionComponent pp = posMapper.get(e);
+                    CollisionComponent cp = colMapper.get(e);
+
+                    PositionComponent tilepp = posMapper.get(t);
+
+                    if(cp.getOldY() > tilepp.getY() + 32) {
+                        float tileY = tilepp.getY() + 32;
+                        float overlap = tileY - pp.getY() + cp.getSize();
+                        pp.setY(pp.getY()+overlap);
+
+                    } else {
+                        float tileY = tilepp.getY();
+                        float overlap = pp.getY()- tileY + cp.getSize();
+                        pp.setY(pp.getY()-overlap);
+                    }
+                } else {
+                    //Check if we passed trough a tile between frames
+                }
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    private void fixXCollision(Entity e) {
+
+        ImmutableArray<Entity> tiles = getEngine().getEntitiesFor(tilesFamily);
+
+        for(Entity t : tiles) {
+            try {
+                Rectangle r = EntityTools.getTileHitbox(t);
+                Circle c = EntityTools.getEntityHitbox(e);
+                if(Intersector.overlaps(c,r)) {
+
+                    PositionComponent pp = posMapper.get(e);
+                    CollisionComponent cp = colMapper.get(e);
+
+                    PositionComponent tilepp = posMapper.get(t);
+
+                    if(cp.getOldX() > tilepp.getX() + 32) {
+                        float tileX = tilepp.getX() + 32;
+                        float overlap = tileX - pp.getX() + cp.getSize();
+                        pp.setX(pp.getX()+overlap);
+
+                    } else {
+                        float tileX = tilepp.getX();
+                        float overlap = pp.getX()- tileX + cp.getSize();
+                        pp.setX(pp.getX()-overlap);
+
+                    }
+                } else  {
+                    //Check if we passed trough a tile between frames
+                }
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Moves entities per axis and checks collision. If collision occurs, moves the entity outside
+     * of the collisionzone by resolving the overlap.
+     *
+     * @param deltaTime The deltaTime between frames
+     */
+    private void moveAllEntities(float deltaTime) {
+
+        ImmutableArray<Entity> entities = getEngine().getEntitiesFor(posColl);
 
         for(Entity e : entities) {
-            PositionComponent p = e.getComponent(PositionComponent.class);
-            VelocityComponent v = e.getComponent(VelocityComponent.class);
+            VelocityComponent vel = velMapper.get(e);
+            PositionComponent pos = posMapper.get(e);
+            CollisionComponent col= colMapper.get(e);
 
-            p.setX(p.getX() + v.getVelX() * deltaTime);
-            p.setY(p.getY() + v.getVelY() * deltaTime);
+            //Record previous position for later collisionresolving
+            col.setOldX(pos.getX());
+            col.setOldY(pos.getY());
 
+            //Step Y
+            pos.setY(pos.getY() + vel.getVelY() * deltaTime);
+            fixYCollision(e);
 
+            //Step X
+            pos.setX(pos.getX() + vel.getVelX() * deltaTime);
+            fixXCollision(e);
         }
-
-
-
-
-
-
-
     }
+
+
 }
