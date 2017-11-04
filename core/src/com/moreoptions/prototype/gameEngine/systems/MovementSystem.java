@@ -320,6 +320,7 @@ public class MovementSystem extends EntitySystem {
             test2(e,col.getOldX(), col.getOldY());
 
             //Add smooth edge movement
+
         }
     }
 
