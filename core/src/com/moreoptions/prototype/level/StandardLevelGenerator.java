@@ -5,19 +5,16 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Implementation for a randomly generated minimap
- *
- * @author Andreas Bonny
+ * Created by denwe on 04.11.2017.
  */
-
-public class Minimap implements IMinimap {
+public class StandardLevelGenerator implements LevelGenerator {
 
     private static final int EMPTY_ROOM = 0;
     private static final int STARTING_ROOM = 1;
-    private static final int NORMAL_ROOM = 2; 
-    private static final int BOSS_ROOM = 3; 
-    private static final int ITEM_ROOM = 4; 
-    private static final int VENDOR_ROOM = 5; 
+    private static final int NORMAL_ROOM = 2;
+    private static final int BOSS_ROOM = 3;
+    private static final int ITEM_ROOM = 4;
+    private static final int VENDOR_ROOM = 5;
     private static final int SECRET_ROOM = 6;
 
     private static final int NORTH = 0;
@@ -41,29 +38,12 @@ public class Minimap implements IMinimap {
     private boolean containsVendorRoom = false;
     private boolean containsSecretRoom = false;
 
-    public Minimap(int width, int height, int maxRooms) {
-        this.width = width;
-        this.height = height;
-
-        this.map = new Room[width][height];
-        this.existingRooms = new ArrayList<Room>();
-        this.possibleSecretRooms = new ArrayList<Room>();
-        this.possibleSecretRoomsSecondary = new ArrayList<Room>();
-
-        this.maxRooms = maxRooms;
-
-        createMap();
-
-        makeRooms();
-
-        printMap();
-    }
 
     /**
      * fills the map with "empty" rooms which will not be accessible by the player
      */
-    @Override
-    public void createMap() {
+
+    private void createMap() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 map[x][y] = new Room(x, y, EMPTY_ROOM);
@@ -74,13 +54,14 @@ public class Minimap implements IMinimap {
     /**
      * calls the methods responsible for generating the different rooms in each minimap
      */
-    @Override
-    public void makeRooms() {
+
+    private Room[][] makeRooms() {
         makeStartingRoom();
 
         makeNormalRooms();
 
         makeSpecialRooms();
+        return map;
     }
 
     /**
@@ -89,8 +70,8 @@ public class Minimap implements IMinimap {
      * in between each call is a method that counts the amount of neighbours each room has in order so that
      * a special room is only accessible by one side
      */
-    @Override
-    public void makeSpecialRooms() {
+
+    private void makeSpecialRooms() {
         countNeighbours();
 
         makeBossRoom();
@@ -112,8 +93,8 @@ public class Minimap implements IMinimap {
     /**
      * creates a predetermined amount of normal rooms
      */
-    @Override
-    public void makeNormalRooms() {
+
+    private void makeNormalRooms() {
         Random random = new Random();
         int roomIndex;
         int direction;
@@ -148,8 +129,8 @@ public class Minimap implements IMinimap {
     /**
      * creates the room in which the player will be placed upon start of each level
      */
-    @Override
-    public void makeStartingRoom() {
+
+    private void makeStartingRoom() {
         int x = width / 2;
         int y = height / 2;
 
@@ -161,8 +142,8 @@ public class Minimap implements IMinimap {
     /**
      * creates the room in which the boss of each level will be placed
      */
-    @Override
-    public void makeBossRoom() {
+
+    private void makeBossRoom() {
 
         /*
         while(no boss room)
@@ -240,8 +221,8 @@ public class Minimap implements IMinimap {
     /**
      * creates the room in which the player can spend resources in order to gain benefits
      */
-    @Override
-    public void makeVendorRoom() {
+
+    private void makeVendorRoom() {
 
         Random random = new Random();
         while (!containsVendorRoom) {
@@ -302,8 +283,8 @@ public class Minimap implements IMinimap {
     /**
      * creates a room in which an item or some other benefit will be spawned
      */
-    @Override
-    public void makeItemRoom() {
+
+    private void makeItemRoom() {
         Random random = new Random();
         while (!containsItemRoom) {
             int roomIndex = random.nextInt(existingRooms.size());
@@ -363,8 +344,8 @@ public class Minimap implements IMinimap {
     /**
      * creates a room which has multiple neighbours which will not be visible without some special means
      */
-    @Override
-    public void makeSecretRoom() {
+
+    private void makeSecretRoom() {
         Random random = new Random();
 
         while (!containsSecretRoom) {
@@ -396,8 +377,8 @@ public class Minimap implements IMinimap {
     /**
      * prints the map to the terminal
      */
-    @Override
-    public void printMap() {
+
+    private void printMap() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 System.out.print(" " + map[x][y].getKind() + " ");
@@ -412,8 +393,8 @@ public class Minimap implements IMinimap {
      * @param y y-coordinate from the room the new room will originate
      * @param kind the kind of room that will be generated
      */
-    @Override
-    public void makeRoomNorth(int x, int y, int kind) {
+
+    private void makeRoomNorth(int x, int y, int kind) {
         Room room;
         if (!checkNorthOutside(y)) {
             if (map[x][y + 1].getKind() == 0) {
@@ -430,8 +411,8 @@ public class Minimap implements IMinimap {
      * @param y y-coordinate from the room the new room will originate
      * @param kind the kind of room that will be generated
      */
-    @Override
-    public void makeRoomEast(int x, int y, int kind) {
+
+    private void makeRoomEast(int x, int y, int kind) {
         Room room;
         if (!checkEastOutside(x)) {
             if (map[x + 1][y].getKind() == 0) {
@@ -448,8 +429,8 @@ public class Minimap implements IMinimap {
      * @param y y-coordinate from the room the new room will originate
      * @param kind the kind of room that will be generated
      */
-    @Override
-    public void makeRoomSouth(int x, int y, int kind) {
+
+    private void makeRoomSouth(int x, int y, int kind) {
         Room room;
         if (!checkSouthOutside(y)) {
             if (map[x][y - 1].getKind() == 0) {
@@ -466,8 +447,8 @@ public class Minimap implements IMinimap {
      * @param y y-coordinate from the room the new room will originate
      * @param kind the kind of room that will be generated
      */
-    @Override
-    public void makeRoomWest(int x, int y, int kind) {
+
+    private void makeRoomWest(int x, int y, int kind) {
         Room room;
         if (!checkWestOutside(x)) {
             if (map[x - 1][y].getKind() == 0) {
@@ -483,8 +464,8 @@ public class Minimap implements IMinimap {
      * @param y y-coordinate of the room to be checked
      * @return true if it is at the northern bound
      */
-    @Override
-    public boolean checkNorthOutside(int y) {
+
+    private boolean checkNorthOutside(int y) {
         return (y == height - 1);
     }
 
@@ -493,8 +474,8 @@ public class Minimap implements IMinimap {
      * @param x x-coordinate of the room to be checked
      * @return true if it is at the eastern bound
      */
-    @Override
-    public boolean checkEastOutside(int x) {
+
+    private boolean checkEastOutside(int x) {
         return (x == width - 1);
     }
 
@@ -503,8 +484,8 @@ public class Minimap implements IMinimap {
      * @param y y-coordinate of the room to be checked
      * @return true if it is at the southern bound
      */
-    @Override
-    public boolean checkSouthOutside(int y) {
+
+    private boolean checkSouthOutside(int y) {
         return (y == 0);
     }
 
@@ -513,8 +494,7 @@ public class Minimap implements IMinimap {
      * @param x x-coordinate of the room to be checked
      * @return true if it is at the western bound
      */
-    @Override
-    public boolean checkWestOutside(int x) {
+    private boolean checkWestOutside(int x) {
         return (x == 0);
     }
 
@@ -522,8 +502,8 @@ public class Minimap implements IMinimap {
      * counts the amount of neighbours a room has and sets that amount of rooms
      * in the room class
      */
-    @Override
-    public void countNeighbours() {
+
+    private void countNeighbours() {
         int neighbours = 0;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -535,14 +515,14 @@ public class Minimap implements IMinimap {
                     }
                 }
 
-                    // east
+                // east
                 if (!checkEastOutside(x)) {
                     if (map[x + 1][y].getKind() != 0) {
                         neighbours++;
                     }
                 }
 
-                    // south
+                // south
                 if (!checkSouthOutside(y)) {
                     if (map[x][y - 1].getKind() != 0) {
                         neighbours++;
@@ -550,7 +530,7 @@ public class Minimap implements IMinimap {
                 }
 
 
-                    // west
+                // west
                 if (!checkWestOutside(x)) {
                     if (map[x - 1][y].getKind() != 0) {
                         neighbours++;
@@ -567,8 +547,8 @@ public class Minimap implements IMinimap {
     /**
      * gets the best suitable empty rooms for the generation of the secret room (3+ neighbours)
      */
-    @Override
-    public void getPossibleSecretRooms() {
+
+    private void getPossibleSecretRooms() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (map[x][y].getKind() == 0) {
@@ -593,5 +573,25 @@ public class Minimap implements IMinimap {
                 }
             }
         }
+    }
+
+    @Override
+    public Level getLevel(int width, int height, int roomCount) {
+        this.width = width;
+        this.height = height;
+
+        this.map = new Room[width][height];
+        this.existingRooms = new ArrayList<Room>();
+        this.possibleSecretRooms = new ArrayList<Room>();
+        this.possibleSecretRoomsSecondary = new ArrayList<Room>();
+
+        this.maxRooms = maxRooms;
+
+        createMap();
+
+        Room[][] rooms = makeRooms();
+
+        Level level = new Level(rooms);
+        return level;
     }
 }

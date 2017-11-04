@@ -1,13 +1,12 @@
 package com.moreoptions.prototype.desktop;
 
-import com.moreoptions.prototype.level.Minimap;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.moreoptions.prototype.MoreOptions;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		// new Minimap();
-
-		new Minimap(10, 10, 10);
-		// LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		// new LwjglApplication(new MoreOptions(), config);
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		new LwjglApplication(new MoreOptions(), config);
 	}
 }
