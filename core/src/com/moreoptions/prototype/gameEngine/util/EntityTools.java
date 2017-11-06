@@ -4,8 +4,10 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
+import com.moreoptions.prototype.gameEngine.components.CircleCollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.components.SquareCollisionComponent;
 import javafx.geometry.Pos;
 
 /**
@@ -13,19 +15,13 @@ import javafx.geometry.Pos;
  */
 public class EntityTools {
 
-    public static Rectangle getTileHitbox(Entity e) throws Exception {
-        CollisionComponent c = e.getComponent(CollisionComponent.class);
-        if(c.getShape() != CollisionComponent.Shape.RECTANGLE) throw new Exception("Not a rectangle hitbox");
-        PositionComponent p = e.getComponent(PositionComponent.class);
-
-        return new Rectangle(p.getX(),p.getY(),c.getSize(),c.getSize());
+    public static Rectangle getSquareHitbox(Entity e) throws Exception {
+        SquareCollisionComponent s = e.getComponent(SquareCollisionComponent.class);
+        return s.getHitbox();
     }
 
-    public static Circle getEntityHitbox(Entity e) throws Exception {
-        CollisionComponent c = e.getComponent(CollisionComponent.class);
-        if(c.getShape() != CollisionComponent.Shape.CIRCLE) throw new Exception("Not a circle hitbox");
-        PositionComponent p = e.getComponent(PositionComponent.class);
-
-        return new Circle(p.getX(),p.getY(),c.getSize());
+    public static Circle getCircleHitbox(Entity e) throws Exception {
+        CircleCollisionComponent s = e.getComponent(CircleCollisionComponent.class);
+        return s.getHitbox();
     }
 }
