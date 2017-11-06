@@ -2,10 +2,7 @@ package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
-import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
-import com.moreoptions.prototype.gameEngine.components.DebugColorComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
-import com.moreoptions.prototype.gameEngine.components.TileComponent;
+import com.moreoptions.prototype.gameEngine.components.*;
 
 import java.util.ArrayList;
 
@@ -96,12 +93,12 @@ public class Room {
 
                 DebugColorComponent dc;
                 if(k==0) {
-                    dc= new DebugColorComponent(new Color(57 / 255f, 150/255f,125/255f, 1));
+                    dc  = new DebugColorComponent(new Color(57 / 255f, 150/255f,125/255f, 1));
+                    e.add(new WalkableTileComponent());
                 }
                 else {
                     dc= new DebugColorComponent(new Color(0 / 255f, 0/255f,125/255f, 1));
-                    TileComponent tc = new TileComponent(k, true);
-                    e.add(tc);
+                    e.add( new BlockedTileComponent());
                 }
 
 

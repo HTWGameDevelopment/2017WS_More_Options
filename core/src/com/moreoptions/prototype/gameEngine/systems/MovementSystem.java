@@ -8,6 +8,7 @@ import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import jdk.nashorn.internal.ir.Block;
 
 import javax.swing.text.Position;
 import java.util.List;
@@ -27,7 +28,7 @@ public class MovementSystem extends EntitySystem {
     ComponentMapper<VelocityComponent>  velMapper   = ComponentMapper.getFor(VelocityComponent.class);
 
     Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class).exclude(TileComponent.class).get();
-    Family tilesFamily = Family.all(TileComponent.class).get();
+    Family blockedTilesFamily = Family.all(BlockedTileComponent.class).get();
     ImmutableArray<Entity> entities;
 
     @Override
@@ -65,7 +66,7 @@ public class MovementSystem extends EntitySystem {
     }
 
     private void resolveXCollision(Entity e, float x,float y) {
-            for(Entity t : getEngine().getEntitiesFor(tilesFamily)) {
+            for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
                 try {
                     float r = CollisionUtil.getXOverlap(EntityTools.getEntityHitbox(e), EntityTools.getTileHitbox(t),x,y);
                     e.getComponent(PositionComponent.class).setX(e.getComponent(PositionComponent.class).getX() + r);
@@ -76,7 +77,7 @@ public class MovementSystem extends EntitySystem {
     }
 
     private void resolveYCollision(Entity e, float x,float y) {
-        for(Entity t : getEngine().getEntitiesFor(tilesFamily)) {
+        for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
             try {
                 float r = CollisionUtil.getYOverlap(EntityTools.getEntityHitbox(e), EntityTools.getTileHitbox(t),x,y);
                 e.getComponent(PositionComponent.class).setY(e.getComponent(PositionComponent.class).getY() + r);
