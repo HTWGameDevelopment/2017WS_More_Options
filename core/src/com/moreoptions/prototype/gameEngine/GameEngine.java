@@ -13,10 +13,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
-import com.moreoptions.prototype.gameEngine.systems.DebugRenderSystem;
-import com.moreoptions.prototype.gameEngine.systems.InputSystem;
-import com.moreoptions.prototype.gameEngine.systems.MovementSystem;
-import com.moreoptions.prototype.gameEngine.systems.TimedSystem;
+import com.moreoptions.prototype.gameEngine.systems.*;
 
 /**
  *
@@ -78,10 +75,25 @@ public class GameEngine extends Engine {
 
         addEntity(playerEntity);
 
+        Entity pickup = new Entity();
+        pickup.add(new PositionComponent(50,50));
+        pickup.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
+        pickup.add(new CollisionComponent(CollisionComponent.Shape.CIRCLE, 10));
+        pickup.add(new CircleCollisionComponent(50,50,10));
+        pickup.add(new PickupComponent(new PickupComponent.PickupEvent() {
+            @Override
+            public void onPickup(Entity e) {
+                System.out.println("NO");
+            }
+        }));
+
+        addEntity(pickup);
+
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());
         addSystem(new DebugRenderSystem(renderer));
         addSystem(new TimedSystem());
+        addSystem(new PickupSystem());
 
 
     }

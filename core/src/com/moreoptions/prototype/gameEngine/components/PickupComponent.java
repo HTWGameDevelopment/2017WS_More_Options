@@ -14,6 +14,12 @@ public class PickupComponent implements Component {
         this.event = event;
     }
 
+    public void trigger(Entity e) {
+        event.onPickup(e);
+        e.getComponent(PositionComponent.class).setX(100);
+        e.getComponent(PositionComponent.class).setY(100);
+    }
+
 
     public interface PickupEvent {
 
