@@ -74,6 +74,7 @@ public class GameEngine extends Engine {
         playerEntity.add(new VelocityComponent(150f,0.75f));
         playerEntity.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
         playerEntity.add(new CollisionComponent(CollisionComponent.Shape.CIRCLE, 10));
+        playerEntity.add(new CircleCollisionComponent(100,100,10));
 
         addEntity(playerEntity);
 

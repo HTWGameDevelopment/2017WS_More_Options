@@ -26,8 +26,9 @@ public class MovementSystem extends EntitySystem {
     ComponentMapper<CollisionComponent> colMapper   = ComponentMapper.getFor(CollisionComponent.class);
     ComponentMapper<PositionComponent>  posMapper   = ComponentMapper.getFor(PositionComponent.class);
     ComponentMapper<VelocityComponent>  velMapper   = ComponentMapper.getFor(VelocityComponent.class);
+    ComponentMapper<CircleCollisionComponent> cMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
 
-    Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class).exclude(TileComponent.class).get();
+    Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class, CircleCollisionComponent.class).exclude(TileComponent.class).get();
     Family blockedTilesFamily = Family.all(BlockedTileComponent.class).get();
     ImmutableArray<Entity> entities;
 
@@ -57,6 +58,8 @@ public class MovementSystem extends EntitySystem {
 
             pos.setX(pos.getX() + vel.getVelX() * deltaTime);
             resolveXCollision(e,col.getOldX(), col.getOldY());
+
+
             pos.setY(pos.getY() + vel.getVelY() * deltaTime);
             resolveYCollision(e,col.getOldX(), col.getOldY());
 
@@ -69,7 +72,7 @@ public class MovementSystem extends EntitySystem {
             for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
                 try {
                     float r = CollisionUtil.getXOverlap(EntityTools.getEntityHitbox(e), EntityTools.getTileHitbox(t),x,y);
-                    e.getComponent(PositionComponent.class).setX(e.getComponent(PositionComponent.class).getX() + r);
+                    updateEntityXPosition(e,r);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -80,11 +83,27 @@ public class MovementSystem extends EntitySystem {
         for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
             try {
                 float r = CollisionUtil.getYOverlap(EntityTools.getEntityHitbox(e), EntityTools.getTileHitbox(t),x,y);
-                e.getComponent(PositionComponent.class).setY(e.getComponent(PositionComponent.class).getY() + r);
+                updateEntityYPosition(e, r);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
         }
+    }
+
+    public void updateEntityXPosition(Entity e, float r) {
+        PositionComponent p = posMapper.get(e);
+        CircleCollisionComponent c = cMapper.get(e);
+
+        p.setX(p.getX() + r);
+        c.getHitbox().x += r;
+    }
+
+    public void updateEntityYPosition(Entity e, float r) {
+        PositionComponent p = posMapper.get(e);
+        CircleCollisionComponent c = cMapper.get(e);
+
+        p.setY(p.getY() + r);
+        c.getHitbox().y += r;
     }
 
 

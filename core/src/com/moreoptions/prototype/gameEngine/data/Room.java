@@ -89,6 +89,7 @@ public class Room {
 
                 PositionComponent p = new PositionComponent(positionX, positionY);
                 CollisionComponent c = new CollisionComponent(CollisionComponent.Shape.RECTANGLE, tileSize);
+                SquareCollisionComponent sqc = new SquareCollisionComponent(positionX,positionY,tileSize);
 
 
                 DebugColorComponent dc;
@@ -102,7 +103,7 @@ public class Room {
                 }
 
 
-                e.add(p).add(c).add(dc);
+                e.add(p).add(c).add(dc).add(sqc);
 
                 entities.add(e);
 
