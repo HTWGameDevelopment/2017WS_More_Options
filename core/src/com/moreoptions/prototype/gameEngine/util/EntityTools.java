@@ -11,7 +11,7 @@ import com.moreoptions.prototype.gameEngine.components.SquareCollisionComponent;
 import javafx.geometry.Pos;
 
 /**
- * Created by denwe on 31.10.2017.
+ * Tools that shouldnt exist :(
  */
 public class EntityTools {
 
@@ -24,4 +24,6 @@ public class EntityTools {
         CircleCollisionComponent s = e.getComponent(CircleCollisionComponent.class);
         return s.getHitbox();
     }
+
+
 }

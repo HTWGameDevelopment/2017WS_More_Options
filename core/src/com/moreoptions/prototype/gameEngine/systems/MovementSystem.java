@@ -24,15 +24,15 @@ import java.util.List;
  */
 public class MovementSystem extends EntitySystem {
 
-    ComponentMapper<CollisionComponent> colMapper   = ComponentMapper.getFor(CollisionComponent.class);
-    ComponentMapper<PositionComponent>  posMapper   = ComponentMapper.getFor(PositionComponent.class);
-    ComponentMapper<VelocityComponent>  velMapper   = ComponentMapper.getFor(VelocityComponent.class);
-    ComponentMapper<CircleCollisionComponent> cMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
-    ComponentMapper<SquareCollisionComponent> sqMapper = ComponentMapper.getFor(SquareCollisionComponent.class);
+    private ComponentMapper<CollisionComponent> colMapper   = ComponentMapper.getFor(CollisionComponent.class);
+    private ComponentMapper<PositionComponent>  posMapper   = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<VelocityComponent>  velMapper   = ComponentMapper.getFor(VelocityComponent.class);
+    private ComponentMapper<CircleCollisionComponent> cMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<SquareCollisionComponent> sqMapper = ComponentMapper.getFor(SquareCollisionComponent.class);
 
-    Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class, CircleCollisionComponent.class).exclude(TileComponent.class).get();
-    Family blockedTilesFamily = Family.all(BlockedTileComponent.class).get();
-    ImmutableArray<Entity> entities;
+    private Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class, CircleCollisionComponent.class).exclude(TileComponent.class).get();
+    private Family blockedTilesFamily = Family.all(BlockedTileComponent.class).get();
+    private ImmutableArray<Entity> entities;
 
     @Override
     public void update(float deltaTime) {
@@ -46,7 +46,6 @@ public class MovementSystem extends EntitySystem {
      * @param deltaTime The deltaTime between frames
      */
     private void moveAllEntities(float deltaTime) {
-
         entities = getEngine().getEntitiesFor(posColl);
 
         for(Entity e : entities) {
@@ -72,7 +71,6 @@ public class MovementSystem extends EntitySystem {
             resolveYCollision(e,col.getOldX(), col.getOldY());
 
             //Add smooth edge movement
-
         }
     }
 
@@ -98,7 +96,7 @@ public class MovementSystem extends EntitySystem {
         }
     }
 
-    public void updateEntityXPosition(Entity e, float r) {
+    private void updateEntityXPosition(Entity e, float r) {
         PositionComponent p = posMapper.get(e);
         CircleCollisionComponent c = cMapper.get(e);
 
@@ -106,7 +104,7 @@ public class MovementSystem extends EntitySystem {
         c.getHitbox().x += r;
     }
 
-    public void updateEntityYPosition(Entity e, float r) {
+    private void updateEntityYPosition(Entity e, float r) {
         PositionComponent p = posMapper.get(e);
         CircleCollisionComponent c = cMapper.get(e);
 

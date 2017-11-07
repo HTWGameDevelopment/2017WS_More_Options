@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Room;
+import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 
@@ -70,7 +71,7 @@ public class GameEngine extends Engine {
         playerEntity.add(new PositionComponent(100,100));
         playerEntity.add(new VelocityComponent(150f,0.75f));
         playerEntity.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
-        playerEntity.add(new CollisionComponent(CollisionComponent.Shape.CIRCLE, 10));
+        playerEntity.add(new CollisionComponent());
         playerEntity.add(new CircleCollisionComponent(100,100,10));
 
         addEntity(playerEntity);
@@ -78,12 +79,14 @@ public class GameEngine extends Engine {
         Entity pickup = new Entity();
         pickup.add(new PositionComponent(50,50));
         pickup.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
-        pickup.add(new CollisionComponent(CollisionComponent.Shape.CIRCLE, 10));
+        pickup.add(new CollisionComponent());
         pickup.add(new CircleCollisionComponent(50,50,10));
-        pickup.add(new PickupComponent(new PickupComponent.PickupEvent() {
+        pickup.add(new PickupComponent(new PickupEvent() {
             @Override
-            public void onPickup(Entity e) {
-                System.out.println("NO");
+            public boolean onPickup(Entity e) {
+                e.getComponent(PositionComponent.class).setX(100);
+                e.getComponent(PositionComponent.class).setY(100);
+                return true;
             }
         }));
 
@@ -94,8 +97,6 @@ public class GameEngine extends Engine {
         addSystem(new DebugRenderSystem(renderer));
         addSystem(new TimedSystem());
         addSystem(new PickupSystem());
-
-
     }
 
     @Override

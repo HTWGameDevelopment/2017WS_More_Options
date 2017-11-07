@@ -8,14 +8,14 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.components.*;
 
 /**
- * Created by denwe on 06.11.2017.
+ * System that handles pickupcomponents
  */
 public class PickupSystem extends EntitySystem {
 
-    Family f = Family.all(PickupComponent.class, PositionComponent.class, CollisionComponent.class, CircleCollisionComponent.class).get();
-    Family p = Family.all(PlayerComponent.class).get();
+    private Family f = Family.all(PickupComponent.class, PositionComponent.class, CollisionComponent.class, CircleCollisionComponent.class).get();
+    private Family p = Family.all(PlayerComponent.class).get();
 
-    ComponentMapper<CircleCollisionComponent> cmapper = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<CircleCollisionComponent> cmapper = ComponentMapper.getFor(CircleCollisionComponent.class);
 
     @Override
     public void update(float deltaTime) {
@@ -27,7 +27,7 @@ public class PickupSystem extends EntitySystem {
         for(Entity p : players) {
             for(Entity pickup : pickups) {
                 if(cmapper.get(p).getHitbox().overlaps(cmapper.get(pickup).getHitbox())) {
-                    pickup.getComponent(PickupComponent.class).trigger(p);
+                    if(pickup.getComponent(PickupComponent.class).trigger(p)) getEngine().removeEntity(pickup);
                 }
             }
         }

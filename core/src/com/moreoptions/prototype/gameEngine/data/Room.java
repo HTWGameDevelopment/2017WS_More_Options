@@ -7,7 +7,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import java.util.ArrayList;
 
 /**
- * Rooms are: 15x9, consist of 2 maps.
+ * Rooms are: 15x9, consist of 2 maps. This is just a prototype implementation with everything hardcoded.
  *
  * 1 walls
  * 1 entities
@@ -88,9 +88,8 @@ public class Room {
                 Entity e = new Entity();
 
                 PositionComponent p = new PositionComponent(positionX, positionY);
-                CollisionComponent c = new CollisionComponent(CollisionComponent.Shape.RECTANGLE, tileSize);
+                CollisionComponent c = new CollisionComponent();
                 SquareCollisionComponent sqc = new SquareCollisionComponent(positionX,positionY,tileSize);
-
 
                 DebugColorComponent dc;
                 if(k==0) {
@@ -102,16 +101,10 @@ public class Room {
                     e.add( new BlockedTileComponent());
                 }
 
-
                 e.add(p).add(c).add(dc).add(sqc);
-
                 entities.add(e);
 
                 System.out.print(k);
-
-
-
-
             }
             System.out.println();
         }

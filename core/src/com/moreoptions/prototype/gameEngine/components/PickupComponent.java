@@ -2,28 +2,21 @@ package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
+import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
 
 /**
- * Created by denwe on 06.11.2017.
+ * Component for PickUps
  */
 public class PickupComponent implements Component {
 
-    PickupEvent event;
+    private PickupEvent event;
 
     public PickupComponent(PickupEvent event) {
         this.event = event;
     }
 
-    public void trigger(Entity e) {
-        event.onPickup(e);
-        e.getComponent(PositionComponent.class).setX(100);
-        e.getComponent(PositionComponent.class).setY(100);
+    public boolean trigger(Entity e) {
+        return event.onPickup(e);
     }
 
-
-    public interface PickupEvent {
-
-        void onPickup(Entity e);
-
-    }
 }
