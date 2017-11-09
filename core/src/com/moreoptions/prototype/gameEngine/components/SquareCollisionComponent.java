@@ -14,8 +14,8 @@ public class SquareCollisionComponent implements Component {
         square = new Rectangle(x,y,size,size);
     }
 
-    public void update(float x, float y) {
-        square.setPosition(x,y);
+    public void update(PositionComponent p) {
+        square.setPosition(p.getX(),p.getY());
     }
 
     public Rectangle getHitbox() {

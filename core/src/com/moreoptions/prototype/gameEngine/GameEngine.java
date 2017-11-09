@@ -5,6 +5,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -30,8 +32,10 @@ public class GameEngine extends Engine {
 
 
     ShapeRenderer renderer;
+    SpriteBatch batch;
     OrthographicCamera camera;
     FitViewport fv;
+    BitmapFont f;
 
     private GameEngine() {
 
@@ -43,6 +47,7 @@ public class GameEngine extends Engine {
         int testw = 15 *32;
         int testh = 9 * 32;
 
+        f = new BitmapFont();
 
         camera = new OrthographicCamera(640,640);
         camera.position.set(15*32/2,9*32/2,0);
@@ -51,6 +56,8 @@ public class GameEngine extends Engine {
         camera.update();
         fv.update(testw,testh);
         renderer = new ShapeRenderer();
+        batch = new SpriteBatch();
+        batch.setProjectionMatrix(camera.combined);
         Gdx.graphics.setWindowedMode(testw,testh);
 
 
@@ -92,16 +99,27 @@ public class GameEngine extends Engine {
 
         addEntity(pickup);
 
+        Entity fontTest = new Entity();
+        CombatTextComponent c = new CombatTextComponent();
+        c.setText("Test");
+        fontTest.add(c);
+        fontTest.add(new PositionComponent(150,150));
+
+        addEntity(fontTest);
+
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());
         addSystem(new DebugRenderSystem(renderer));
+        addSystem(new FontRenderSystem(batch,f));
         addSystem(new TimedSystem());
         addSystem(new PickupSystem());
     }
 
     @Override
     public void update(float deltaTime) {
+
         super.update(deltaTime);
+
     }
 
     public void resize(int width, int height) {

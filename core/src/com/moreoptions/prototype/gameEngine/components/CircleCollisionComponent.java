@@ -14,7 +14,7 @@ public class CircleCollisionComponent implements Component {
         this.hitbox = new Circle(x,y,radius);
     }
 
-    public void updateHitbx(PositionComponent p) {
+    public void update(PositionComponent p) {
         hitbox.setPosition(p.getX(),p.getY());
     }
 
