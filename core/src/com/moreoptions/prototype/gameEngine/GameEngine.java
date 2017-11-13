@@ -14,8 +14,12 @@ import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
+import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
+import com.moreoptions.prototype.gameEngine.util.MapParser;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -36,6 +40,9 @@ public class GameEngine extends Engine {
     FitViewport fv;
     BitmapFont f;
 
+
+    GameInputProcessor processor;
+
     private GameEngine() {
 
         demoSetup();
@@ -49,9 +56,9 @@ public class GameEngine extends Engine {
         f = new BitmapFont();
 
         camera = new OrthographicCamera(640,640);
-        camera.position.set(15*32/2,9*32/2,0);
+        camera.position.set(17*32/2,11*32/2,0);
 
-        fv = new FitViewport(15*32 , 9*32, camera);
+        fv = new FitViewport(17*32 , 11*32, camera);
         camera.update();
         fv.update(testw,testh);
         renderer = new ShapeRenderer();
@@ -62,15 +69,14 @@ public class GameEngine extends Engine {
 
         renderer.setProjectionMatrix(camera.combined);
 
-        GameInputProcessor processor;
         processor = new GameInputProcessor(camera);
         Gdx.input.setInputProcessor(processor);
 
 
-        Room r = new Room();
-        for(Entity e : r.getEntities()) {
-            addEntity(e);
-        }
+        //Room r = new Room();
+        //for(Entity e : r.getEntities()) {
+        //    addEntity(e);
+        //}
 
 
         Player p = new Player();
@@ -114,10 +120,23 @@ public class GameEngine extends Engine {
 
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());
+
+        addSystem(new TileRenderSystem(batch));
         addSystem(new DebugRenderSystem(renderer));
         addSystem(new FontRenderSystem(batch,f));
         addSystem(new TimedSystem());
         addSystem(new PickupSystem());
+
+
+        ArrayList<Entity> e = null;
+        try {
+            e = MapParser.loadRooms();
+        } catch (MissdefinedTileException e1) {
+            e1.printStackTrace();
+        }
+        for(Entity ex : e) {
+            addEntity(ex);
+        }
     }
 
     @Override
@@ -133,5 +152,10 @@ public class GameEngine extends Engine {
 
     public float getTileSize() {
         return 32;
+    }
+
+    public void updateInput() {
+
+        Gdx.input.setInputProcessor(processor);
     }
 }

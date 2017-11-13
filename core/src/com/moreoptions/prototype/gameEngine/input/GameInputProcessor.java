@@ -39,6 +39,7 @@ public class GameInputProcessor implements InputProcessor {
 
         switch(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode)) {
             case P1_MOVE_UP:
+                System.out.println("TEST");
                 p1.setMoveUp(true);
                 break;
             case P1_MOVE_DOWN:

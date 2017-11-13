@@ -20,6 +20,7 @@ import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.DebugRenderSystem;
 import com.moreoptions.prototype.gameEngine.systems.MovementSystem;
 import com.moreoptions.prototype.gameEngine.systems.InputSystem;
+import com.moreoptions.prototype.gameEngine.util.MapParser;
 
 public class MoreOptions extends Game {
 
@@ -32,12 +33,16 @@ public class MoreOptions extends Game {
 	public MoreOptions() {
 
 
+
+
 	}
 
 	public void create() {
+
+
 		screen = new StartGameScreen(this);
 		dungeonScreen = new DungeonScreen(this);
-		setScreen(screen);
+		setScreen(dungeonScreen);
 	}
 
 	public void showDungeon() {

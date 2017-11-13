@@ -1,6 +1,8 @@
 package com.moreoptions.prototype;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.moreoptions.prototype.gameEngine.GameEngine;
 
 /**
@@ -17,10 +19,15 @@ public class DungeonScreen implements Screen {
     @Override
     public void show() {
 
+        engine.updateInput();
+
     }
 
     @Override
     public void render(float delta) {
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         engine.update(delta);
     }
 
