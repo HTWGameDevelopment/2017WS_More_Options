@@ -42,6 +42,7 @@ public class InputSystem extends EntitySystem {
     }
 
     private void updateVelocity(Entity e) {
+
         Player p = e.getComponent(PlayerComponent.class).getPlayer();
         VelocityComponent v = e.getComponent(VelocityComponent.class);
 

@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
+import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
@@ -73,8 +72,14 @@ public class GameEngine extends Engine {
             addEntity(e);
         }
 
+
+        Player p = new Player();
+        processor.addPlayer(p);
+
+
+
         Entity playerEntity = new Entity();
-        playerEntity.add(new PlayerComponent(GameState.getInstance().getPlayerOne()));
+        playerEntity.add(new PlayerComponent(p));
         playerEntity.add(new PositionComponent(100,100));
         playerEntity.add(new VelocityComponent(150f,0.75f));
         playerEntity.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));

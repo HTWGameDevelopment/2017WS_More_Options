@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.gameEngine;
+package com.moreoptions.prototype.gameEngine.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -35,7 +35,6 @@ public class FontRenderSystem extends EntitySystem {
 
         }
         batch.end();
-
-
     }
+
 }

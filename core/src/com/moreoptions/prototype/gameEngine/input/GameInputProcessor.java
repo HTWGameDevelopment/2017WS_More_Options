@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.InputState;
+import com.moreoptions.prototype.gameEngine.data.Player;
 
 /**
  * Implementation of the Libgdx Inputprocessor, called before the render() step.
@@ -13,15 +14,24 @@ import com.moreoptions.prototype.gameEngine.data.InputState;
 public class GameInputProcessor implements InputProcessor {
 
     private OrthographicCamera camera;
+    private InputState p1;
 
     public GameInputProcessor(OrthographicCamera camera) {
         this.camera = camera;
     }
 
+    private int playerCount = 0;
+
+    public void addPlayer(Player p) {
+        if(playerCount == 0) {
+            p1 = p.getInputState();
+        }
+    }
+
+
     @Override
     public boolean keyDown(int keycode) {
 
-        InputState p1 = GameState.getInstance().getPlayerOne().getInputState();
 
         if(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode) == null) {
             return true;
@@ -71,7 +81,6 @@ public class GameInputProcessor implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
 
-        InputState p1 = GameState.getInstance().getPlayerOne().getInputState();
 
         if(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode) == null) {
             return true;

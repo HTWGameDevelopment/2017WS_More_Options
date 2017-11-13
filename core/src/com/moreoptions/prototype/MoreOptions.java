@@ -3,6 +3,7 @@ package com.moreoptions.prototype;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -20,35 +21,31 @@ import com.moreoptions.prototype.gameEngine.systems.DebugRenderSystem;
 import com.moreoptions.prototype.gameEngine.systems.MovementSystem;
 import com.moreoptions.prototype.gameEngine.systems.InputSystem;
 
-public class MoreOptions extends ApplicationAdapter {
+public class MoreOptions extends Game {
 
 	private GameEngine engine;
 	private FPSLogger logger;
+	private StartGameScreen screen;
+	private DungeonScreen dungeonScreen;
+
 	
-	@Override
-	public void create () {
-        engine = GameEngine.getInstance();
-        logger = new FPSLogger();
-	}
+	public MoreOptions() {
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        engine.update(Gdx.graphics.getDeltaTime());
-        logger.log();
-
-	}
-	
-	@Override
-	public void dispose () {
 
 	}
 
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        engine.resize(width,height);
-    }
+	public void create() {
+		screen = new StartGameScreen(this);
+		dungeonScreen = new DungeonScreen(this);
+		setScreen(screen);
+	}
+
+	public void showDungeon() {
+		setScreen(dungeonScreen);
+	}
+
+	public void showStartScreen() {
+		setScreen(screen);
+	}
+
 }

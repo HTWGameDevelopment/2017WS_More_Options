@@ -3,6 +3,8 @@ package com.moreoptions.prototype.gameEngine.data;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
+import java.util.ArrayList;
+
 /**
  * Current gameconfig | gamedata
  */
@@ -11,9 +13,7 @@ public class GameState {
     private static GameState ourInstance = new GameState();
     private Profile gameProfile;
 
-    private Player playerOne;
-    private Player playerTwo;
-
+    private ArrayList<Player> playerList = new ArrayList<Player>();
 
     public static GameState getInstance() {
         return ourInstance;
@@ -28,21 +28,13 @@ public class GameState {
             gameProfile = new Profile(pref.getString(Strings.PREFERENCES_PROFILE));
         }
 
-
-        //TODO do this during game/world creation
-        playerOne = new Player();
-
     }
 
     public Profile getGameProfile() {
         return gameProfile;
     }
 
-    public Player getPlayerOne() {
-        return playerOne;
-    }
-
-    public Player getPlayerTwo() {
-        return playerTwo;
+    public void addPlayer(Player player) {
+        playerList.add(player);
     }
 }

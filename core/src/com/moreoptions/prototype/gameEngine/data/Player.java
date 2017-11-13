@@ -15,7 +15,7 @@ public class Player {
 
     private PlayerStatistics stats;
 
-    Player() {
+    public Player() {
         inputState = new InputState();
     }
 
