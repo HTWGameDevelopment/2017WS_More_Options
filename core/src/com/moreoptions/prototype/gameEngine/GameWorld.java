@@ -24,12 +24,12 @@ import java.util.ArrayList;
 /**
  *
  */
-public class GameEngine extends Engine {
+public class GameWorld extends Engine {
 
-    private static GameEngine gameEngine;
+    private static GameWorld gameEngine;
 
-    public static GameEngine getInstance() {
-        if(gameEngine == null) gameEngine = new GameEngine();
+    public static GameWorld getInstance() {
+        if(gameEngine == null) gameEngine = new GameWorld();
         return gameEngine;
     }
 
@@ -43,7 +43,7 @@ public class GameEngine extends Engine {
 
     GameInputProcessor processor;
 
-    private GameEngine() {
+    private GameWorld() {
 
         demoSetup();
     }

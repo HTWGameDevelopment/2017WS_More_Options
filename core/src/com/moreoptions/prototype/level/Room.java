@@ -4,13 +4,13 @@ package com.moreoptions.prototype.level;
  * Created by Andreas on 28.10.2017.
  */
 public class Room {
-    private static final int EMPTY_ROOM = 0;
-    private static final int STARTING_ROOM = 1;
-    private static final int NORMAL_ROOM = 2;
-    private static final int BOSS_ROOM = 3;
-    private static final int VENDOR_ROOM = 4;
-    private static final int ITEM_ROOM = 5;
-    private static final int SECRET_ROOM = 6;
+    public static final int EMPTY_ROOM = 0;
+    public static final int STARTING_ROOM = 1;
+    public static final int NORMAL_ROOM = 2;
+    public static final int BOSS_ROOM = 3;
+    public static final int VENDOR_ROOM = 4;
+    public static final int ITEM_ROOM = 5;
+    public static final int SECRET_ROOM = 6;
 
     private int xCoord;
     private int yCoord;
