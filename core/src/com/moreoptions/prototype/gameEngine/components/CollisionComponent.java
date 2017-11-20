@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
+import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
 
 /**
  * Component that holds old position information for collision
@@ -10,9 +11,16 @@ public class CollisionComponent implements Component{
     private float oldX;
     private float oldY;
 
+    CollisionEvent event;
+
 
     public CollisionComponent() {
+        event = new CollisionEvent.DefaultCollisionEvent();
+    }
 
+
+    public CollisionComponent(CollisionEvent event) {
+        this.event = event;
     }
 
 
@@ -32,4 +40,7 @@ public class CollisionComponent implements Component{
         return oldY;
     }
 
+    public CollisionEvent getOnCollision() {
+        return event;
+    }
 }

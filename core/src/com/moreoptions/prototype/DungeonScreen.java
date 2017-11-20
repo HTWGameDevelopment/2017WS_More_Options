@@ -3,17 +3,18 @@ package com.moreoptions.prototype;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.moreoptions.prototype.gameEngine.GameEngine;
+import com.moreoptions.prototype.gameEngine.GameWorld;
+import com.moreoptions.prototype.gameEngine.GameWorld;
 
 /**
  * Created by denwe on 12.11.2017.
  */
 public class DungeonScreen implements Screen {
 
-    GameEngine engine;
+    GameWorld engine;
 
     public DungeonScreen(MoreOptions moreOptions) {
-        engine = GameEngine.getInstance();
+        engine = GameWorld.getInstance();
     }
 
     @Override

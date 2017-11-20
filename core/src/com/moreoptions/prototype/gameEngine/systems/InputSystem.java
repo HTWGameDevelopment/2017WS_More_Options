@@ -5,11 +5,14 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Game;
-import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
-import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
+import com.moreoptions.prototype.gameEngine.data.projectileEvents.SplitEvent;
 
 /**
  * System that manipulates Entities based on Player Input
@@ -67,6 +70,22 @@ public class InputSystem extends EntitySystem {
             v.setVelX(v.getSpeed());
         } else if (!playerInput.isMoveLeft() && !playerInput.isMoveRight()) {
             v.setVelX(v.getVelX() * v.getDeceleration());
+        }
+
+        if(playerInput.isShootDown()){
+            Entity proj = new Entity();
+
+            PositionComponent playerPosition = e.getComponent(PositionComponent.class);
+
+
+            proj.add(new PositionComponent(playerPosition.getX(),playerPosition.getY()));
+            proj.add(new VelocityComponent(50, 10));
+            proj.add(new CollisionComponent(new SplitEvent()));
+            proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()),(proj.getComponent(PositionComponent.class).getY()),10));
+            proj.add(new DebugColorComponent(Color.CORAL));
+            VelocityComponent pv = proj.getComponent(VelocityComponent.class);
+            pv.setVelY(-10);
+            getEngine().addEntity(proj);
         }
     }
 }

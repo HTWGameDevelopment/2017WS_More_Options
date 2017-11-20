@@ -5,6 +5,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.*;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
@@ -78,6 +79,10 @@ public class MovementSystem extends EntitySystem {
             for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
                 try {
                     float r = CollisionUtil.getXOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t),x,y);
+
+                    if(r != 0) {
+                        e.getComponent(CollisionComponent.class).getOnCollision().onCollision(e,t);
+                    }
                     updateEntityXPosition(e,r);
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -89,6 +94,9 @@ public class MovementSystem extends EntitySystem {
         for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
             try {
                 float r = CollisionUtil.getYOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t),x,y);
+                if(r != 0) {
+                    e.getComponent(CollisionComponent.class).getOnCollision().onCollision(e,t);
+                }
                 updateEntityYPosition(e, r);
             } catch (Exception e1) {
                 e1.printStackTrace();
