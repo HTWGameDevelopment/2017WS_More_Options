@@ -126,7 +126,7 @@ public class GameWorld extends Engine {
         addSystem(new FontRenderSystem(batch,f));
         addSystem(new TimedSystem());
         addSystem(new PickupSystem());
-
+        addSystem(new ProjectileSystem());
 
         ArrayList<Entity> e = null;
         try {
