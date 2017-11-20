@@ -3,7 +3,7 @@ package com.moreoptions.prototype.level;
 /**
  * Created by Andreas on 28.10.2017.
  */
-public class Room {
+public class RoomBlueprint {
     public static final int EMPTY_ROOM = 0;
     public static final int STARTING_ROOM = 1;
     public static final int NORMAL_ROOM = 2;
@@ -17,10 +17,15 @@ public class Room {
     private int kind;
     private int neighbours;
 
+    private boolean hasNeighbourTop;
+    private boolean hasNeighbourBottom;
+    private boolean hasNeighbourLeft;
+    private boolean hasNeighbourRight;
+
     private boolean isSuitableForSpecialRoom;
     private boolean isOccupied;
 
-    public Room(int x, int y, int kind) {
+    public RoomBlueprint(int x, int y, int kind) {
         this.xCoord = x;
         this.yCoord = y;
         this.kind = kind;
@@ -68,5 +73,37 @@ public class Room {
 
     public int getNeighbours() {
         return neighbours;
+    }
+
+    public boolean isHasNeighbourTop() {
+        return hasNeighbourTop;
+    }
+
+    public void setHasNeighbourTop(boolean hasNeighbourTop) {
+        this.hasNeighbourTop = hasNeighbourTop;
+    }
+
+    public boolean isHasNeighbourBottom() {
+        return hasNeighbourBottom;
+    }
+
+    public void setHasNeighbourBottom(boolean hasNeighbourBottom) {
+        this.hasNeighbourBottom = hasNeighbourBottom;
+    }
+
+    public boolean isHasNeighbourLeft() {
+        return hasNeighbourLeft;
+    }
+
+    public void setHasNeighbourLeft(boolean hasNeighbourLeft) {
+        this.hasNeighbourLeft = hasNeighbourLeft;
+    }
+
+    public boolean isHasNeighbourRight() {
+        return hasNeighbourRight;
+    }
+
+    public void setHasNeighbourRight(boolean hasNeighbourRight) {
+        this.hasNeighbourRight = hasNeighbourRight;
     }
 }

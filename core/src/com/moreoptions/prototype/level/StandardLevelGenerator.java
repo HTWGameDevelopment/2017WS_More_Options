@@ -25,11 +25,11 @@ public class StandardLevelGenerator implements LevelGenerator {
     private int width;
     private int height;
 
-    private Room[][] map;
+    private RoomBlueprint[][] map;
 
-    private List<Room> existingRooms;
-    private List<Room> possibleSecretRooms;
-    private List<Room> possibleSecretRoomsSecondary;
+    private List<RoomBlueprint> existingRooms;
+    private List<RoomBlueprint> possibleSecretRooms;
+    private List<RoomBlueprint> possibleSecretRoomsSecondary;
 
     private int maxRooms;
 
@@ -46,7 +46,7 @@ public class StandardLevelGenerator implements LevelGenerator {
     private void createMap() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                map[x][y] = new Room(x, y, EMPTY_ROOM);
+                map[x][y] = new RoomBlueprint(x, y, EMPTY_ROOM);
             }
         }
     }
@@ -55,7 +55,7 @@ public class StandardLevelGenerator implements LevelGenerator {
      * calls the methods responsible for generating the different rooms in each minimap
      */
 
-    private Room[][] makeRooms() {
+    private RoomBlueprint[][] makeRooms() {
         makeStartingRoom();
 
         makeNormalRooms();
@@ -98,7 +98,7 @@ public class StandardLevelGenerator implements LevelGenerator {
         Random random = new Random();
         int roomIndex;
         int direction;
-        Room randomRoom;
+        RoomBlueprint randomRoom;
 
         while (existingRooms.size() < maxRooms) {
             roomIndex = random.nextInt(existingRooms.size());
@@ -134,7 +134,7 @@ public class StandardLevelGenerator implements LevelGenerator {
         int x = width / 2;
         int y = height / 2;
 
-        Room startingRoom = new Room(x, y, STARTING_ROOM);
+        RoomBlueprint startingRoom = new RoomBlueprint(x, y, STARTING_ROOM);
         map[x][y] = startingRoom;
         existingRooms.add(startingRoom);
     }
@@ -164,7 +164,7 @@ public class StandardLevelGenerator implements LevelGenerator {
 
             int direction = random.nextInt(4);
 
-            Room randomRoom = existingRooms.get(roomIndex);
+            RoomBlueprint randomRoom = existingRooms.get(roomIndex);
 
             switch (direction) {
                 case NORTH:
@@ -230,7 +230,7 @@ public class StandardLevelGenerator implements LevelGenerator {
 
             int direction = random.nextInt(4);
 
-            Room randomRoom = existingRooms.get(roomIndex);
+            RoomBlueprint randomRoom = existingRooms.get(roomIndex);
 
             switch (direction) {
                 case NORTH:
@@ -291,7 +291,7 @@ public class StandardLevelGenerator implements LevelGenerator {
 
             int direction = random.nextInt(4);
 
-            Room randomRoom = existingRooms.get(roomIndex);
+            RoomBlueprint randomRoom = existingRooms.get(roomIndex);
 
             switch (direction) {
                 case NORTH:
@@ -351,7 +351,7 @@ public class StandardLevelGenerator implements LevelGenerator {
         while (!containsSecretRoom) {
             if (possibleSecretRooms.size() != 0) {
                 int secretRoomIndex = random.nextInt(possibleSecretRooms.size());
-                Room secretRoom = possibleSecretRooms.get(secretRoomIndex);
+                RoomBlueprint secretRoom = possibleSecretRooms.get(secretRoomIndex);
 
                 map[secretRoom.getXCoord()][secretRoom.getYCoord()].setKind(SECRET_ROOM);
                 existingRooms.add(secretRoom);
@@ -362,7 +362,7 @@ public class StandardLevelGenerator implements LevelGenerator {
 
                 if (possibleSecretRoomsSecondary.size() != 0) {
                     int secretRoomIndex = random.nextInt(possibleSecretRoomsSecondary.size());
-                    Room secretRoom = possibleSecretRoomsSecondary.get(secretRoomIndex);
+                    RoomBlueprint secretRoom = possibleSecretRoomsSecondary.get(secretRoomIndex);
                     map[secretRoom.getXCoord()][secretRoom.getYCoord()].setKind(SECRET_ROOM);
                     existingRooms.add(secretRoom);
                     containsSecretRoom = true;
@@ -395,10 +395,10 @@ public class StandardLevelGenerator implements LevelGenerator {
      */
 
     private void makeRoomNorth(int x, int y, int kind) {
-        Room room;
+        RoomBlueprint room;
         if (!checkNorthOutside(y)) {
             if (map[x][y + 1].getKind() == 0) {
-                room = new Room(x, y + 1, kind);
+                room = new RoomBlueprint(x, y + 1, kind);
                 map[x][y + 1] = room;
                 existingRooms.add(room);
             }
@@ -413,10 +413,10 @@ public class StandardLevelGenerator implements LevelGenerator {
      */
 
     private void makeRoomEast(int x, int y, int kind) {
-        Room room;
+        RoomBlueprint room;
         if (!checkEastOutside(x)) {
             if (map[x + 1][y].getKind() == 0) {
-                room = new Room(x + 1, y, kind);
+                room = new RoomBlueprint(x + 1, y, kind);
                 map[x + 1][y] = room;
                 existingRooms.add(room);
             }
@@ -431,10 +431,10 @@ public class StandardLevelGenerator implements LevelGenerator {
      */
 
     private void makeRoomSouth(int x, int y, int kind) {
-        Room room;
+        RoomBlueprint room;
         if (!checkSouthOutside(y)) {
             if (map[x][y - 1].getKind() == 0) {
-                room = new Room(x, y - 1, kind);
+                room = new RoomBlueprint(x, y - 1, kind);
                 map[x][y - 1] = room;
                 existingRooms.add(room);
             }
@@ -449,10 +449,10 @@ public class StandardLevelGenerator implements LevelGenerator {
      */
 
     private void makeRoomWest(int x, int y, int kind) {
-        Room room;
+        RoomBlueprint room;
         if (!checkWestOutside(x)) {
             if (map[x - 1][y].getKind() == 0) {
-                room = new Room(x - 1, y, kind);
+                room = new RoomBlueprint(x - 1, y, kind);
                 map[x - 1][y] = room;
                 existingRooms.add(room);
             }
@@ -512,6 +512,7 @@ public class StandardLevelGenerator implements LevelGenerator {
                 if (!checkNorthOutside(y)) {
                     if (map[x][y + 1].getKind() != 0) {
                         neighbours++;
+                        map[x][y + 1].setHasNeighbourTop(true);
                     }
                 }
 
@@ -519,6 +520,7 @@ public class StandardLevelGenerator implements LevelGenerator {
                 if (!checkEastOutside(x)) {
                     if (map[x + 1][y].getKind() != 0) {
                         neighbours++;
+                        map[x + 1][y].setHasNeighbourRight(true);
                     }
                 }
 
@@ -526,6 +528,7 @@ public class StandardLevelGenerator implements LevelGenerator {
                 if (!checkSouthOutside(y)) {
                     if (map[x][y - 1].getKind() != 0) {
                         neighbours++;
+                        map[x][y - 1].setHasNeighbourBottom(true);
                     }
                 }
 
@@ -534,6 +537,7 @@ public class StandardLevelGenerator implements LevelGenerator {
                 if (!checkWestOutside(x)) {
                     if (map[x - 1][y].getKind() != 0) {
                         neighbours++;
+                        map[x - 1][y].setHasNeighbourLeft(true);
                     }
                 }
 
@@ -576,22 +580,20 @@ public class StandardLevelGenerator implements LevelGenerator {
     }
 
     @Override
-    public Level getLevel(int width, int height, int roomCount) {
+    public LevelBlueprint getLevel(int width, int height, int roomCount) {
         this.width = width;
         this.height = height;
 
-        this.map = new Room[width][height];
-        this.existingRooms = new ArrayList<Room>();
-        this.possibleSecretRooms = new ArrayList<Room>();
-        this.possibleSecretRoomsSecondary = new ArrayList<Room>();
-
-        this.maxRooms = maxRooms;
+        this.map = new RoomBlueprint[width][height];
+        this.existingRooms = new ArrayList<RoomBlueprint>();
+        this.possibleSecretRooms = new ArrayList<RoomBlueprint>();
+        this.possibleSecretRoomsSecondary = new ArrayList<RoomBlueprint>();
 
         createMap();
 
-        Room[][] rooms = makeRooms();
+        RoomBlueprint[][] rooms = makeRooms();
 
-        Level level = new Level(rooms);
+        LevelBlueprint level = new LevelBlueprint(rooms,width,height);
         return level;
     }
 }

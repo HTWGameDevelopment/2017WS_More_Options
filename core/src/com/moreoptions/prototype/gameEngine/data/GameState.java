@@ -37,4 +37,8 @@ public class GameState {
     public void addPlayer(Player player) {
         playerList.add(player);
     }
+
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
 }

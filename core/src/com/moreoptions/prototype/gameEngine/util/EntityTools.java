@@ -26,4 +26,11 @@ public class EntityTools {
     }
 
 
+    public static void resetEnemy(Entity e) {
+        //TODO impl
+    }
+
+    public static void resetDestructible(Entity e) {
+        //Todo impl
+    }
 }

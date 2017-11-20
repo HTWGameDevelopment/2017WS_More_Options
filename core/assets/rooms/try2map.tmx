@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="16">
+ <properties>
+  <property name="test" value="test"/>
+ </properties>
  <tileset firstgid="1" source="testTileSet.tsx"/>
  <layer name="BackgroundLayer" width="17" height="11" visible="0">
   <data encoding="csv">

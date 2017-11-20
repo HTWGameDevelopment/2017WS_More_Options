@@ -1,7 +1,95 @@
 package com.moreoptions.prototype.level;
 
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
+import com.moreoptions.prototype.gameEngine.GameWorld;
+import com.moreoptions.prototype.gameEngine.components.DestructibleComponent;
+import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
+import com.moreoptions.prototype.gameEngine.data.GameState;
+import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.util.EntityTools;
+
+import java.util.ArrayList;
+
 /**
  * Created by denwe on 15.11.2017.
  */
 public class RoomManager {
+
+    /*
+        Also!
+        Derzeit ist ein Raum halt eine Ansammlung von Entities.
+        Wir manipulieren die Spielwelt
+        Indem wir Räume laden und entladen
+        Wenn wir einen Raum laden, spielen wir alle Entities in die Engine. Alle Entities die zu einem anderen Raum gehören, werden gelöscht
+        Letztendlich entfernen wir alle Entities und befüllen die Engine neu.
+        Wenn wir einen Raum entladen, erneuern wir alle Entities im Raum mit denen im geladenen Raum
+        es seidem der Raum ist != clear
+        Dann lassen wir das.
+        Wenn wir einen Raum laden erstellen wir eine neue PlayerEntity anhand unserer PlayerStats Blaupause
+        in der Richtung, von der der Spieler gekommen ist
+        Sieht das gut aus?
+        hab ich was vergessen?
+        Ich denke auch, dass wir Räume versetzt laden können. Das heißt in unsererm "RoomManager" hat man zwei Felder für Räume. Wenn man einen Raum neuläd wird der raum versetzt links/rechts/oben/unten gemalt. dann werden die räume in die richtige richtung verschoben
+     */
+
+
+    private IRoom currentRoom;       //The current room
+    private IRoom bufferRoom;        //A buffer to handle smooth room transitions.
+
+    private ComponentMapper<EnemyComponent> ecm = ComponentMapper.getFor(EnemyComponent.class);
+    private ComponentMapper<DestructibleComponent> dcm = ComponentMapper.getFor(DestructibleComponent.class);
+
+
+    public void changeRoom(IRoom targetRoom, Offset offset) {
+
+        //Create tools
+
+        GameWorld world = GameWorld.getInstance();
+
+        //First, we check if all monsters are dead. If one is alive, revive all other monsters and return them to their spawn position.
+        //Also, if a monster is alive, restore every entity back to its natural state.
+
+        ImmutableArray<Entity> currentRoomEntities = world.getEntities(); //All current Entities
+
+        for(Entity e : currentRoomEntities) {
+            if(ecm.has(e) && !ecm.get(e).isDead()) {
+
+                resetEverything(currentRoomEntities);
+
+            }
+        }
+
+        //Then, we set our bufferRoom
+
+        currentRoom = targetRoom;
+
+        //Clear world
+
+        world.removeAllEntities();
+
+        //Add new entities
+        for(Entity e : currentRoom.getAllEntities()) {
+            world.addEntity(e);
+        }
+        //Add player entity
+        ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players
+        for (Player p : players) {
+            world.addEntity(p.getEntity(offset));
+        }
+
+
+
+    }
+
+    private void resetEverything(ImmutableArray<Entity> currentRoom) {
+
+        for(Entity e : currentRoom) {
+            if(ecm.has(e)) EntityTools.resetEnemy(e);
+            if(dcm.has(e)) EntityTools.resetDestructible(e);
+        }
+    }
+
+
 }

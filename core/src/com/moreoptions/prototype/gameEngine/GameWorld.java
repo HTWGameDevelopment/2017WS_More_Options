@@ -3,6 +3,7 @@ package com.moreoptions.prototype.gameEngine;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,6 +19,8 @@ import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.gameEngine.util.MapParser;
+import com.moreoptions.prototype.level.LevelBlueprint;
+import com.moreoptions.prototype.level.StandardLevelGenerator;
 
 import java.util.ArrayList;
 
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 public class GameWorld extends Engine {
 
     private static GameWorld gameEngine;
+    private boolean filled = true;
 
     public static GameWorld getInstance() {
         if(gameEngine == null) gameEngine = new GameWorld();
@@ -39,6 +43,8 @@ public class GameWorld extends Engine {
     OrthographicCamera camera;
     FitViewport fv;
     BitmapFont f;
+
+    Room room;
 
 
     GameInputProcessor processor;
@@ -73,10 +79,7 @@ public class GameWorld extends Engine {
         Gdx.input.setInputProcessor(processor);
 
 
-        //Room r = new Room();
-        //for(Entity e : r.getEntities()) {
-        //    addEntity(e);
-        //}
+
 
 
         Player p = new Player();
@@ -94,29 +97,6 @@ public class GameWorld extends Engine {
 
         addEntity(playerEntity);
 
-        Entity pickup = new Entity();
-        pickup.add(new PositionComponent(50,50));
-        pickup.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
-        pickup.add(new CollisionComponent());
-        pickup.add(new CircleCollisionComponent(50,50,10));
-        pickup.add(new PickupComponent(new PickupEvent() {
-            @Override
-            public boolean onPickup(Entity e) {
-                e.getComponent(PositionComponent.class).setX(100);
-                e.getComponent(PositionComponent.class).setY(100);
-                return true;
-            }
-        }));
-
-        addEntity(pickup);
-
-        Entity fontTest = new Entity();
-        CombatTextComponent c = new CombatTextComponent();
-        c.setText("Test");
-        fontTest.add(c);
-        fontTest.add(new PositionComponent(150,150));
-
-        addEntity(fontTest);
 
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());
@@ -135,14 +115,16 @@ public class GameWorld extends Engine {
             e1.printStackTrace();
         }
         for(Entity ex : e) {
-            addEntity(ex);
+            //addEntity(ex);
         }
+        generateLevel();
     }
 
     @Override
     public void update(float deltaTime) {
 
         super.update(deltaTime);
+
 
     }
 
@@ -157,5 +139,12 @@ public class GameWorld extends Engine {
     public void updateInput() {
 
         Gdx.input.setInputProcessor(processor);
+    }
+
+    public void generateLevel() {
+        StandardLevelGenerator generator = new StandardLevelGenerator();
+
+        LevelBlueprint p = generator.getLevel(10,10,10);
+        p.generateLevel();
     }
 }

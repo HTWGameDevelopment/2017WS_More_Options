@@ -2,9 +2,15 @@ package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
+import com.moreoptions.prototype.level.RoomBlueprint;
+import com.moreoptions.prototype.level.RoomDefinition;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Rooms are: 15x9, consist of 2 maps. This is just a prototype implementation with everything hardcoded.
@@ -40,79 +46,17 @@ import java.util.ArrayList;
  */
 public class Room {
 
-    int height = 14;
-    int tileSize = 32;
 
-    int[][] destructibles = {
-           {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-           {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-           {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-           {0,0,0,0,0,0,5,5,5,0,0,0,0,0,0},
-           {0,0,0,0,0,0,5,5,5,0,0,0,0,0,0},
-           {0,0,0,0,0,0,5,5,5,0,0,0,0,0,0},
-           {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-           {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-           {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-       };
-    
-    int[][] tiles = {
-            {1,1,1,1,1,0,0,1,1,1,1,1,1,1,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,1,0,1,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,1,1,1,1,1,0,1,1,1,1,1,1,1,1}
-       };
+    ArrayList<Entity> entities;
 
+    public Room(RoomBlueprint roomBlueprint) {
 
-    public Room() {
+        Random r = new Random();
+        ArrayList<RoomDefinition> roomlist = AssetLoader.getInstance().definition(roomBlueprint.isHasNeighbourTop(),roomBlueprint.isHasNeighbourBottom(),roomBlueprint.isHasNeighbourLeft(),roomBlueprint.isHasNeighbourRight());
+        RoomDefinition rq = roomlist.get(r.nextInt(roomlist.size()));
+        rq.getEntities();
+
 
     }
-
-    public ArrayList<Entity> getEntities() {
-        ArrayList<Entity> entities = new ArrayList<Entity>();
-
-        System.out.println("X = "+tiles.length);
-        System.out.println("Y = "+ height);
-        for(int i = 0; i < tiles.length; ++i) {
-            for(int j = 0; j <= height; j++) {
-
-                int k = tiles[i][height-j];
-
-                int positionY = i * tileSize;
-                int positionX = (height-j) * tileSize;
-
-                Entity e = new Entity();
-
-                PositionComponent p = new PositionComponent(positionX, positionY);
-                CollisionComponent c = new CollisionComponent();
-                SquareCollisionComponent sqc = new SquareCollisionComponent(positionX,positionY,tileSize);
-
-                DebugColorComponent dc;
-                if(k==0) {
-                    dc  = new DebugColorComponent(new Color(57 / 255f, 150/255f,125/255f, 1));
-                    e.add(new WalkableTileComponent());
-                }
-                else {
-                    dc= new DebugColorComponent(new Color(0 / 255f, 0/255f,125/255f, 1));
-                    e.add( new BlockedTileComponent());
-                }
-
-                e.add(p).add(c).add(dc).add(sqc);
-                entities.add(e);
-
-                System.out.print(k);
-            }
-            System.out.println();
-        }
-        return entities;
-    }
-    
-    
-
-
 
 }
