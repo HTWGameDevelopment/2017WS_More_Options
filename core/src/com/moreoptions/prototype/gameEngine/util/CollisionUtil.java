@@ -2,7 +2,6 @@ package com.moreoptions.prototype.gameEngine.util;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.*;
-import com.moreoptions.prototype.gameEngine.GameEngine;
 import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.DebugLineComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
