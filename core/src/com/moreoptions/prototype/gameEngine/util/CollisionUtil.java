@@ -175,6 +175,7 @@ public class CollisionUtil {
 
         Vector2 p1 = new Vector2(startA - baX * abScalingFactor1, startB
                 - baY * abScalingFactor1);
+
         if (disc == 0) { // abScalingFactor1 == abScalingFactor2
             return Collections.singletonList(p1);
         }

@@ -7,15 +7,14 @@ import com.badlogic.ashley.core.Family;
 import com.moreoptions.prototype.gameEngine.components.TimedComponent;
 
 /**
- * Created by denwe on 03.11.2017.
+ * System that takes care of timed entities.
  */
 public class TimedSystem extends EntitySystem {
 
-    Family f = Family.all(TimedComponent.class).get();
-    ComponentMapper<TimedComponent> cm = ComponentMapper.getFor(TimedComponent.class);
+    private Family f = Family.all(TimedComponent.class).get();
+    private ComponentMapper<TimedComponent> cm = ComponentMapper.getFor(TimedComponent.class);
     @Override
     public void update(float deltaTime) {
-
         for(Entity e : getEngine().getEntitiesFor(f)) {
             TimedComponent t = cm.get(e);
             t.setCurrentTime(t.getCurrentTime() + deltaTime);
@@ -24,6 +23,5 @@ public class TimedSystem extends EntitySystem {
                 getEngine().removeEntity(e);
             }
         }
-
     }
 }

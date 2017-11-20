@@ -34,13 +34,11 @@ public class InputSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(family);
 
         for(Entity e : entities) {
             updateVelocity(e);
         }
-
     }
 
     private void updateVelocity(Entity e) {

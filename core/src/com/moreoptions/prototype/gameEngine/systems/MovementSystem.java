@@ -16,20 +16,23 @@ import java.util.List;
 /**
  * The job of this movement-system is to:
  * -Move Entities
- * -Resolve Collisions with immovable entities, entities that _do_not_ move. makes us unable to pass bounds, or run over rocks.
+ * -Resolve Collisions with tiles
+ * -Resolves Collision with nonmoving entities.
  *
  * Maybe implement a spacial map to not iterate x²
  *
  */
 public class MovementSystem extends EntitySystem {
 
-    ComponentMapper<CollisionComponent> colMapper   = ComponentMapper.getFor(CollisionComponent.class);
-    ComponentMapper<PositionComponent>  posMapper   = ComponentMapper.getFor(PositionComponent.class);
-    ComponentMapper<VelocityComponent>  velMapper   = ComponentMapper.getFor(VelocityComponent.class);
+    private ComponentMapper<CollisionComponent> colMapper   = ComponentMapper.getFor(CollisionComponent.class);
+    private ComponentMapper<PositionComponent>  posMapper   = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<VelocityComponent>  velMapper   = ComponentMapper.getFor(VelocityComponent.class);
+    private ComponentMapper<CircleCollisionComponent> cMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<SquareCollisionComponent> sqMapper = ComponentMapper.getFor(SquareCollisionComponent.class);
 
-    Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class).exclude(TileComponent.class).get();
-    Family blockedTilesFamily = Family.all(BlockedTileComponent.class).get();
-    ImmutableArray<Entity> entities;
+    private Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class, CircleCollisionComponent.class).exclude(TileComponent.class).get();
+    private Family blockedTilesFamily = Family.all(BlockedTileComponent.class).get();
+    private ImmutableArray<Entity> entities;
 
     @Override
     public void update(float deltaTime) {
@@ -43,7 +46,6 @@ public class MovementSystem extends EntitySystem {
      * @param deltaTime The deltaTime between frames
      */
     private void moveAllEntities(float deltaTime) {
-
         entities = getEngine().getEntitiesFor(posColl);
 
         for(Entity e : entities) {
@@ -51,25 +53,32 @@ public class MovementSystem extends EntitySystem {
             PositionComponent pos = posMapper.get(e);
             CollisionComponent col= colMapper.get(e);
 
+
             //Record previous position for later collision resolving
             col.setOldX(pos.getX());
             col.setOldY(pos.getY());
 
             pos.setX(pos.getX() + vel.getVelX() * deltaTime);
+            if(sqMapper.has(e)) sqMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
+            if(cMapper.has(e)) cMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
             resolveXCollision(e,col.getOldX(), col.getOldY());
+
+
             pos.setY(pos.getY() + vel.getVelY() * deltaTime);
+
+            if(sqMapper.has(e)) sqMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
+            if(cMapper.has(e)) cMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
             resolveYCollision(e,col.getOldX(), col.getOldY());
 
             //Add smooth edge movement
-
         }
     }
 
     private void resolveXCollision(Entity e, float x,float y) {
             for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
                 try {
-                    float r = CollisionUtil.getXOverlap(EntityTools.getEntityHitbox(e), EntityTools.getTileHitbox(t),x,y);
-                    e.getComponent(PositionComponent.class).setX(e.getComponent(PositionComponent.class).getX() + r);
+                    float r = CollisionUtil.getXOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t),x,y);
+                    updateEntityXPosition(e,r);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -79,12 +88,28 @@ public class MovementSystem extends EntitySystem {
     private void resolveYCollision(Entity e, float x,float y) {
         for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
             try {
-                float r = CollisionUtil.getYOverlap(EntityTools.getEntityHitbox(e), EntityTools.getTileHitbox(t),x,y);
-                e.getComponent(PositionComponent.class).setY(e.getComponent(PositionComponent.class).getY() + r);
+                float r = CollisionUtil.getYOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t),x,y);
+                updateEntityYPosition(e, r);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
         }
+    }
+
+    private void updateEntityXPosition(Entity e, float r) {
+        PositionComponent p = posMapper.get(e);
+        CircleCollisionComponent c = cMapper.get(e);
+
+        p.setX(p.getX() + r);
+        c.getHitbox().x += r;
+    }
+
+    private void updateEntityYPosition(Entity e, float r) {
+        PositionComponent p = posMapper.get(e);
+        CircleCollisionComponent c = cMapper.get(e);
+
+        p.setY(p.getY() + r);
+        c.getHitbox().y += r;
     }
 
 
