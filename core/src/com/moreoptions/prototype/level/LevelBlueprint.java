@@ -36,15 +36,14 @@ public class LevelBlueprint{
 
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                //Todo impl
                 if(rooms[x][y].isHasNeighbourLeft()) {
-                    generatedRooms[x][y].setLeftNeighbour(generatedRooms[x-1][y]);
+                    generatedRooms[x][y].setLeftNeighbour(generatedRooms[x][y-1]);
                 } if(rooms[x][y].isHasNeighbourRight()) {
-                    generatedRooms[x][y].setRightNeighbour(generatedRooms[x+1][y]);
+                    generatedRooms[x][y].setRightNeighbour(generatedRooms[x][y+1]);
                 } if(rooms[x][y].isHasNeighbourTop()) {
-                    generatedRooms[x][y].setTopNeighbour(generatedRooms[x][y+1]);
+                    generatedRooms[x][y].setTopNeighbour(generatedRooms[x+1][y]);
                 } if(rooms[x][y].isHasNeighbourBottom()) {
-                    generatedRooms[x][y].setBottomNeighbour(generatedRooms[x][y-1]);
+                    generatedRooms[x][y].setBottomNeighbour(generatedRooms[x-1][y]);
                 }
             }
         }

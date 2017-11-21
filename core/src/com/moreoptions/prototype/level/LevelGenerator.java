@@ -5,7 +5,7 @@ package com.moreoptions.prototype.level;
  */
 public interface LevelGenerator {
 
-    LevelBlueprint getLevel(int width, int height, int roomCount);
+    Level getLevel(int width, int height, int roomCount);
 
 
 }

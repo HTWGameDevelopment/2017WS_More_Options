@@ -580,7 +580,7 @@ public class StandardLevelGenerator implements LevelGenerator {
     }
 
     @Override
-    public LevelBlueprint getLevel(int width, int height, int roomCount) {
+    public Level getLevel(int width, int height, int roomCount) {
         this.width = width;
         this.height = height;
         this.maxRooms = roomCount;
@@ -595,7 +595,7 @@ public class StandardLevelGenerator implements LevelGenerator {
         RoomBlueprint[][] rooms = makeRooms();
 
         LevelBlueprint level = new LevelBlueprint(rooms,width,height);
-        printMap();
-        return level;
+
+        return level.generateLevel();
     }
 }

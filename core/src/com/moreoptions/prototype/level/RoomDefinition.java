@@ -82,12 +82,6 @@ public class RoomDefinition {
 
     }
 
-    public Room getRoom() {
-
-
-
-        return null;
-    }
 
     public boolean isDoorNorth() {
         return doorNorth;

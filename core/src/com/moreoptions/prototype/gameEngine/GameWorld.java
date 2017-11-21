@@ -122,7 +122,7 @@ public class GameWorld extends Engine {
 
         System.out.println("None");
 
-        manager = new LevelManager(generateLevel(),this);
+        manager = new LevelManager(this);
     }
 
     @Override
@@ -153,12 +153,4 @@ public class GameWorld extends Engine {
         Gdx.input.setInputProcessor(processor);
     }
 
-    public Level generateLevel() {
-        StandardLevelGenerator generator = new StandardLevelGenerator();
-
-        LevelBlueprint p = generator.getLevel(10,10,10);
-
-
-        return p.generateLevel();
-    }
 }

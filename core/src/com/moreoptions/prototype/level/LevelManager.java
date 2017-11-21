@@ -44,9 +44,17 @@ public class LevelManager {
 
     private GameWorld world;
 
-    public LevelManager(Level level, GameWorld world) {
+    private LevelGenerator levelGenerator;
+    private Level currentLevel;
 
-        currentRoom = level.getStartingRoom();
+    public LevelManager(GameWorld world) {
+
+        levelGenerator = new StandardLevelGenerator();
+
+        currentLevel = levelGenerator.getLevel(10,10,20);
+
+
+        currentRoom = currentLevel.getStartingRoom();
         this.world = world;
 
     }
