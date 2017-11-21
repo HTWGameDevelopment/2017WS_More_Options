@@ -378,9 +378,9 @@ public class StandardLevelGenerator implements LevelGenerator {
      * prints the map to the terminal
      */
 
-    private void printMap() {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+    public void printMap() {
+        for (int y = 0; y < width; y++) {
+            for (int x = 0; x < height; x++) {
                 System.out.print(" " + map[x][y].getKind() + " ");
             }
             System.out.println();
@@ -583,6 +583,7 @@ public class StandardLevelGenerator implements LevelGenerator {
     public LevelBlueprint getLevel(int width, int height, int roomCount) {
         this.width = width;
         this.height = height;
+        this.maxRooms = roomCount;
 
         this.map = new RoomBlueprint[width][height];
         this.existingRooms = new ArrayList<RoomBlueprint>();
@@ -594,6 +595,7 @@ public class StandardLevelGenerator implements LevelGenerator {
         RoomBlueprint[][] rooms = makeRooms();
 
         LevelBlueprint level = new LevelBlueprint(rooms,width,height);
+        printMap();
         return level;
     }
 }

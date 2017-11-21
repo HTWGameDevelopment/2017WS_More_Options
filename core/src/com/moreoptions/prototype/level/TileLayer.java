@@ -1,11 +1,25 @@
 package com.moreoptions.prototype.level;
 
-/**
- * Created by denwe on 15.11.2017.
- */
-public class GroundLayer {
+import com.badlogic.ashley.core.Entity;
 
-/*
+import java.util.ArrayList;
+import java.util.Arrays;
+
+/**
+ * Created by denwe on 21.11.2017.
+ */
+public class TileLayer {
+
+    Entity[][] tiles;
+
+    public TileLayer(Entity[][] tiles, int width, int height) {
+
+        this.tiles = tiles;
+
+    }
+
+
+    /*
 Height: 11, Width: 17.
 
          A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q
@@ -25,7 +39,7 @@ Height: 11, Width: 17.
  */
 
 
-public void addDoorLeft() {
+    public void addDoorLeft() {
 
     /*                             EB
     // We need to edit tile at  FA FB
@@ -36,13 +50,27 @@ public void addDoorLeft() {
 
     */
 
+    }
+
+    public void openAllClosedTiles() {
+
+        // Take all door-tile-entities that are closed. Change their state to open.
+
+    }
+
+    public ArrayList<Entity> getEntities() {
+        ArrayList list = new ArrayList();
+        for(Entity[] e: tiles ) {
+            for(Entity ex : Arrays.asList(e)) {
+                if(ex != null) list.add(ex);
+            }
+        }
+        return list;
+    }
+
+
 }
 
-public void openAllClosedTiles() {
-
-    // Take all door-tile-entities that are closed. Change their state to open.
-
-}
 
 
-}
+

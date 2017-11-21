@@ -53,9 +53,12 @@ public class AssetLoader {
     public boolean update() {
         if(assetManager.update()) {
             System.out.println("Done loading");
+            System.out.println("Loaded "+assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size + " assets.");
             for(TiledMap t : assetManager.getAll(TiledMap.class, new Array<TiledMap>())) {
                 definitions.add(new RoomDefinition(t));
             }
+
+            System.out.println("TEST: "+ assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size);
             return true;
         } return false;
     }

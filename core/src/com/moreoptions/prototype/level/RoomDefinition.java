@@ -34,6 +34,7 @@ public class RoomDefinition {
     private final int TREASURE_ROOM = 1;
     private final int BOSS_ROOM     = 2;
     private final int SHOP_ROOM     = 3;
+    private TileLayer tileLayer;
 
     public RoomDefinition(TiledMap map) {
 
@@ -84,16 +85,31 @@ public class RoomDefinition {
     public Room getRoom() {
 
 
-        //TODO
-
 
         return null;
     }
 
-    private static ArrayList<Entity> loadTileLayer(TiledMap tiledMap) throws MissdefinedTileException {
+    public boolean isDoorNorth() {
+        return doorNorth;
+    }
 
-        TiledMapTileLayer t = (TiledMapTileLayer) tiledMap.getLayers().get("TileLayer");
-        ArrayList<Entity> tiles = new ArrayList<Entity>();
+    public boolean isDoorSouth() {
+        return doorSouth;
+    }
+
+    public boolean isDoorWest() {
+        return doorWest;
+    }
+
+    public boolean isDoorEast() {
+        return doorEast;
+    }
+
+    public DestructibleLayer getDestLayer() throws MissdefinedTileException {
+
+        TiledMapTileLayer t = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
+
+        Entity[][] entities = new Entity[t.getWidth()][t.getHeight()];
 
         for(int x = 0; x < t.getWidth(); x++) {
             for(int y = 0; y < t.getHeight(); y++) {
@@ -114,34 +130,43 @@ public class RoomDefinition {
                     tile.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
                     tile.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
                 }
+                entities[x][y] = tile;
+            }
+        }
+
+        return new DestructibleLayer(entities, t.getWidth(),t.getHeight());
+    }
+
+    public TileLayer getTileLayer() throws MissdefinedTileException {
+        TiledMapTileLayer t = (TiledMapTileLayer) tiledMap.getLayers().get("TileLayer");
+        ArrayList<Entity> tiles = new ArrayList<Entity>();
+
+        Entity[][] entities = new Entity[t.getWidth()][t.getHeight()];
+
+        for(int x = 0; x < t.getWidth(); x++) {
+            for(int y = 0; y < t.getHeight(); y++) {
+                Entity tile = new Entity();
+
+                if(t.getCell(x,y) == null) continue;
+
+                tile.add(new TileGraphicComponent(t.getCell(x, y).getTile().getTextureRegion(),1));
+                if (!t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
+                    throw new MissdefinedTileException("No blocked flag set");
+                } else {
+                    boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
+                    if (blocked) {
+                        tile.add(new BlockedTileComponent());
+                    } else {
+                        tile.add(new WalkableTileComponent());
+                    }
+                    tile.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
+                    tile.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
+                }
+                entities[x][y] = tile;
                 tiles.add(tile);
             }
         }
-        return tiles;
-    }
 
-    public boolean isDoorNorth() {
-        return doorNorth;
-    }
-
-    public boolean isDoorSouth() {
-        return doorSouth;
-    }
-
-    public boolean isDoorWest() {
-        return doorWest;
-    }
-
-    public boolean isDoorEast() {
-        return doorEast;
-    }
-
-    public ArrayList<Entity> getEntities() {
-        try {
-            return loadTileLayer(tiledMap);
-        } catch (MissdefinedTileException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new TileLayer(entities, t.getWidth(),t.getHeight());
     }
 }

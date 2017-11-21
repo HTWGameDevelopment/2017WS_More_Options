@@ -19,7 +19,9 @@ import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.gameEngine.util.MapParser;
+import com.moreoptions.prototype.level.Level;
 import com.moreoptions.prototype.level.LevelBlueprint;
+import com.moreoptions.prototype.level.LevelManager;
 import com.moreoptions.prototype.level.StandardLevelGenerator;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class GameWorld extends Engine {
 
     private static GameWorld gameEngine;
     private boolean filled = true;
+    private boolean loaded = false;
 
     public static GameWorld getInstance() {
         if(gameEngine == null) gameEngine = new GameWorld();
@@ -44,17 +47,16 @@ public class GameWorld extends Engine {
     FitViewport fv;
     BitmapFont f;
 
-    Room room;
+    LevelManager manager;
 
 
     GameInputProcessor processor;
 
     private GameWorld() {
-
         demoSetup();
     }
 
-    private void demoSetup() {
+    public void demoSetup() {
 
         int testw = 15 *32;
         int testh = 9 * 32;
@@ -117,12 +119,22 @@ public class GameWorld extends Engine {
         for(Entity ex : e) {
             //addEntity(ex);
         }
-        generateLevel();
+
+        System.out.println("None");
+
+        manager = new LevelManager(generateLevel(),this);
     }
 
     @Override
     public void update(float deltaTime) {
+        if(!loaded) {
+            manager.initStartingLevel();
+            loaded = true;
+        }
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+            manager.test();
+        }
         super.update(deltaTime);
 
 
@@ -141,10 +153,12 @@ public class GameWorld extends Engine {
         Gdx.input.setInputProcessor(processor);
     }
 
-    public void generateLevel() {
+    public Level generateLevel() {
         StandardLevelGenerator generator = new StandardLevelGenerator();
 
         LevelBlueprint p = generator.getLevel(10,10,10);
-        p.generateLevel();
+
+
+        return p.generateLevel();
     }
 }

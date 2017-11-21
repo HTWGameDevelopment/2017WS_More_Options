@@ -19,27 +19,24 @@ public class LevelBlueprint{
     }
 
 
+
     public Level generateLevel() {
 
-        Room[][] generatedRooms = generateRoom(rooms, width,height);
-
-
-        return null;
-    }
-
-
-    private Room[][] generateRoom(RoomBlueprint[][] rooms, int width, int height) {
-        System.out.println("TEST");
+        Room startingRoom = null;
 
         Room[][] generatedRooms = new Room[width][height];
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 generatedRooms[x][y] = new Room(rooms[x][y]);
+                if(rooms[x][y].getKind() ==RoomBlueprint.STARTING_ROOM) {
+                    startingRoom = generatedRooms[x][y];
+                }
             }
         }
 
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
+                //Todo impl
                 if(rooms[x][y].isHasNeighbourLeft()) {
                     generatedRooms[x][y].setLeftNeighbour(generatedRooms[x-1][y]);
                 } if(rooms[x][y].isHasNeighbourRight()) {
@@ -53,7 +50,7 @@ public class LevelBlueprint{
         }
 
 
-        return null;
+        return new Level(generatedRooms, startingRoom);
     }
 
 

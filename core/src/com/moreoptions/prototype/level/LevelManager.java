@@ -8,6 +8,7 @@ import com.moreoptions.prototype.gameEngine.components.DestructibleComponent;
 import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by denwe on 15.11.2017.
  */
-public class RoomManager {
+public class LevelManager {
 
     /*
         Also!
@@ -35,19 +36,37 @@ public class RoomManager {
      */
 
 
-    private IRoom currentRoom;       //The current room
-    private IRoom bufferRoom;        //A buffer to handle smooth room transitions.
+    private Room currentRoom;       //The current room
+    private Room bufferRoom;        //A buffer to handle smooth room transitions.
 
     private ComponentMapper<EnemyComponent> ecm = ComponentMapper.getFor(EnemyComponent.class);
     private ComponentMapper<DestructibleComponent> dcm = ComponentMapper.getFor(DestructibleComponent.class);
 
+    private GameWorld world;
 
-    public void changeRoom(IRoom targetRoom, Offset offset) {
+    public LevelManager(Level level, GameWorld world) {
 
-        //Create tools
+        currentRoom = level.getStartingRoom();
+        this.world = world;
 
-        GameWorld world = GameWorld.getInstance();
+    }
 
+    private void initStartingRoom(Room currentRoom) {
+        for(Entity e : currentRoom.getEntities()) {
+            if(e != null) {
+                world.addEntity(e);
+            }
+        }
+    }
+
+    public void test() {
+        changeRoom(currentRoom.getLeftNeighbour(), null);
+        System.out.println("Changed");
+    }
+
+    public boolean changeRoom(Room targetRoom, Offset offset) {
+
+        if(targetRoom == null) return false;
         //First, we check if all monsters are dead. If one is alive, revive all other monsters and return them to their spawn position.
         //Also, if a monster is alive, restore every entity back to its natural state.
 
@@ -70,7 +89,7 @@ public class RoomManager {
         world.removeAllEntities();
 
         //Add new entities
-        for(Entity e : currentRoom.getAllEntities()) {
+        for(Entity e : currentRoom.getEntities()) {
             world.addEntity(e);
         }
         //Add player entity
@@ -79,8 +98,7 @@ public class RoomManager {
             world.addEntity(p.getEntity(offset));
         }
 
-
-
+        return true;
     }
 
     private void resetEverything(ImmutableArray<Entity> currentRoom) {
@@ -92,4 +110,7 @@ public class RoomManager {
     }
 
 
+    public void initStartingLevel() {
+        initStartingRoom(currentRoom);
+    }
 }
