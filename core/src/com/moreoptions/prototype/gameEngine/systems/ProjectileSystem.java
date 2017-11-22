@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.InputState;
@@ -25,10 +24,6 @@ public class ProjectileSystem extends EntitySystem {
 
         for (Entity e : entities){
             InputState state = e.getComponent(PlayerComponent.class).getPlayer().getInputState();
-
-            //if leftShoot = true
-
-
         }
 
         ImmutableArray<Entity> proj = getEngine().getEntitiesFor(projFamily);
@@ -42,12 +37,12 @@ public class ProjectileSystem extends EntitySystem {
 
 
         proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
-        proj.add(new VelocityComponent(50, 10));
+        proj.add(new VelocityComponent(300, 10));
         proj.add(new CollisionComponent(new SplitEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelY(-200);
+        pv.setVelY(-pv.getSpeed());
         GameWorld.getInstance().addEntity(proj);
     }
 
@@ -58,12 +53,12 @@ public class ProjectileSystem extends EntitySystem {
 
 
         proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
-        proj.add(new VelocityComponent(50, 10));
+        proj.add(new VelocityComponent(250, 10));
         proj.add(new CollisionComponent(new SplitEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelY(200);
+        pv.setVelY(pv.getSpeed());
         GameWorld.getInstance().addEntity(proj);
     }
 
@@ -74,12 +69,12 @@ public class ProjectileSystem extends EntitySystem {
 
 
         proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
-        proj.add(new VelocityComponent(50, 10));
+        proj.add(new VelocityComponent(250, 10));
         proj.add(new CollisionComponent(new SplitEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelX(-200);
+        pv.setVelX(-pv.getSpeed());
         GameWorld.getInstance().addEntity(proj);
     }
 
@@ -90,12 +85,12 @@ public class ProjectileSystem extends EntitySystem {
 
 
         proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
-        proj.add(new VelocityComponent(50, 10));
+        proj.add(new VelocityComponent(250, 10));
         proj.add(new CollisionComponent(new SplitEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelX(200);
+        pv.setVelX(pv.getSpeed());
         GameWorld.getInstance().addEntity(proj);
     }
 }

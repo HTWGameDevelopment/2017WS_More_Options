@@ -22,7 +22,7 @@ public class SplitEvent implements CollisionEvent {
 
         test2.add(new PositionComponent(cuc.getOldX(),cuc.getOldY()));
         VelocityComponent vcus = us.getComponent(VelocityComponent.class);
-        VelocityComponent vc = new VelocityComponent(50,10);
+        VelocityComponent vc = new VelocityComponent(300,10);
         vc.setVelY(- vcus.getVelY() );
         vc.setVelX(5);
 
@@ -38,7 +38,7 @@ public class SplitEvent implements CollisionEvent {
                 return false;
             }
         }));
-        test2.add(new CircleCollisionComponent((test2.getComponent(PositionComponent.class).getX()),(test2.getComponent(PositionComponent.class).getY()),10));
+        test2.add(new CircleCollisionComponent((test2.getComponent(PositionComponent.class).getX()),(test2.getComponent(PositionComponent.class).getY()),2));
         test2.add(new DebugColorComponent(Color.CORAL));
         GameWorld.getInstance().addEntity(test2);
 
@@ -53,9 +53,9 @@ public class SplitEvent implements CollisionEvent {
 
         test3.add(new PositionComponent(cuc.getOldX(),cuc.getOldY()));
         vcus = us.getComponent(VelocityComponent.class);
-        vc = new VelocityComponent(50,10);
+        vc = new VelocityComponent(300,10);
         vc.setVelY(- vcus.getVelY() );
-        vc.setVelX(-5);
+        vc.setVelX( (vcus.getVelY())/2);
 
 
         test3.add(vc);
@@ -69,7 +69,7 @@ public class SplitEvent implements CollisionEvent {
                 return false;
             }
         }));
-        test3.add(new CircleCollisionComponent((test3.getComponent(PositionComponent.class).getX()),(test3.getComponent(PositionComponent.class).getY()),10));
+        test3.add(new CircleCollisionComponent((test3.getComponent(PositionComponent.class).getX()),(test3.getComponent(PositionComponent.class).getY()),2));
         test3.add(new DebugColorComponent(Color.CORAL));
         GameWorld.getInstance().addEntity(test3);
 
