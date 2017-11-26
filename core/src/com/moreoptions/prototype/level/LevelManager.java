@@ -4,8 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.GameWorld;
-import com.moreoptions.prototype.gameEngine.components.DestructibleComponent;
-import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
+import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
@@ -81,12 +80,12 @@ public class LevelManager {
         ImmutableArray<Entity> currentRoomEntities = world.getEntities(); //All current Entities
 
         for(Entity e : currentRoomEntities) {
-            if(ecm.has(e) && !ecm.get(e).isDead()) {
-
-                resetEverything(currentRoomEntities);
-
-            }
+            if(ecm.has(e)) EntityTools.resetEnemy(e);
+            if(dcm.has(e)) EntityTools.resetDestructible(e);
+            world.removeEntity(e);
         }
+
+
 
         //Then, we set our bufferRoom
 
@@ -94,11 +93,13 @@ public class LevelManager {
 
         //Clear world
 
-        world.removeAllEntities();
 
         //Add new entities
         for(Entity e : currentRoom.getEntities()) {
             world.addEntity(e);
+            System.out.println("Adding new entity:" + e.getComponent(PositionComponent.class).getX());
+            System.out.println(world.getEntities().size());
+            if((e.getComponent(TileGraphicComponent.class)) != null) System.out.println("Tile");
         }
         //Add player entity
         ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players
@@ -109,13 +110,6 @@ public class LevelManager {
         return true;
     }
 
-    private void resetEverything(ImmutableArray<Entity> currentRoom) {
-
-        for(Entity e : currentRoom) {
-            if(ecm.has(e)) EntityTools.resetEnemy(e);
-            if(dcm.has(e)) EntityTools.resetDestructible(e);
-        }
-    }
 
 
     public void initStartingLevel() {

@@ -27,29 +27,49 @@ public class LevelBlueprint{
         Room[][] generatedRooms = new Room[width][height];
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
+
+                System.out.print(rooms[x][y].getKind());
                 generatedRooms[x][y] = new Room(rooms[x][y]);
                 if(rooms[x][y].getKind() ==RoomBlueprint.STARTING_ROOM) {
                     startingRoom = generatedRooms[x][y];
                 }
             }
+
+            System.out.println();
         }
+        System.out.println();
 
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
+
+                System.out.print(rooms[x][y].getKind());
                 if(rooms[x][y].isHasNeighbourLeft()) {
+                    if(isValid(width,height,x,y-1))
                     generatedRooms[x][y].setLeftNeighbour(generatedRooms[x][y-1]);
                 } if(rooms[x][y].isHasNeighbourRight()) {
-                    generatedRooms[x][y].setRightNeighbour(generatedRooms[x][y+1]);
+                    if(isValid(width,height,x,y+1)) generatedRooms[x][y].setRightNeighbour(generatedRooms[x][y+1]);
                 } if(rooms[x][y].isHasNeighbourTop()) {
+                    if(isValid(width,height,x+1, y))
                     generatedRooms[x][y].setTopNeighbour(generatedRooms[x+1][y]);
                 } if(rooms[x][y].isHasNeighbourBottom()) {
+                    if(isValid(width,height,x-1,y))
                     generatedRooms[x][y].setBottomNeighbour(generatedRooms[x-1][y]);
                 }
             }
+
+            System.out.println();
         }
 
 
+
         return new Level(generatedRooms, startingRoom);
+    }
+
+    private boolean isValid(int width, int height, int x, int y) {
+
+
+
+        return !(x>=width || y>=height || x <0 || y < 0);
     }
 
 

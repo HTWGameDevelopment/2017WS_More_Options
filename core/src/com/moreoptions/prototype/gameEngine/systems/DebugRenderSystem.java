@@ -46,8 +46,8 @@ public class DebugRenderSystem extends EntitySystem{
         for(Entity e : getEngine().getEntitiesFor(f)) {
             DebugColorComponent dc = e.getComponent(DebugColorComponent.class);
 
-            renderer.setColor(dc.getColor());
-
+            if(dc!= null) renderer.setColor(dc.getColor());
+            else renderer.setColor(Color.FIREBRICK);
             if(sqm.has(e)) {
                 Rectangle hitbox = sqm.get(e).getHitbox();
                 renderer.rect(hitbox.x,hitbox.y,hitbox.getWidth(),hitbox.getHeight());

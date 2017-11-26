@@ -102,25 +102,15 @@ public class GameWorld extends Engine {
 
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());
-
+        addSystem(new DoorCollisionSystem());
         addSystem(new TileRenderSystem(batch));
         addSystem(new DebugRenderSystem(renderer));
         addSystem(new FontRenderSystem(batch,f));
         addSystem(new TimedSystem());
         addSystem(new PickupSystem());
+        addSystem(new ProjectileSystem());
 
 
-        ArrayList<Entity> e = null;
-        try {
-            e = MapParser.loadRooms();
-        } catch (MissdefinedTileException e1) {
-            e1.printStackTrace();
-        }
-        for(Entity ex : e) {
-            //addEntity(ex);
-        }
-
-        System.out.println("None");
 
         levelManager = new LevelManager(this);
     }
@@ -133,7 +123,7 @@ public class GameWorld extends Engine {
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)) {
-            levelManager.test();
+            System.out.println(getEntities().size());
         }
         super.update(deltaTime);
 

@@ -71,7 +71,6 @@ public class Room {
 
         int test = r.nextInt(roomlist.size());
 
-        System.out.println("Selected " + test + " from " + roomlist.size());
 
         RoomDefinition rq = roomlist.get(r.nextInt(roomlist.size()));
 
@@ -90,10 +89,10 @@ public class Room {
         entities.addAll(destLayer.getEntities());
         entities.addAll(tileLayer.getEntities());
 
-        if(leftNeighbour != null) addDoorLeft(entities);
-        if(rightNeighbour != null) addDoorRight(entities);
-        if(topNeighbour != null) addDoorLeft(entities);
-        if(bottomNeighbour != null) addDoorLeft(entities);
+        if(leftNeighbour != null) entities.add(createDoor(0,6,leftNeighbour));
+        if(rightNeighbour != null) entities.add(createDoor(11,6,rightNeighbour));
+        if(topNeighbour != null) entities.add(createDoor(6,6,topNeighbour));
+        if(bottomNeighbour != null) entities.add(createDoor(6,0,bottomNeighbour));
 
 
         return entities;
@@ -104,7 +103,9 @@ public class Room {
 
         e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
         e.add(new CollisionComponent(new ChangeRoomEvent(room)));
-        e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
+        e.add(new DoorComponent());
+
+        e.add(new CircleCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE/2));
 
         return e;
 
