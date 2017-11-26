@@ -1,10 +1,8 @@
 package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.moreoptions.prototype.gameEngine.components.*;
-import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
+import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.level.DestructibleLayer;
@@ -64,7 +62,11 @@ public class Room {
         y = roomBlueprint.getYCoord();
 
         Random r = new Random();
-        ArrayList<RoomDefinition> roomlist = AssetLoader.getInstance().definition(roomBlueprint.isHasNeighbourTop(),roomBlueprint.isHasNeighbourBottom(),roomBlueprint.isHasNeighbourLeft(),roomBlueprint.isHasNeighbourRight());
+
+        //TODO refactor this!
+        ArrayList<RoomDefinition> roomlist = AssetLoader
+                .getInstance()
+                .definition(roomBlueprint.isHasNeighbourTop(),roomBlueprint.isHasNeighbourBottom(),roomBlueprint.isHasNeighbourLeft(),roomBlueprint.isHasNeighbourRight());
 
 
         int test = r.nextInt(roomlist.size());
@@ -88,7 +90,24 @@ public class Room {
         entities.addAll(destLayer.getEntities());
         entities.addAll(tileLayer.getEntities());
 
+        if(leftNeighbour != null) addDoorLeft(entities);
+        if(rightNeighbour != null) addDoorRight(entities);
+        if(topNeighbour != null) addDoorLeft(entities);
+        if(bottomNeighbour != null) addDoorLeft(entities);
+
+
         return entities;
+    }
+
+    private Entity createDoor(int x, int y, Room room) {
+        Entity e = new Entity();
+
+        e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
+        e.add(new CollisionComponent(new ChangeRoomEvent(room)));
+        e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
+
+        return e;
+
     }
 
     public void setLeftNeighbour(Room leftNeighbour) {

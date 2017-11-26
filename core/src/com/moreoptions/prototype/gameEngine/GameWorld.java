@@ -47,7 +47,7 @@ public class GameWorld extends Engine {
     FitViewport fv;
     BitmapFont f;
 
-    LevelManager manager;
+    LevelManager levelManager;
 
 
     GameInputProcessor processor;
@@ -122,18 +122,18 @@ public class GameWorld extends Engine {
 
         System.out.println("None");
 
-        manager = new LevelManager(this);
+        levelManager = new LevelManager(this);
     }
 
     @Override
     public void update(float deltaTime) {
         if(!loaded) {
-            manager.initStartingLevel();
+            levelManager.initStartingLevel();
             loaded = true;
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.K)) {
-            manager.test();
+            levelManager.test();
         }
         super.update(deltaTime);
 
@@ -153,4 +153,7 @@ public class GameWorld extends Engine {
         Gdx.input.setInputProcessor(processor);
     }
 
+    public LevelManager getRoomManager() {
+        return levelManager;
+    }
 }
