@@ -24,6 +24,10 @@ public class RoomBlueprint {
 
     private boolean isSuitableForSpecialRoom;
     private boolean isOccupied;
+    private boolean left = false;
+    private boolean right = false;
+    private boolean down = false;
+    private boolean top = false;
 
     public RoomBlueprint(int x, int y, int kind) {
         this.xCoord = x;
@@ -105,5 +109,37 @@ public class RoomBlueprint {
 
     public void setHasNeighbourRight(boolean hasNeighbourRight) {
         this.hasNeighbourRight = hasNeighbourRight;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public void setTop(boolean top) {
+        this.top = top;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public boolean isTop() {
+        return top;
     }
 }

@@ -58,7 +58,7 @@ public class Player {
                 break;
             case DOWN:
 
-                p = new PositionComponent(7*32, 9 * 32);
+                p = new PositionComponent(7*32, 8 * 32);
 
                 break;
             case RIGHT:

@@ -54,7 +54,11 @@ public class Room {
     private int y;
     private int id;
 
+    RoomBlueprint blueprint;
+
     public Room(RoomBlueprint roomBlueprint) {
+
+        this.blueprint = roomBlueprint;
 
         x = roomBlueprint.getXCoord();
         y = roomBlueprint.getYCoord();
@@ -64,9 +68,11 @@ public class Room {
         //TODO refactor this!
         ArrayList<RoomDefinition> roomlist = AssetLoader
                 .getInstance()
-                .definition(roomBlueprint.isHasNeighbourTop(),roomBlueprint.isHasNeighbourBottom(),roomBlueprint.isHasNeighbourLeft(),roomBlueprint.isHasNeighbourRight());
+                .definition(roomBlueprint.isTop(),roomBlueprint.isDown(),roomBlueprint.isLeft(),roomBlueprint.isRight());
 
         RoomDefinition rq = roomlist.get(r.nextInt(roomlist.size()));
+
+
 
         try {
             destLayer = rq.getDestLayer();
@@ -74,6 +80,12 @@ public class Room {
         } catch (MissdefinedTileException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public String toString() {
+
+        return ("Room: "+ id + " Doors: TOP("+blueprint.isTop()+"), DOWN("+blueprint.isDown()+"), LEFT("+blueprint.isLeft()+"), RIGHT("+blueprint.isRight()+"), " );
 
     }
 
@@ -120,7 +132,6 @@ public class Room {
     }
 
     public Room getLeftNeighbour() {
-        System.out.print(x + "| " + y);
         return leftNeighbour;
     }
 

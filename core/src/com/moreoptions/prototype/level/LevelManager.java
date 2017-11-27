@@ -17,24 +17,6 @@ import java.util.ArrayList;
  */
 public class LevelManager {
 
-    /*
-        Also!
-        Derzeit ist ein Raum halt eine Ansammlung von Entities.
-        Wir manipulieren die Spielwelt
-        Indem wir Räume laden und entladen
-        Wenn wir einen Raum laden, spielen wir alle Entities in die Engine. Alle Entities die zu einem anderen Raum gehören, werden gelöscht
-        Letztendlich entfernen wir alle Entities und befüllen die Engine neu.
-        Wenn wir einen Raum entladen, erneuern wir alle Entities im Raum mit denen im geladenen Raum
-        es seidem der Raum ist != clear
-        Dann lassen wir das.
-        Wenn wir einen Raum laden erstellen wir eine neue PlayerEntity anhand unserer PlayerStats Blaupause
-        in der Richtung, von der der Spieler gekommen ist
-        Sieht das gut aus?
-        hab ich was vergessen?
-        Ich denke auch, dass wir Räume versetzt laden können. Das heißt in unsererm "RoomManager" hat man zwei Felder für Räume. Wenn man einen Raum neuläd wird der raum versetzt links/rechts/oben/unten gemalt. dann werden die räume in die richtige richtung verschoben
-     */
-
-
     private Room currentRoom;       //The current room
     private Room bufferRoom;        //A buffer to handle smooth room transitions.
 
@@ -68,7 +50,7 @@ public class LevelManager {
 
     public boolean changeRoom(Room targetRoom, Offset offset) {
 
-        System.out.println("Switched from: "+currentRoom.getId() + " to : " + targetRoom.getId());
+        System.out.println(targetRoom);
 
         if(targetRoom == null) return false;
         //First, we check if all monsters are dead. If one is alive, revive all other monsters and return them to their spawn position.
@@ -82,14 +64,8 @@ public class LevelManager {
             world.removeEntity(e);
         }
 
-
-
         //Then, we set our bufferRoom
-
         currentRoom = targetRoom;
-
-        //Clear world
-
 
         //Add new entities
         for(Entity e : currentRoom.getEntities()) {
@@ -97,8 +73,6 @@ public class LevelManager {
         }
         //Add player entity
         addPlayerEntities(offset);
-
-
         return true;
     }
 
@@ -106,7 +80,6 @@ public class LevelManager {
         ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players
         for (Player p : players) {
             world.addEntity(p.getEntity(offset));
-            System.out.println("added player");
         }
     }
 

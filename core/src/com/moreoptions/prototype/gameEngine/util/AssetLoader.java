@@ -74,7 +74,6 @@ public class AssetLoader {
                 fits.add(def);
             }
         }
-
         return fits;
     }
 }
