@@ -5,10 +5,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
-import com.moreoptions.prototype.level.DestructibleLayer;
-import com.moreoptions.prototype.level.RoomBlueprint;
-import com.moreoptions.prototype.level.RoomDefinition;
-import com.moreoptions.prototype.level.TileLayer;
+import com.moreoptions.prototype.level.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,6 +52,7 @@ public class Room {
     private Room bottomNeighbour;
     private int x;
     private int y;
+    private int id;
 
     public Room(RoomBlueprint roomBlueprint) {
 
@@ -67,10 +65,6 @@ public class Room {
         ArrayList<RoomDefinition> roomlist = AssetLoader
                 .getInstance()
                 .definition(roomBlueprint.isHasNeighbourTop(),roomBlueprint.isHasNeighbourBottom(),roomBlueprint.isHasNeighbourLeft(),roomBlueprint.isHasNeighbourRight());
-
-
-        int test = r.nextInt(roomlist.size());
-
 
         RoomDefinition rq = roomlist.get(r.nextInt(roomlist.size()));
 
@@ -89,22 +83,20 @@ public class Room {
         entities.addAll(destLayer.getEntities());
         entities.addAll(tileLayer.getEntities());
 
-        if(leftNeighbour != null) entities.add(createDoor(0,6,leftNeighbour));
-        if(rightNeighbour != null) entities.add(createDoor(11,6,rightNeighbour));
-        if(topNeighbour != null) entities.add(createDoor(6,6,topNeighbour));
-        if(bottomNeighbour != null) entities.add(createDoor(6,0,bottomNeighbour));
-
+        if(leftNeighbour != null) entities.add(createDoor(1,6,leftNeighbour, Offset.LEFT));
+        if(rightNeighbour != null) entities.add(createDoor(16,6,rightNeighbour, Offset.RIGHT));
+        if(topNeighbour != null) entities.add(createDoor(8,10,topNeighbour, Offset.TOP));
+        if(bottomNeighbour != null) entities.add(createDoor(8,0,bottomNeighbour, Offset.DOWN));
 
         return entities;
     }
 
-    private Entity createDoor(int x, int y, Room room) {
+    private Entity createDoor(int x, int y, Room room, Offset offset) {
         Entity e = new Entity();
 
         e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
         e.add(new CollisionComponent(new ChangeRoomEvent(room)));
-        e.add(new DoorComponent());
-
+        e.add(new DoorComponent(offset));
         e.add(new CircleCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE/2));
 
         return e;
@@ -142,5 +134,13 @@ public class Room {
 
     public Room getBottomNeighbour() {
         return bottomNeighbour;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

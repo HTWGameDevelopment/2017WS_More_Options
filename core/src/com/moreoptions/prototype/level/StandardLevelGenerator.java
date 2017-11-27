@@ -86,8 +86,9 @@ public class StandardLevelGenerator implements LevelGenerator {
 
         countNeighbours();
         getPossibleSecretRooms();
-
         makeSecretRoom();
+
+        countNeighbours();
     }
 
     /**

@@ -86,6 +86,7 @@ public class GameWorld extends Engine {
 
         Player p = new Player();
         processor.addPlayer(p);
+        GameState.getInstance().addPlayer(p);
 
 
 
@@ -93,9 +94,9 @@ public class GameWorld extends Engine {
         playerEntity.add(new PlayerComponent(p));
         playerEntity.add(new PositionComponent(100,100));
         playerEntity.add(new VelocityComponent(150f,0.75f));
+        playerEntity.add(new CircleCollisionComponent(100,100,10));
         playerEntity.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
         playerEntity.add(new CollisionComponent());
-        playerEntity.add(new CircleCollisionComponent(100,100,10));
 
         addEntity(playerEntity);
 

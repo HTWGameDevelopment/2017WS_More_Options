@@ -17,10 +17,10 @@ public class RoomBlueprint {
     private int kind;
     private int neighbours;
 
-    private boolean hasNeighbourTop;
-    private boolean hasNeighbourBottom;
-    private boolean hasNeighbourLeft;
-    private boolean hasNeighbourRight;
+    private boolean hasNeighbourTop = false;
+    private boolean hasNeighbourBottom= false;
+    private boolean hasNeighbourLeft= false;
+    private boolean hasNeighbourRight= false;
 
     private boolean isSuitableForSpecialRoom;
     private boolean isOccupied;

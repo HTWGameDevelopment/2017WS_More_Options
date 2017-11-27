@@ -62,7 +62,7 @@ public class StartGameScreen implements Screen {
                                   }
         );
 
-                TextButton continueButton = new TextButton("More Options", skin);
+        TextButton continueButton = new TextButton("More Options", skin);
         TextButton exitGameButton = new TextButton("Exit",skin);
 
         table.add(newGameButton);

@@ -50,7 +50,7 @@ public class LevelManager {
 
         levelGenerator = new StandardLevelGenerator();
 
-        currentLevel = levelGenerator.getLevel(10,10,20);
+        currentLevel = levelGenerator.getLevel(10,10,10);
 
 
         currentRoom = currentLevel.getStartingRoom();
@@ -66,12 +66,9 @@ public class LevelManager {
         }
     }
 
-    public void test() {
-        changeRoom(currentRoom.getLeftNeighbour(), null);
-        System.out.println("Changed");
-    }
-
     public boolean changeRoom(Room targetRoom, Offset offset) {
+
+        System.out.println("Switched from: "+currentRoom.getId() + " to : " + targetRoom.getId());
 
         if(targetRoom == null) return false;
         //First, we check if all monsters are dead. If one is alive, revive all other monsters and return them to their spawn position.
@@ -97,20 +94,21 @@ public class LevelManager {
         //Add new entities
         for(Entity e : currentRoom.getEntities()) {
             world.addEntity(e);
-            System.out.println("Adding new entity:" + e.getComponent(PositionComponent.class).getX());
-            System.out.println(world.getEntities().size());
-            if((e.getComponent(TileGraphicComponent.class)) != null) System.out.println("Tile");
         }
         //Add player entity
-        ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players
-        for (Player p : players) {
-            world.addEntity(p.getEntity(offset));
-        }
+        addPlayerEntities(offset);
+
 
         return true;
     }
 
-
+    public void addPlayerEntities(Offset offset) {
+        ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players
+        for (Player p : players) {
+            world.addEntity(p.getEntity(offset));
+            System.out.println("added player");
+        }
+    }
 
     public void initStartingLevel() {
         initStartingRoom(currentRoom);
