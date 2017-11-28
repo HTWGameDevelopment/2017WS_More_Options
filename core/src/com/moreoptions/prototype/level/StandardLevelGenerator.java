@@ -98,25 +98,25 @@ public class StandardLevelGenerator implements LevelGenerator {
             for(int i = 0; i < width; i++) {
                 if(isValid(width,height,i-1, k)) {
                     if(map[i-1][k].getKind() != RoomBlueprint.EMPTY_ROOM) {
-                        map[i][k].setLeft(true);
+                        map[i][k].setTop(true);
                     }
                 }
 
                 if(isValid(width,height,i+1, k)) {
                     if(map[i+1][k].getKind() != RoomBlueprint.EMPTY_ROOM) {
-                        map[i][k].setRight(true);
+                        map[i][k].setDown(true);
                     }
                 }
 
                 if(isValid(width,height,i, k-1)) {
                     if(map[i][k-1].getKind() != RoomBlueprint.EMPTY_ROOM) {
-                        map[i][k].setDown(true);
+                        map[i][k].setLeft(true);
                     }
                 }
 
                 if(isValid(width,height,i, k+1)) {
                     if(map[i][k+1].getKind() != RoomBlueprint.EMPTY_ROOM) {
-                        map[i][k].setTop(true);
+                        map[i][k].setRight(true);
                     }
                 }
 
