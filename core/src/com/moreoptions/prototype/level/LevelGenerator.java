@@ -7,5 +7,4 @@ public interface LevelGenerator {
 
     Level getLevel(int width, int height, int roomCount);
 
-
 }

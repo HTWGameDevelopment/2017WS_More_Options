@@ -37,18 +37,24 @@ public class Player {
 
         playerEntity.add(new PlayerComponent(this));
 
-        addPositionComponent(playerEntity,offset);
-        addVelocityComponent(playerEntity);
+        try {
+            addPositionComponent(playerEntity,offset);
+            addVelocityComponent(playerEntity);
+            addCollisionComponent(playerEntity);
 
-        addCollisionComponent(playerEntity);
+        } catch (NoOffsetException e) {
+            e.printStackTrace();
+        }
 
         return playerEntity;
 
     }
 
-    private void addPositionComponent(Entity playerEntity, Offset offset) {
+    private void addPositionComponent(Entity playerEntity, Offset offset) throws NoOffsetException {
 
         PositionComponent p;
+
+
 
         switch (offset) {
             case TOP:
@@ -67,8 +73,11 @@ public class Player {
             case LEFT:
                 p = new PositionComponent(14*32, 6 * 32);
                 break;
+            case NONE:
+                p = new PositionComponent(150,150);
+                break;
             default:
-                p = new PositionComponent(50,50);
+                throw new NoOffsetException();
         }
 
         System.out.println("TEST11" + p.getX() +""+ p.getY());

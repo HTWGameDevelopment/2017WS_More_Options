@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class LevelManager {
 
     private Room currentRoom;       //The current room
-    private Room bufferRoom;        //A buffer to handle smooth room transitions.
 
     private ComponentMapper<EnemyComponent> ecm = ComponentMapper.getFor(EnemyComponent.class);
     private ComponentMapper<DestructibleComponent> dcm = ComponentMapper.getFor(DestructibleComponent.class);
@@ -29,24 +28,14 @@ public class LevelManager {
     private Level currentLevel;
 
     public LevelManager(GameWorld world) {
-
-        levelGenerator = new StandardLevelGenerator();
-
-        currentLevel = levelGenerator.getLevel(10,10,10);
-
-
-        currentRoom = currentLevel.getStartingRoom();
+        this.levelGenerator = new StandardLevelGenerator();
         this.world = world;
 
+
+        generateNewLevel(10,10,10);
+
     }
 
-    private void initStartingRoom(Room currentRoom) {
-        for(Entity e : currentRoom.getEntities()) {
-            if(e != null) {
-                world.addEntity(e);
-            }
-        }
-    }
 
     public boolean changeRoom(Room targetRoom, Offset offset) {
 
@@ -83,7 +72,10 @@ public class LevelManager {
         }
     }
 
-    public void initStartingLevel() {
-        initStartingRoom(currentRoom);
+
+    public void generateNewLevel(int width, int height, int roomCount) {
+        this.currentLevel = levelGenerator.getLevel(width,height,roomCount);
+        changeRoom(currentLevel.getStartingRoom(), Offset.NONE);
     }
+
 }

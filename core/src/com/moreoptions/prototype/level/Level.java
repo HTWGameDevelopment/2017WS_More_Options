@@ -15,7 +15,6 @@ public class Level {
         this.startingRoom = startingRoom;
     }
 
-
     public Room getStartingRoom() {
         return startingRoom;
     }

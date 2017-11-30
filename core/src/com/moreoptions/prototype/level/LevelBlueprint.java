@@ -18,16 +18,13 @@ public class LevelBlueprint{
         this.height = height;
     }
 
-
-
     public Level generateLevel() {
-
         Room startingRoom = null;
 
         Room[][] generatedRooms = new Room[width][height];
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                System.out.print(rooms[x][y].getKind());
+                System.out.print(String.format("%1$"+4+ "s", String.valueOf(rooms[x][y].getKind())));
                 if(rooms[x][y].getKind() == RoomBlueprint.EMPTY_ROOM) continue;
                 generatedRooms[x][y] = new Room(rooms[x][y]);
                 if(rooms[x][y].getKind() ==RoomBlueprint.STARTING_ROOM) {
@@ -39,14 +36,11 @@ public class LevelBlueprint{
         }
         System.out.println();
 
-        System.out.println("Log-----------");
-
         int count = 0;
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 if(generatedRooms[x][y] == null) continue;
                 generatedRooms[x][y].setId(count++);
-                System.out.print(rooms[x][y].getKind());
                 if(rooms[x][y].isHasNeighbourLeft()) {
                     if(isValid(width,height,x,y-1))
                     generatedRooms[x][y].setLeftNeighbour(generatedRooms[x][y-1]);
@@ -67,24 +61,15 @@ public class LevelBlueprint{
 
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-
                 if(rooms[x][y].getKind() != RoomBlueprint.EMPTY_ROOM) System.out.print(String.format("%1$"+4+ "s", String.valueOf(generatedRooms[x][y].getId())));
                 else System.out.print(String.format("%1$"+4+ "s", "0"));
             }
             System.out.println();
-
         }
-
-
-
-
         return new Level(generatedRooms, startingRoom);
     }
 
     private boolean isValid(int width, int height, int x, int y) {
-
-
-
         return !(x>=width || y>=height || x <0 || y < 0);
     }
 

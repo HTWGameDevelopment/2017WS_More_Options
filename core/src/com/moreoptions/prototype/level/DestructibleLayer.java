@@ -12,10 +12,8 @@ public class DestructibleLayer {
 
     Entity[][] destructibles;
 
-
     public DestructibleLayer(Entity[][] destructibles, int width, int height) {
         this.destructibles = destructibles;
-
     }
 
     public ArrayList<Entity> getEntities() {

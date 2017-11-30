@@ -13,18 +13,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
-import com.moreoptions.prototype.gameEngine.data.Room;
-import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
-import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
-import com.moreoptions.prototype.gameEngine.util.MapParser;
-import com.moreoptions.prototype.level.Level;
-import com.moreoptions.prototype.level.LevelBlueprint;
 import com.moreoptions.prototype.level.LevelManager;
-import com.moreoptions.prototype.level.StandardLevelGenerator;
-
-import java.util.ArrayList;
 
 /**
  *
@@ -119,7 +110,6 @@ public class GameWorld extends Engine {
     @Override
     public void update(float deltaTime) {
         if(!loaded) {
-            levelManager.initStartingLevel();
             loaded = true;
         }
 

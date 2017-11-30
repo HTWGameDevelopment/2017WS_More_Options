@@ -2,17 +2,10 @@ package com.moreoptions.prototype.gameEngine.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.math.*;
 import com.moreoptions.prototype.gameEngine.components.*;
-import com.moreoptions.prototype.gameEngine.data.Consts;
-import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-import jdk.nashorn.internal.ir.Block;
 
-import javax.swing.text.Position;
-import java.util.List;
 
 /**
  * The job of this movement-system is to:
