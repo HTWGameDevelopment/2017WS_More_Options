@@ -15,9 +15,6 @@ public class MoreOptions extends Game {
 	
 	public MoreOptions() {
 
-
-
-
 	}
 
 	public void create() {

@@ -208,6 +208,8 @@ public class PathFinder {
 
         grid = new Cell[width][height];
         closed = new boolean[width][height];
+        //TODO: don't use lambdas here
+        /*
         open = new PriorityQueue<>((Object o1, Object o2) -> {
             Cell c1 = (Cell) o1;
             Cell c2 = (Cell) o2;
@@ -215,6 +217,7 @@ public class PathFinder {
             return c1.getFinalCost() < c2. getFinalCost() ? -1:
                     c1.getFinalCost() > c2.getFinalCost() ? 1:0;
         });
+        */
 
         // start and target location
         setStart(startX, startY);
