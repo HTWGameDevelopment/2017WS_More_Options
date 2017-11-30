@@ -101,4 +101,12 @@ public class StandardCSpace implements CSpace {
             renderer.circle(n.getX(), n.getY(), 5);
         }
     }
+
+    public boolean isEntityReachable(Entity e){
+        for (CSpaceRectangle cr : cSpaceRectangles) {
+            if (cr.contains(e.getComponent(PositionComponent.class).getX(), e.getComponent(PositionComponent.class).getY()))
+                return false;
+        }
+        return true;
+    }
 }
