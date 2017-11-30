@@ -9,10 +9,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.data.ai.CSpace;
+import com.moreoptions.prototype.gameEngine.data.ai.StandardCSpace;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.level.LevelManager;
@@ -37,6 +40,8 @@ public class GameWorld extends Engine {
     OrthographicCamera camera;
     FitViewport fv;
     BitmapFont f;
+
+    StandardCSpace cSpace;
 
     LevelManager levelManager;
 
@@ -75,21 +80,12 @@ public class GameWorld extends Engine {
 
 
 
+
+
         Player p = new Player();
         processor.addPlayer(p);
         GameState.getInstance().addPlayer(p);
 
-
-
-        Entity playerEntity = new Entity();
-        playerEntity.add(new PlayerComponent(p));
-        playerEntity.add(new PositionComponent(100,100));
-        playerEntity.add(new VelocityComponent(150f,0.75f));
-        playerEntity.add(new CircleCollisionComponent(100,100,10));
-        playerEntity.add(new DebugColorComponent(new Color(76f/255f, 176/255f, 186f/255f,1)));
-        playerEntity.add(new CollisionComponent());
-
-        addEntity(playerEntity);
 
 
         addSystem(InputSystem.getInstance());
@@ -100,11 +96,23 @@ public class GameWorld extends Engine {
         addSystem(new FontRenderSystem(batch,f));
         addSystem(new TimedSystem());
         addSystem(new PickupSystem());
-        addSystem(new ProjectileSystem());
-
-
+        // addSystem(new ProjectileSystem());
 
         levelManager = new LevelManager(this);
+
+        Entity debugMonsterEntity = new Entity();
+        debugMonsterEntity.add(new PositionComponent(150, 100));
+        debugMonsterEntity.add(new CollisionComponent());
+        debugMonsterEntity.add(new CircleCollisionComponent(150f, 100f, 10));
+        debugMonsterEntity.add(new DebugCircleComponent(new Vector2(150, 100), 10));
+        debugMonsterEntity.add(new VelocityComponent(0f, 0f));
+        debugMonsterEntity.add(new DebugColorComponent(Color.FIREBRICK));
+
+        addEntity(debugMonsterEntity);
+
+        cSpace = new StandardCSpace(levelManager.getCurrentRoom(), debugMonsterEntity);
+
+
     }
 
     @Override
@@ -117,7 +125,9 @@ public class GameWorld extends Engine {
             System.out.println(getEntities().size());
         }
         super.update(deltaTime);
-
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        cSpace.debugDraw(renderer);
+        renderer.end();
 
     }
 

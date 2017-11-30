@@ -34,15 +34,18 @@ public class InputSystem extends EntitySystem {
 
     }
 
-    private Family family = Family.all(PlayerComponent.class).get();
+    private Family family = Family.one(PlayerComponent.class).get();
 
     @Override
     public void update(float deltaTime) {
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(family);
 
+        //System.out.println(entities.size());
+
+
         for (Entity e : entities) {
             updateVelocity(e);
-            updateShots(e);
+            // updateShots(e);
         }
     }
 

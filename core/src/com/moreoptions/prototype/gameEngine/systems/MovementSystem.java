@@ -24,7 +24,9 @@ public class MovementSystem extends EntitySystem {
     private ComponentMapper<CircleCollisionComponent> cMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
     private ComponentMapper<SquareCollisionComponent> sqMapper = ComponentMapper.getFor(SquareCollisionComponent.class);
 
-    private Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class, CircleCollisionComponent.class).exclude(TileComponent.class).get();
+    private Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class,
+            CircleCollisionComponent.class).exclude(TileComponent.class).get();
+
     private Family blockedTilesFamily = Family.all(BlockedTileComponent.class).get();
     private ImmutableArray<Entity> entities;
 

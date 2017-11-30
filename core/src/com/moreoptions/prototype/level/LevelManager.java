@@ -78,4 +78,7 @@ public class LevelManager {
         changeRoom(currentLevel.getStartingRoom(), Offset.NONE);
     }
 
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
 }
