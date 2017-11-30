@@ -40,12 +40,9 @@ public class InputSystem extends EntitySystem {
     public void update(float deltaTime) {
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(family);
 
-        //System.out.println(entities.size());
-
-
         for (Entity e : entities) {
             updateVelocity(e);
-            // updateShots(e);
+            updateShots(e);
         }
     }
 

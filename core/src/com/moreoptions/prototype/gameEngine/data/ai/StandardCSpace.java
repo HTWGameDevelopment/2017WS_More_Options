@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine.data.ai;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
@@ -88,6 +89,16 @@ public class StandardCSpace implements CSpace {
     public void debugDraw(ShapeRenderer renderer) {
         for (CSpaceRectangle cRect : cSpaceRectangles) {
             renderer.rect(cRect.getX(), cRect.getY(), cRect.getWidth(), cRect.getHeight());
+        }
+
+        for (Node n : nodes) {
+            if (n.isBlocked()) {
+                renderer.setColor(Color.GOLDENROD);
+            } else {
+                renderer.setColor(Color.CHARTREUSE);
+            }
+
+            renderer.circle(n.getX(), n.getY(), 5);
         }
     }
 }
