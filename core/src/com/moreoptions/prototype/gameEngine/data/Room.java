@@ -89,6 +89,14 @@ public class Room {
 
     }
 
+    public ArrayList<Entity> getTileEntities() {
+        return tileLayer.getEntities();
+    }
+
+    public ArrayList<Entity> getDestructibleEntities() {
+        return destLayer.getEntities();
+    }
+
     public ArrayList<Entity> getEntities() {
 
         ArrayList<Entity> entities = new ArrayList<Entity>();
