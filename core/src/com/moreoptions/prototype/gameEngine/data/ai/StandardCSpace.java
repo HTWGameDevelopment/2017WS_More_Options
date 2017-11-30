@@ -10,8 +10,6 @@ import com.moreoptions.prototype.gameEngine.data.Room;
 
 import java.util.ArrayList;
 
-
-
 /**
  * Created by Andreas on 30.11.2017.
  */
@@ -29,6 +27,21 @@ public class StandardCSpace implements CSpace {
         for (Entity x : entities) {
             cSpaceRectangles.add(translateToCSpace(e, x));
         }
+
+        for (CSpaceRectangle cRect : cSpaceRectangles) {
+            nodes.addAll(cRect.getNodes());
+        }
+
+        for(Node n : nodes) {
+            for (CSpaceRectangle csr : cSpaceRectangles) {
+                if (csr.contains(n.getX(), n.getY())) {
+                    n.setBlocked(true);
+                    n.setBlocker(csr.getEntity());
+                    break;
+                }
+            }
+        }
+
     }
 
     /**
@@ -58,9 +71,8 @@ public class StandardCSpace implements CSpace {
 
         SquareCollisionComponent scc = x.getComponent(SquareCollisionComponent.class);
         Rectangle rect = scc.getHitbox();
-        CSpaceRectangle cRect = new CSpaceRectangle(e, x, rect);
 
-        return cRect;
+        return new CSpaceRectangle(e, x, rect);
     }
 
     @Override
