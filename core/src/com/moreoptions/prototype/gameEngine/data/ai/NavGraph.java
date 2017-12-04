@@ -3,15 +3,14 @@ package com.moreoptions.prototype.gameEngine.data.ai;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.GameWorld;
-import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
-import com.moreoptions.prototype.gameEngine.components.InnerTileComponent;
-import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
-import com.moreoptions.prototype.gameEngine.components.SquareCollisionComponent;
+import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.exceptions.NoValidComponentException;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
+import javafx.geometry.Pos;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -126,21 +125,21 @@ public class NavGraph {
     }
 
     public void draw(ShapeRenderer renderer) {
+        renderer.setColor(Color.BLUE);
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for(Node n : nodes) {
-            if(n.isMarked()) {
                 renderer.circle(n.getX(),n.getY(),10);
 
                 for(Node k : n.getNeighbours()) {
                     renderer.line(n.getX(),n.getY(),k.getX(),k.getY());
                 }
-            }
         }
         renderer.end();
     }
 
 
-    public ArrayList<Node> getPath(float startY, float startX, float endX, float endY) {
+    public ArrayList<Node> getPath(float startX, float startY, float endX, float endY) {
+
 
         ArrayList closedSet = new ArrayList();
         PriorityQueue<Node> nodePriorityQueue = new PriorityQueue<Node>(new Comparator<Node>() {
@@ -191,6 +190,10 @@ public class NavGraph {
         removeNode(start);
         removeNode(end);
 
+        long endTime = System.nanoTime();
+
+
+
 
         return stack;
 
@@ -214,5 +217,17 @@ public class NavGraph {
     }
 
 
+    public ArrayList<Node> getPath(Entity self, Entity player) throws NoValidComponentException {
 
+        ComponentMapper<PositionComponent> cmp = ComponentMapper.getFor(PositionComponent.class);
+
+        if(!cmp.has(self)|| !cmp.has(player)) throw new NoValidComponentException("None of the given entities has a positioncomponent");
+
+        PositionComponent selfPos = cmp.get(self);
+        PositionComponent theirPos = cmp.get(player);
+
+        return getPath(selfPos.getX(),selfPos.getY(), theirPos.getX(), theirPos.getY());
+
+
+    }
 }

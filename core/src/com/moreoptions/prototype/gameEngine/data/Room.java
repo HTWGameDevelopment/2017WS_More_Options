@@ -62,6 +62,10 @@ public class Room {
 
     RoomBlueprint blueprint;
 
+    ArrayList<Entity> playerList = new ArrayList<Entity>();
+
+
+
     public Room(RoomBlueprint roomBlueprint) {
 
         this.blueprint = roomBlueprint;
@@ -123,6 +127,10 @@ public class Room {
         return entities;
     }
 
+    public ArrayList<Entity> getPlayerList() {
+        return playerList;
+    }
+
     private Entity createDoor(int x, int y, Room room, Offset offset) {
         Entity e = new Entity();
 
@@ -133,6 +141,10 @@ public class Room {
 
         return e;
 
+    }
+
+    public void addPlayer(Entity player) {
+        playerList.add(player);
     }
 
     public void setLeftNeighbour(Room leftNeighbour) {

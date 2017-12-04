@@ -3,6 +3,8 @@ package com.moreoptions.prototype.level;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
@@ -51,6 +53,8 @@ public class LevelManager {
 
         ImmutableArray<Entity> currentRoomEntities = world.getEntities(); //All current Entities
 
+        if(currentRoom != null) currentRoom.getPlayerList().clear();
+
         for(Entity e : currentRoomEntities) {
             if(ecm.has(e)) EntityTools.resetEnemy(e);
             if(dcm.has(e)) EntityTools.resetDestructible(e);
@@ -69,7 +73,24 @@ public class LevelManager {
         }
         //Add player entity
         addPlayerEntities(offset,targetRoom);
+        addDebugMonster();
         return true;
+    }
+
+    public void addDebugMonster() {
+
+
+        Entity debugMonsterEntity = new Entity();
+        debugMonsterEntity.add(new PositionComponent(150, 100));
+        debugMonsterEntity.add(new CollisionComponent());
+        debugMonsterEntity.add(new CircleCollisionComponent(150f, 100f, 4));
+        debugMonsterEntity.add(new DebugCircleComponent(new Vector2(150, 100), 4));
+        debugMonsterEntity.add(new VelocityComponent(0f, 0f));
+        debugMonsterEntity.add(new DebugColorComponent(Color.FIREBRICK));
+        debugMonsterEntity.add(new AIComponent());
+
+        world.addEntity(debugMonsterEntity);
+
     }
 
 
@@ -78,6 +99,7 @@ public class LevelManager {
         for (Player p : players) {
             Entity playerEntity = p.getEntity(offset);
             world.addEntity(playerEntity);
+            currentRoom.addPlayer(playerEntity);
         }
     }
 

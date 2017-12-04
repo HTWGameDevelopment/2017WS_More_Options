@@ -104,19 +104,10 @@ public class GameWorld extends Engine {
         addSystem(new TimedSystem());
         addSystem(new PickupSystem());
         addSystem(new ProjectileSystem());
-
+        addSystem(new AISystem(renderer));
         levelManager = new LevelManager(this);
 
 
-        debugMonsterEntity = new Entity();
-        debugMonsterEntity.add(new PositionComponent(150, 100));
-        debugMonsterEntity.add(new CollisionComponent());
-        debugMonsterEntity.add(new CircleCollisionComponent(150f, 100f, 10));
-        debugMonsterEntity.add(new DebugCircleComponent(new Vector2(150, 100), 10));
-        debugMonsterEntity.add(new VelocityComponent(0f, 0f));
-        debugMonsterEntity.add(new DebugColorComponent(Color.FIREBRICK));
-
-        addEntity(debugMonsterEntity);
 
 
 
@@ -129,16 +120,9 @@ public class GameWorld extends Engine {
             loaded = true;
         }
 
-           path = levelManager.getPath(debugMonsterEntity, getPlayerEntities().get(0));
+        levelManager.getCurrentRoom().getNavGraph().draw(renderer);
 
         super.update(deltaTime);
-        renderer.begin(ShapeRenderer.ShapeType.Line);
-            for(Node n : path) {
-                if(n.getCameFrom() != null) {
-                    renderer.line(n.getX(),n.getY(),n.getCameFrom().getX(),n.getCameFrom().getY());
-                }
-            }
-        renderer.end();
 
         fps.log();
 
