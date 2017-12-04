@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.gameEngine.data;
+package com.moreoptions.prototype.gameEngine.exceptions;
 
 /**
  * Created by denwe on 28.11.2017.

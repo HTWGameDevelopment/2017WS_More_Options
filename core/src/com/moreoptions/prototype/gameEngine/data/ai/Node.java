@@ -2,6 +2,8 @@ package com.moreoptions.prototype.gameEngine.data.ai;
 
 import com.badlogic.ashley.core.Entity;
 
+import java.util.ArrayList;
+
 /**
  * Created by Andreas on 30.11.2017.
  */
@@ -10,16 +12,18 @@ public class Node {
 
     private float x;
     private float y;
+    private boolean blocked = false;
 
-    private boolean blocked;
-
-    private Entity blocker;
+    private ArrayList<Node> neighbors = new ArrayList<Node>();
+    private double heuristicDistance;
+    private float cost;
+    private double priority;
+    private Node cameFrom;
+    private boolean marked;
 
     public Node(float x, float y) {
         this.x = x;
         this.y = y;
-        this.blocked = false;
-        this.blocker = null;
     }
 
     public float getX() {
@@ -38,12 +42,10 @@ public class Node {
         this.y = y;
     }
 
-    public Entity getBlocker() {
-        return blocker;
-    }
-
-    public void setBlocker(Entity blocker) {
-        this.blocker = blocker;
+    public void addNeighbor(Node n) {
+        if(!neighbors.contains(neighbors)) {
+            neighbors.add(n);
+        }
     }
 
     public boolean isBlocked() {
@@ -52,5 +54,45 @@ public class Node {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public ArrayList<Node> getNeighbours() {
+        return neighbors;
+    }
+
+    public void setHeuristicDistance(double heuristicDistance) {
+        this.heuristicDistance = heuristicDistance;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public void setPriority(double priority) {
+        this.priority = priority;
+    }
+
+    public double getPriority() {
+        return priority;
+    }
+
+    public void cameFrom(Node current) {
+        this.cameFrom = current;
+    }
+
+    public Node getCameFrom() {
+        return  cameFrom;
+    }
+
+    public void setMarked(boolean marked) {
+        this.marked = marked;
+    }
+
+    public boolean isMarked() {
+        return marked;
     }
 }

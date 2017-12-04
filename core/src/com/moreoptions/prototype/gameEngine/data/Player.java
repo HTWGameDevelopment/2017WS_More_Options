@@ -4,9 +4,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.exceptions.NoOffsetException;
 import com.moreoptions.prototype.level.Offset;
-
-import javax.swing.text.Position;
 
 /**
  * Player Data

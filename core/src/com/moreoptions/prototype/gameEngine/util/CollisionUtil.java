@@ -217,4 +217,15 @@ public class CollisionUtil {
         return Arrays.asList(p1, p2);
     }
 
+    public static boolean intersectSegmentRectangle(float x1,float y1, float x2, float y2, Rectangle rect) {
+
+        if(Intersector.intersectSegments(x1,y1,x2,y2,rect.x,rect.y,rect.x+rect.width,rect.y,null)) return true;
+        if(Intersector.intersectSegments(x1,y1,x2,y2,rect.x,rect.y,rect.x+rect.width,rect.y+rect.height,null)) return true;
+        if(Intersector.intersectSegments(x1,y1,x2,y2,rect.x,rect.y,rect.x,rect.y+rect.getHeight(),null)) return true;
+        if(Intersector.intersectSegments(x1,y1,x2,y2,rect.x+rect.width,rect.y+rect.height,rect.x+rect.width,rect.y,null)) return true;
+
+        return false;
+    }
+
+
 }

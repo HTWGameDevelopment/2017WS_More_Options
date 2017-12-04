@@ -17,8 +17,8 @@ public class StandardMoveState implements AIState {
             PositionComponent ppc = p.getComponent(PositionComponent.class);
 
 
-
+            return null;
         }
-
+        return null;
     }
 }

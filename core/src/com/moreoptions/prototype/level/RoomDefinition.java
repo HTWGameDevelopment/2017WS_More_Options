@@ -112,18 +112,34 @@ public class RoomDefinition {
                 if(t.getCell(x,y) == null) continue;
 
                 tile.add(new TileGraphicComponent(t.getCell(x, y).getTile().getTextureRegion(),1));
+
                 if (!t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
                     throw new MissdefinedTileException("No blocked flag set");
-                } else {
-                    boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
-                    if (blocked) {
-                        tile.add(new BlockedTileComponent());
-                    } else {
-                        tile.add(new WalkableTileComponent());
-                    }
-                    tile.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
-                    tile.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
                 }
+
+                if (!t.getCell(x, y).getTile().getProperties().containsKey("destructible")) {
+                    throw new MissdefinedTileException("No destructible flag set");
+                }
+
+                boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
+                if (blocked) {
+                    tile.add(new BlockedTileComponent());
+                } else {
+                    tile.add(new WalkableTileComponent());
+                }
+
+                boolean destructible = t.getCell(x, y).getTile().getProperties().get("destructible", boolean.class);
+                if(destructible) tile.add(new DestructibleComponent());
+
+                if (t.getCell(x, y).getTile().getProperties().containsKey("inner")) {
+                    if(t.getCell(x, y).getTile().getProperties().get("inner", boolean.class))
+                        tile.add(new InnerTileComponent());
+                }
+
+
+                tile.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
+                tile.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
+
                 entities[x][y] = tile;
             }
         }
@@ -156,6 +172,10 @@ public class RoomDefinition {
                     tile.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
                     tile.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
                 }
+
+
+
+
                 entities[x][y] = tile;
                 tiles.add(tile);
             }

@@ -3,6 +3,8 @@ package com.moreoptions.prototype.gameEngine.data.ai;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.moreoptions.prototype.gameEngine.components.CircleCollisionComponent;
+import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,36 +14,47 @@ import java.util.Collection;
  */
 public class CSpaceRectangle extends Rectangle {
 
-    Entity entity;
-    private Collection<? extends Node> nodes;
-
-    public CSpaceRectangle(Entity e, Entity entity, Rectangle rect) {
+    private Entity entity;
+    private ArrayList<Node> nodes = new ArrayList<Node>();
+    public CSpaceRectangle(int dimension, Entity entity, Rectangle rect) {
         super(rect);
         this.entity = entity;
-        this.set(rect);
 
-        update(e);
+        init(dimension);
+        generateNodes();
     }
 
-    public void update(Entity e) {
-        CircleCollisionComponent ccc = e.getComponent(CircleCollisionComponent.class);
-        System.out.println("TESTSHIT" +getX());
-        this.setX(getX() - ccc.getHitbox().radius);
-        this.setY(getY() - ccc.getHitbox().radius);
-        this.setWidth(getWidth() + 2 * ccc.getHitbox().radius);
-        this.setHeight(getHeight() + 2 * ccc.getHitbox().radius);
+    private void init(int dimension) {
+        this.setX(getX() - dimension);
+        this.setY(getY() - dimension);
+        this.setWidth(getWidth() + 2 * dimension);
+        this.setHeight(getHeight() + 2 * dimension);
     }
+
+    private void generateNodes() {
+        nodes.add(new Node(x-1, y-1));
+        nodes.add(new Node(x-1, y + height+1));
+        nodes.add(new Node(x + width+1, y-1));
+        nodes.add(new Node(x + width+1, y + height+1));
+    }
+
+    public void update() {
+        float x = entity.getComponent(CollisionComponent.class).getOldX() - entity.getComponent(PositionComponent.class).getX();
+        float y = entity.getComponent(CollisionComponent.class).getOldY() - entity.getComponent(PositionComponent.class).getY();
+
+        if(x != 0 || y != 0) {      // We moved. Update nodes.
+
+        }
+
+    }
+
+
 
     public Entity getEntity() {
         return entity;
     }
 
     public Collection<? extends Node> getNodes() {
-        ArrayList<Node> nodes = new ArrayList<Node>();
-        nodes.add(new Node(x, y));
-        nodes.add(new Node(x, y + height));
-        nodes.add(new Node(x + width, y));
-        nodes.add(new Node(x + width, y + height));
         return nodes;
     }
 }

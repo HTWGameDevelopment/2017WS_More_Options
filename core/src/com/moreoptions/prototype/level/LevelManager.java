@@ -8,6 +8,8 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
+import com.moreoptions.prototype.gameEngine.data.ai.Node;
+import com.moreoptions.prototype.gameEngine.data.ai.StandardCSpace;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 
 import java.util.ArrayList;
@@ -26,15 +28,17 @@ public class LevelManager {
 
     private LevelGenerator levelGenerator;
     private Level currentLevel;
+    private StandardCSpace cSpace;
 
     public LevelManager(GameWorld world) {
         this.levelGenerator = new StandardLevelGenerator();
         this.world = world;
 
-
         generateNewLevel(10,10,10);
-
     }
+
+
+
 
 
     public boolean changeRoom(Room targetRoom, Offset offset) {
@@ -50,6 +54,9 @@ public class LevelManager {
         for(Entity e : currentRoomEntities) {
             if(ecm.has(e)) EntityTools.resetEnemy(e);
             if(dcm.has(e)) EntityTools.resetDestructible(e);
+            //remove references to player
+
+
             world.removeEntity(e);
         }
 
@@ -61,14 +68,16 @@ public class LevelManager {
             world.addEntity(e);
         }
         //Add player entity
-        addPlayerEntities(offset);
+        addPlayerEntities(offset,targetRoom);
         return true;
     }
 
-    public void addPlayerEntities(Offset offset) {
+
+    public void addPlayerEntities(Offset offset, Room targetroom) {
         ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players
         for (Player p : players) {
-            world.addEntity(p.getEntity(offset));
+            Entity playerEntity = p.getEntity(offset);
+            world.addEntity(playerEntity);
         }
     }
 
@@ -80,5 +89,13 @@ public class LevelManager {
 
     public Room getCurrentRoom() {
         return currentRoom;
+    }
+
+    public ArrayList<Node> getPath(Entity debugMonsterEntity, Entity entity) {
+
+
+
+        return  getCurrentRoom().getNavGraph().getPath(debugMonsterEntity.getComponent(PositionComponent.class).getX(),debugMonsterEntity.getComponent(PositionComponent.class).getY(),entity.getComponent(PositionComponent.class).getX(),entity.getComponent(PositionComponent.class).getY() );
+
     }
 }

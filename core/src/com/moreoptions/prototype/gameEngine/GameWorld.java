@@ -2,9 +2,12 @@ package com.moreoptions.prototype.gameEngine;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,11 +17,14 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
-import com.moreoptions.prototype.gameEngine.data.ai.CSpace;
+import com.moreoptions.prototype.gameEngine.data.ai.NavGraph;
+import com.moreoptions.prototype.gameEngine.data.ai.Node;
 import com.moreoptions.prototype.gameEngine.data.ai.StandardCSpace;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.level.LevelManager;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -40,11 +46,12 @@ public class GameWorld extends Engine {
     OrthographicCamera camera;
     FitViewport fv;
     BitmapFont f;
-
+    FPSLogger fps = new FPSLogger();
     StandardCSpace cSpace;
 
     LevelManager levelManager;
-
+    Entity debugMonsterEntity;
+    ArrayList<Node> path;
 
     GameInputProcessor processor;
 
@@ -100,7 +107,8 @@ public class GameWorld extends Engine {
 
         levelManager = new LevelManager(this);
 
-        Entity debugMonsterEntity = new Entity();
+
+        debugMonsterEntity = new Entity();
         debugMonsterEntity.add(new PositionComponent(150, 100));
         debugMonsterEntity.add(new CollisionComponent());
         debugMonsterEntity.add(new CircleCollisionComponent(150f, 100f, 10));
@@ -110,7 +118,7 @@ public class GameWorld extends Engine {
 
         addEntity(debugMonsterEntity);
 
-        cSpace = new StandardCSpace(levelManager.getCurrentRoom(), debugMonsterEntity);
+
 
 
     }
@@ -121,13 +129,18 @@ public class GameWorld extends Engine {
             loaded = true;
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.K)) {
-            System.out.println(getEntities().size());
-        }
+           path = levelManager.getPath(debugMonsterEntity, getPlayerEntities().get(0));
+
         super.update(deltaTime);
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        cSpace.debugDraw(renderer);
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+            for(Node n : path) {
+                if(n.getCameFrom() != null) {
+                    renderer.line(n.getX(),n.getY(),n.getCameFrom().getX(),n.getCameFrom().getY());
+                }
+            }
         renderer.end();
+
+        fps.log();
 
     }
 
@@ -146,5 +159,10 @@ public class GameWorld extends Engine {
 
     public LevelManager getRoomManager() {
         return levelManager;
+    }
+
+    public ImmutableArray<Entity> getPlayerEntities() {
+        Family f = Family.all(PlayerComponent.class).get();
+        return getEntitiesFor(f);
     }
 }

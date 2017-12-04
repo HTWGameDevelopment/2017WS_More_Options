@@ -1,13 +1,16 @@
 package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.ai.NavGraph;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.level.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 /**
@@ -46,6 +49,9 @@ public class Room {
 
     DestructibleLayer destLayer;
     TileLayer tileLayer;
+
+    NavGraph navGraph = new NavGraph();
+
     private Room leftNeighbour;
     private Room rightNeighbour;
     private Room topNeighbour;
@@ -72,13 +78,15 @@ public class Room {
 
         RoomDefinition rq = roomlist.get(r.nextInt(roomlist.size()));
 
-
-
         try {
             destLayer = rq.getDestLayer();
             tileLayer = rq.getTileLayer();
         } catch (MissdefinedTileException e) {
             e.printStackTrace();
+        }
+
+        for(Entity e : destLayer.getEntities()) {
+            navGraph.addEntity(e);
         }
 
     }
@@ -87,6 +95,10 @@ public class Room {
 
         return ("Room: "+ id + " Doors: TOP("+blueprint.isTop()+"), DOWN("+blueprint.isDown()+"), LEFT("+blueprint.isLeft()+"), RIGHT("+blueprint.isRight()+"), " );
 
+    }
+
+    public void draw(ShapeRenderer renderer) {
+        navGraph.draw(renderer);
     }
 
     public ArrayList<Entity> getTileEntities() {
@@ -161,5 +173,9 @@ public class Room {
 
     public int getId() {
         return id;
+    }
+
+    public NavGraph getNavGraph() {
+        return navGraph;
     }
 }
