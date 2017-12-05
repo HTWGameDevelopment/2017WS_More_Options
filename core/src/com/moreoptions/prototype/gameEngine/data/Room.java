@@ -6,7 +6,7 @@ import com.moreoptions.prototype.gameEngine.components.CircleCollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.DoorComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
-import com.moreoptions.prototype.gameEngine.data.ai.NavGraph;
+import com.moreoptions.prototype.gameEngine.data.pathfinding.NavGraph;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;

@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.gameEngine.data.ai;
+package com.moreoptions.prototype.gameEngine.data.pathfinding;
 
 import java.util.ArrayList;
 

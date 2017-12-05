@@ -10,7 +10,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
-import com.moreoptions.prototype.gameEngine.data.ai.Node;
+import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.gameEngine.data.ai;
+package com.moreoptions.prototype.gameEngine.data.pathfinding;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
