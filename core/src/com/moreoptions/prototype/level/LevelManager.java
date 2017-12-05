@@ -11,7 +11,6 @@ import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.Node;
-import com.moreoptions.prototype.gameEngine.data.ai.StandardCSpace;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ public class LevelManager {
 
     private LevelGenerator levelGenerator;
     private Level currentLevel;
-    private StandardCSpace cSpace;
 
     public LevelManager(GameWorld world) {
         this.levelGenerator = new StandardLevelGenerator();
