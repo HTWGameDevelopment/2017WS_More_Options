@@ -31,27 +31,14 @@ import java.util.ArrayList;
  */
 public class GameWorld extends Engine {
 
-    private static GameWorld gameEngine;
-    private boolean filled = true;
-    private boolean loaded = false;
-
-    public static GameWorld getInstance() {
-        if(gameEngine == null) gameEngine = new GameWorld();
-        return gameEngine;
-    }
-
-
     ShapeRenderer renderer;
     SpriteBatch batch;
     OrthographicCamera camera;
     FitViewport fv;
-    BitmapFont f;
-    FPSLogger fps = new FPSLogger();
-    StandardCSpace cSpace;
+
+    private static GameWorld gameEngine;
 
     LevelManager levelManager;
-    Entity debugMonsterEntity;
-    ArrayList<Node> path;
 
     GameInputProcessor processor;
 
@@ -64,8 +51,6 @@ public class GameWorld extends Engine {
         int testw = 15 *32;
         int testh = 9 * 32;
 
-        f = new BitmapFont();
-
         camera = new OrthographicCamera(640,640);
         camera.position.set(17*32/2,11*32/2,0);
 
@@ -77,63 +62,34 @@ public class GameWorld extends Engine {
         batch.setProjectionMatrix(camera.combined);
         Gdx.graphics.setWindowedMode(testw,testh);
 
-
         renderer.setProjectionMatrix(camera.combined);
 
         processor = new GameInputProcessor(camera);
         Gdx.input.setInputProcessor(processor);
 
-
-
-
-
-
-
         Player p = new Player();
         processor.addPlayer(p);
         GameState.getInstance().addPlayer(p);
-
-
 
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());
         addSystem(new DoorCollisionSystem());
         addSystem(new TileRenderSystem(batch));
         addSystem(new DebugRenderSystem(renderer));
-        addSystem(new FontRenderSystem(batch,f));
+        addSystem(new FontRenderSystem(batch));
         addSystem(new TimedSystem());
         addSystem(new PickupSystem());
         addSystem(new ProjectileSystem());
         addSystem(new AISystem(renderer));
         levelManager = new LevelManager(this);
 
-
-
-
-
-
     }
 
     @Override
     public void update(float deltaTime) {
-        if(!loaded) {
-            loaded = true;
-        }
-
         levelManager.getCurrentRoom().getNavGraph().draw(renderer);
 
         super.update(deltaTime);
-
-        fps.log();
-
-    }
-
-    public void resize(int width, int height) {
-        fv.update(width,height);
-    }
-
-    public float getTileSize() {
-        return 32;
     }
 
     public void updateInput() {
@@ -145,8 +101,10 @@ public class GameWorld extends Engine {
         return levelManager;
     }
 
-    public ImmutableArray<Entity> getPlayerEntities() {
-        Family f = Family.all(PlayerComponent.class).get();
-        return getEntitiesFor(f);
+    public static GameWorld getInstance() {
+        if(gameEngine == null) gameEngine = new GameWorld();
+        return gameEngine;
     }
+
+
 }

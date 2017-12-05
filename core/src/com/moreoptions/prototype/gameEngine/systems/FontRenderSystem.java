@@ -18,9 +18,9 @@ public class FontRenderSystem extends EntitySystem {
     BitmapFont font;
     Family f = Family.all(CombatTextComponent.class).get();
 
-    public FontRenderSystem(SpriteBatch batch, BitmapFont font) {
+    public FontRenderSystem(SpriteBatch batch) {
         this.batch = batch;
-        this.font = font;
+        this.font = new BitmapFont();
     }
 
     @Override
