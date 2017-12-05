@@ -1,16 +1,13 @@
 package com.moreoptions.prototype.level;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
-import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by denwe on 17.11.2017.

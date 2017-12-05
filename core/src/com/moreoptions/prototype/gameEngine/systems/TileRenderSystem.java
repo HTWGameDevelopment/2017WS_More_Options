@@ -4,18 +4,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.TileGraphicComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class TileRenderSystem extends EntitySystem{
 

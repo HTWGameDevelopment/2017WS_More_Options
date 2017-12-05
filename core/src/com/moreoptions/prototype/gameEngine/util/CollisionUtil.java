@@ -1,10 +1,9 @@
 package com.moreoptions.prototype.gameEngine.util;
 
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.*;
-import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
-import com.moreoptions.prototype.gameEngine.components.DebugLineComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.Arrays;
 import java.util.Collections;

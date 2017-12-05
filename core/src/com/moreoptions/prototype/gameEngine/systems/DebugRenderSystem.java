@@ -10,8 +10,6 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.moreoptions.prototype.gameEngine.components.*;
 
-import static com.sun.javafx.geom.BaseBounds.BoundsType.RECTANGLE;
-
 /**
  * Basic ShapeRenderer
  */
@@ -55,7 +53,6 @@ public class DebugRenderSystem extends EntitySystem{
                 Circle c = ccc.get(e).getHitbox();
                 renderer.circle(c.x,c.y,c.radius);
             }
-
         }
 
         renderer.end();

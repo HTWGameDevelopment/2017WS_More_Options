@@ -1,7 +1,6 @@
 package com.moreoptions.prototype.gameEngine.data.callback;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Game;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.DoorComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;

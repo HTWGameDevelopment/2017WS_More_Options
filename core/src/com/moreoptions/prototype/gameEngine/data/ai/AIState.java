@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.data.Room;
 
-import java.util.ArrayList;
-
 public interface AIState {
     void update(Room room, Entity self);
 

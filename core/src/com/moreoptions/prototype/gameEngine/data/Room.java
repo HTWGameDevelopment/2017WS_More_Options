@@ -2,7 +2,10 @@ package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.components.CircleCollisionComponent;
+import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
+import com.moreoptions.prototype.gameEngine.components.DoorComponent;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.ai.NavGraph;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
@@ -10,7 +13,6 @@ import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.level.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 /**

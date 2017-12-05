@@ -11,7 +11,7 @@ public class CollisionComponent implements Component{
     private float oldX;
     private float oldY;
 
-    CollisionEvent event;
+    private CollisionEvent event;
 
 
     public CollisionComponent() {

@@ -1,7 +1,6 @@
 package com.moreoptions.prototype.level;
 
 import com.moreoptions.prototype.gameEngine.data.Room;
-import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 
 /**
  * Created by denwe on 04.11.2017.

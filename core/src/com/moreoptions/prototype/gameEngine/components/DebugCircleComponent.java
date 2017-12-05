@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class DebugCircleComponent implements Component {
 
-    Vector2 center;
-    float radius;
+    private Vector2 center;
+    private float radius;
 
     public Vector2 getCenter() {
         return center;

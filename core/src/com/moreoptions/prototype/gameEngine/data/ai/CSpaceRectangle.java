@@ -2,7 +2,6 @@ package com.moreoptions.prototype.gameEngine.data.ai;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Rectangle;
-import com.moreoptions.prototype.gameEngine.components.CircleCollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 

@@ -2,19 +2,15 @@ package com.moreoptions.prototype.gameEngine.data.ai;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.exceptions.NoValidComponentException;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.Stack;
 
 /**
  * Created by denwe on 02.12.2017.

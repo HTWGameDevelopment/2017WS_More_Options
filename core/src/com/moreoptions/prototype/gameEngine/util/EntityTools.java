@@ -1,14 +1,10 @@
 package com.moreoptions.prototype.gameEngine.util;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.moreoptions.prototype.gameEngine.components.CircleCollisionComponent;
-import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.SquareCollisionComponent;
-import javafx.geometry.Pos;
 
 /**
  * Tools that shouldnt exist :(

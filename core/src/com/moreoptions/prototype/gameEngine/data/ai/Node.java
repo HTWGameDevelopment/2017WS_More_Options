@@ -1,7 +1,5 @@
 package com.moreoptions.prototype.gameEngine.data.ai;
 
-import com.badlogic.ashley.core.Entity;
-
 import java.util.ArrayList;
 
 /**

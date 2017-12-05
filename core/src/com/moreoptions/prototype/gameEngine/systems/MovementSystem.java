@@ -1,6 +1,9 @@
 package com.moreoptions.prototype.gameEngine.systems;
 
-import com.badlogic.ashley.core.*;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
@@ -49,7 +52,6 @@ public class MovementSystem extends EntitySystem {
             PositionComponent pos = posMapper.get(e);
             CollisionComponent col= colMapper.get(e);
 
-
             //Record previous position for later collision resolving
             col.setOldX(pos.getX());
             col.setOldY(pos.getY());
@@ -59,9 +61,7 @@ public class MovementSystem extends EntitySystem {
             if(cMapper.has(e)) cMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
             resolveXCollision(e,col.getOldX(), col.getOldY());
 
-
             pos.setY(pos.getY() + vel.getVelY() * deltaTime);
-
             if(sqMapper.has(e)) sqMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
             if(cMapper.has(e)) cMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
             resolveYCollision(e,col.getOldX(), col.getOldY());

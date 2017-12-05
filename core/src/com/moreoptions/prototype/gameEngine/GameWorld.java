@@ -1,30 +1,16 @@
 package com.moreoptions.prototype.gameEngine;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
-import com.moreoptions.prototype.gameEngine.data.ai.NavGraph;
-import com.moreoptions.prototype.gameEngine.data.ai.Node;
-import com.moreoptions.prototype.gameEngine.data.ai.StandardCSpace;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.level.LevelManager;
-
-import java.util.ArrayList;
 
 /**
  *

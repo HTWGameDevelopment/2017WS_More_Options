@@ -4,16 +4,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.ai.btree.leaf.Wait;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
-import com.moreoptions.prototype.gameEngine.components.*;
-import com.moreoptions.prototype.gameEngine.data.GameState;
+import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
+import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 import com.moreoptions.prototype.gameEngine.data.Player;
-import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
-import com.moreoptions.prototype.gameEngine.data.projectileEvents.SplitEvent;
 
 /**
  * System that manipulates Entities based on Player Input
