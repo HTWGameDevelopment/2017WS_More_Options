@@ -97,7 +97,7 @@ public class LevelManager {
         for (Player p : players) {
             Entity playerEntity = p.getEntity(offset);
             world.addEntity(playerEntity);
-            currentRoom.addPlayer(playerEntity);
+            targetroom.addPlayer(playerEntity);
         }
     }
 

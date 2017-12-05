@@ -46,7 +46,7 @@ public class GameWorld extends Engine {
         renderer = new ShapeRenderer();
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
-        Gdx.graphics.setWindowedMode(testw,testh);
+        Gdx.graphics.setWindowedMode(testw*2,testh*2);
 
         renderer.setProjectionMatrix(camera.combined);
 

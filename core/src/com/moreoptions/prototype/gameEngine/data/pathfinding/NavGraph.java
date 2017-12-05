@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.components.*;
-import com.moreoptions.prototype.gameEngine.exceptions.NoValidComponentException;
+import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 
 import java.util.ArrayList;

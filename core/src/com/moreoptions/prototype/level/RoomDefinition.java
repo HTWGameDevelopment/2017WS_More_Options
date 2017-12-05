@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
-import com.moreoptions.prototype.gameEngine.exceptions.MissdefinedTileException;
+import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 
 import java.util.ArrayList;
 
