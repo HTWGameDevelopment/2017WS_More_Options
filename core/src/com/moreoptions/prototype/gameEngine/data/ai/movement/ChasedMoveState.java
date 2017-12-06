@@ -14,28 +14,38 @@ import java.util.ArrayList;
  * Created by Andreas on 06.12.2017.
  */
 public class ChasedMoveState implements AIState {
+    private PositionComponent playerPos;
+    private VelocityComponent playerVel;
+
+    private PositionComponent ownPos;
+    private VelocityComponent ownVel;
+
+    private Vector2 playerVec = new Vector2();
+    private Vector2 ownVec = new Vector2();
+    private Vector2 dirVector = new Vector2();
+
+    private Entity player;
 
     @Override
     public void update(Room room, Entity self, float delta) {
-        Entity player = getClosestPlayer(room.getPlayerList(), self);
+        player = getClosestPlayer(room.getPlayerList(), self);
 
         try {
 
-            PositionComponent playerPos = player.getComponent(PositionComponent.class);
-            VelocityComponent playerVel = player.getComponent(VelocityComponent.class);
+            playerPos = player.getComponent(PositionComponent.class);
+            playerVel = player.getComponent(VelocityComponent.class);
 
-            PositionComponent ownPos = self.getComponent(PositionComponent.class);
-            VelocityComponent ownVel = self.getComponent(VelocityComponent.class);
+            ownPos = self.getComponent(PositionComponent.class);
+            ownVel = self.getComponent(VelocityComponent.class);
 
-            Vector2 playerVec = new Vector2(playerPos.getX(), playerPos.getY());
-            Vector2 ownVec = new Vector2(ownPos.getX(), ownPos.getY());
+            playerVec.set(playerPos.getX(), playerPos.getY());
+            ownVec.set(ownPos.getX(), ownPos.getY());
 
-            Vector2 dirVector = ownVec.sub(playerVec);
-
+            dirVector = ownVec.sub(playerVec);
             dirVector.nor();
 
-            ownVel.setVelX(dirVector.x*25);
-            ownVel.setVelY(dirVector.y*25);
+            ownVel.setVelX(dirVector.x * 25);
+            ownVel.setVelY(dirVector.y * 25);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

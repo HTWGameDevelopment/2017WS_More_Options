@@ -8,25 +8,35 @@ import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 
 public class StandardMoveState implements AIState {
 
     Node target = new Node(0,0);
+    private Entity player;
+
+    private VelocityComponent velC;
+    private PositionComponent posC;
+
+    private float tx;
+    private float ty;
+    private float dist;
+
 
     @Override
     public void update(Room r, Entity self,float delta) {
 
-        Entity player = getClosestPlayer(r.getPlayerList(),self);
+        player = getClosestPlayer(r.getPlayerList(),self);
 
         try {
             ArrayList<Node> path = r.getNavGraph().getPath(self,player);
             if(!path.isEmpty()) {
 
 
-                VelocityComponent velC = self.getComponent(VelocityComponent.class);
-                PositionComponent posC = self.getComponent(PositionComponent.class);
+                velC = self.getComponent(VelocityComponent.class);
+                posC = self.getComponent(PositionComponent.class);
 
                 target = path.get(0);
 
@@ -35,9 +45,9 @@ public class StandardMoveState implements AIState {
                 }
 
 
-                float tx = target.getX() - posC.getX();
-                float ty = target.getY() - posC.getY();
-                float dist = (float) Math.sqrt(tx * tx + ty * ty);
+                tx = target.getX() - posC.getX();
+                ty = target.getY() - posC.getY();
+                dist = (float) Math.sqrt(tx * tx + ty * ty);
 
                 velC.setVelX((tx / dist) * 100);
                 velC.setVelY((ty / dist) * 100);
