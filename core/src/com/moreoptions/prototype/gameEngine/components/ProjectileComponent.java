@@ -7,11 +7,24 @@ import com.badlogic.ashley.core.Component;
  */
 public class ProjectileComponent implements Component {
 
+    float range = 0;
+    float distanceTravelled = 0;
 
-    public ProjectileComponent() {
+
+    public ProjectileComponent(float range) {
+        this.range = range;
     }
 
 
+    public float getDistanceTravelled() {
+        return distanceTravelled;
+    }
 
+    public void setDistanceTravelled(float distanceTravelled) {
+        this.distanceTravelled = distanceTravelled;
+    }
 
+    public float getRange() {
+        return range;
+    }
 }

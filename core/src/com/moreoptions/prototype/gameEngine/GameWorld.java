@@ -67,6 +67,7 @@ public class GameWorld extends Engine {
         addSystem(new PickupSystem());
         addSystem(new ProjectileSystem());
         addSystem(new AISystem(renderer));
+        addSystem(new PlayerSystem());
         levelManager = new LevelManager(this);
 
     }

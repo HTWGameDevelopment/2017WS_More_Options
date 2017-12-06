@@ -72,25 +72,18 @@ public class InputSystem extends EntitySystem {
 
     public void updateShots(Entity e) {
 
-        double currentCd = 0;
-        double shootingCd = 0.5;
         Player p = e.getComponent(PlayerComponent.class).getPlayer();
 
         InputState playerInput = p.getInputState();
 
-        if(currentCd == 0) {
             if (playerInput.isShootDown()) {
-                //        if (currentCd - System.currentTimeMillis() >= shootingCd)
-                ProjectileSystem.shootDown(e);
+                ProjectileSystem.shoot(ProjectileSystem.Direction.DOWN, e);
             } else if (playerInput.isShootUp()) {
-                ProjectileSystem.shootUp(e);
+                ProjectileSystem.shoot(ProjectileSystem.Direction.UP, e);
             } else if (playerInput.isShootLeft()) {
-                currentCd = System.currentTimeMillis();
-                ProjectileSystem.shootLeft(e);
-
+                ProjectileSystem.shoot(ProjectileSystem.Direction.LEFT, e);
             } else if (playerInput.isShootRight()) {
-                ProjectileSystem.shootRight(e);
+                ProjectileSystem.shoot(ProjectileSystem.Direction.RIGHT, e);
             }
-        }
     }
 }
