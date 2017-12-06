@@ -43,8 +43,6 @@ public class StandardMoveState implements AIState {
                 velC.setVelY((ty / dist) * 100);
 
 
-                System.out.println(posC.getX());
-
             }
         } catch (NoValidComponentException e) {
             e.printStackTrace();

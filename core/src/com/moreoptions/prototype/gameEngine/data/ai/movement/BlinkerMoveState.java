@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,14 +31,22 @@ public class BlinkerMoveState implements AIState {
                 Random random = new Random();
 
                 // TODO: fix this!
-                float x = random.nextInt(250) + 64;
-                float y = random.nextInt(180) + 64;
+                float x;
+                float y;
+                x = random.nextInt(250) + 64;
+                y = random.nextInt(180) + 64;
+                ArrayList<Node> path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
 
-                if(!room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y).isEmpty()) {
+                while(path.isEmpty() || path.size() == 0) {
+
+                    x = random.nextInt(250) + 64;
+                    y = random.nextInt(180) + 64;
+                    path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
+                }
 
                     ownPos.setX(random.nextInt(250) + 64);
                     ownPos.setY(random.nextInt(164) + 64);
-                }
+
 
 
             } catch (Exception ex) {
