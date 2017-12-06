@@ -20,16 +20,18 @@ public class ProjectileSystem extends EntitySystem {
     private Family family = Family.all(PlayerComponent.class).get();
 
     private Family projFamily = Family.all(ProjectileComponent.class).get();
+    private Family enemyFamily = Family.all(EnemyHitboxComponent.class).get();
 
     @Override
     public void update(float deltatime){
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(projFamily);
+        ImmutableArray<Entity> enemies = getEngine().getEntitiesFor(enemyFamily);
 
         for (Entity e : entities){
-
             ProjectileComponent p = e.getComponent(ProjectileComponent.class);
             CollisionComponent c = e.getComponent(CollisionComponent.class);
             PositionComponent pc = e.getComponent(PositionComponent.class);
+            CircleCollisionComponent projectileCircleCollisionComponent = e.getComponent(CircleCollisionComponent.class);
 
             float oldX = c.getOldX();
             float oldY = c.getOldY();
@@ -39,6 +41,23 @@ public class ProjectileSystem extends EntitySystem {
             p.setDistanceTravelled((float) ( p.getDistanceTravelled() + (Math.hypot(oldX-currentX, oldY - currentY))));
 
             if(p.getDistanceTravelled() > p.getRange()) getEngine().removeEntity(e);
+
+            for(Entity hit : enemies) {
+
+                EnemyHitboxComponent ehc = hit.getComponent(EnemyHitboxComponent.class);
+                PositionComponent hitpc = hit.getComponent(PositionComponent.class);
+
+                ehc.getCircle().setPosition(hitpc.getX(),hitpc.getY());
+
+                if(ehc.getCircle().overlaps(projectileCircleCollisionComponent.getHitbox())) {
+                    if(p.getHitEvent().onHit(e,hit)) {
+                        getEngine().removeEntity(e);
+                    }
+                    break;
+                }
+
+
+            }
 
         }
 
@@ -92,7 +111,7 @@ public class ProjectileSystem extends EntitySystem {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
-        proj.add(new ProjectileComponent(stats.getRange()));
+        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
         pv.setVelY(-pv.getSpeed());
         GameWorld.getInstance().addEntity(proj);
@@ -111,7 +130,7 @@ public class ProjectileSystem extends EntitySystem {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
-        proj.add(new ProjectileComponent(stats.getRange()));
+        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
         pv.setVelY(pv.getSpeed());
         GameWorld.getInstance().addEntity(proj);
@@ -131,7 +150,7 @@ public class ProjectileSystem extends EntitySystem {
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
 
-        proj.add(new ProjectileComponent(stats.getRange()));
+        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
         pv.setVelX(-pv.getSpeed());
         GameWorld.getInstance().addEntity(proj);
@@ -150,7 +169,7 @@ public class ProjectileSystem extends EntitySystem {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
-        proj.add(new ProjectileComponent(stats.getRange()));
+        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
         pv.setVelX(pv.getSpeed());
         GameWorld.getInstance().addEntity(proj);

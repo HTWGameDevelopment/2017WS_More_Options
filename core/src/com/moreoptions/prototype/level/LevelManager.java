@@ -86,11 +86,12 @@ public class LevelManager {
         debugMonsterEntity.add(new PositionComponent(150, 100));
         debugMonsterEntity.add(new CollisionComponent());
         debugMonsterEntity.add(new CircleCollisionComponent(150f, 100f, 4));
-        debugMonsterEntity.add(new DebugCircleComponent(new Vector2(150, 100), 4));
+        debugMonsterEntity.add(new DebugCircleComponent(10));
         debugMonsterEntity.add(new VelocityComponent(0f, 0f));
         debugMonsterEntity.add(new DebugColorComponent(Color.FIREBRICK));
+        debugMonsterEntity.add(new EnemyHitboxComponent(10));
         debugMonsterEntity.add(new AIComponent(2));
-
+        debugMonsterEntity.add(new EnemyComponent());
         world.addEntity(debugMonsterEntity);
     }
 
@@ -99,10 +100,12 @@ public class LevelManager {
         debugChaser.add(new PositionComponent(150, 100));
         debugChaser.add(new CollisionComponent());
         debugChaser.add(new CircleCollisionComponent(150f, 100f, 4));
-        debugChaser.add(new DebugCircleComponent(new Vector2(150, 100), 4));
+        debugChaser.add(new DebugCircleComponent(10));
         debugChaser.add(new VelocityComponent(0f, 0f));
-        debugChaser.add(new DebugColorComponent(Color.GOLDENROD));
+        debugChaser.add(new DebugColorComponent(Color.BLUE));
+        debugChaser.add(new EnemyHitboxComponent(10));
         debugChaser.add(new AIComponent(1));
+        debugChaser.add(new EnemyComponent());
 
         world.addEntity(debugChaser);
     }
@@ -112,10 +115,12 @@ public class LevelManager {
         debugBlinker.add(new PositionComponent(150, 100));
         debugBlinker.add(new CollisionComponent());
         debugBlinker.add(new CircleCollisionComponent(150f, 150f, 4));
-        debugBlinker.add(new DebugCircleComponent(new Vector2(150, 100), 4));
+        debugBlinker.add(new DebugCircleComponent(10));
         debugBlinker.add(new VelocityComponent(0f, 0f));
         debugBlinker.add(new DebugColorComponent(Color.CORAL));
         debugBlinker.add(new AIComponent(3));
+        debugBlinker.add(new EnemyHitboxComponent(10));
+        debugBlinker.add(new EnemyComponent());
 
         world.addEntity(debugBlinker);
     }

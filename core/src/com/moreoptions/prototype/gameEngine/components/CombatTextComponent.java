@@ -16,4 +16,8 @@ public class CombatTextComponent implements Component {
     public void setText(String text) {
         this.text = text;
     }
+
+    public CombatTextComponent(String text) {
+        this.text = text;
+    }
 }

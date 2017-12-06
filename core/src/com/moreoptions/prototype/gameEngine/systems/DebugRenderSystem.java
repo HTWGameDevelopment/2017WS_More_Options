@@ -86,7 +86,9 @@ public class DebugRenderSystem extends EntitySystem{
     private void drawDebugCircle(ShapeRenderer renderer) {
         renderer.setColor(Color.RED);
         for(Entity e : getEngine().getEntitiesFor(debugCircles)) {
-            renderer.circle(am.get(e).getCenter().x,am.get(e).getCenter().y, am.get(e).getRadius());
+            PositionComponent pc = e.getComponent(PositionComponent.class);
+            DebugCircleComponent cc = e.getComponent(DebugCircleComponent.class);
+            renderer.circle(pc.getX(),pc.getY(), cc.getRadius());
         }
     }
 }
