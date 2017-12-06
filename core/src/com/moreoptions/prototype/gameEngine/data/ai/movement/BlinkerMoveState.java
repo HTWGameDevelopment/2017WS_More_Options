@@ -16,26 +16,32 @@ import java.util.Random;
  */
 public class BlinkerMoveState implements AIState {
 
-    float cooldown = 1;
-    float currentProgress = 0;
+    private float cooldown = 1;
+    private float currentProgress = 0;
 
+    private Entity player;
+
+    private PositionComponent playerPos;
+    private PositionComponent ownPos;
+
+    private Random random;
+    private ArrayList<Node> path;
     @Override
     public void update(Room room, Entity self, float delta) {
-        Entity player = getClosestPlayer(room.getPlayerList(), self);
+        player = getClosestPlayer(room.getPlayerList(), self);
 
         if(currentProgress > cooldown) {
             try {
-                PositionComponent playerPos = player.getComponent(PositionComponent.class);
-                PositionComponent ownPos = self.getComponent(PositionComponent.class);
+                playerPos = player.getComponent(PositionComponent.class);
+                ownPos = self.getComponent(PositionComponent.class);
 
-                Random random = new Random();
+                random = new Random();
 
-                // TODO: fix this!
                 float x;
                 float y;
                 x = random.nextInt(250) + 64;
                 y = random.nextInt(180) + 64;
-                ArrayList<Node> path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
+                path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
 
                 while(path.isEmpty() || path.size() == 0) {
 

@@ -76,8 +76,12 @@ public class LevelManager {
     }
 
     public void addDebugMonster() {
+        addDebugChased();
+        addDebugChaser();
+        addDebugBlinker();
+    }
 
-
+    private void addDebugChased() {
         Entity debugMonsterEntity = new Entity();
         debugMonsterEntity.add(new PositionComponent(150, 100));
         debugMonsterEntity.add(new CollisionComponent());
@@ -85,10 +89,35 @@ public class LevelManager {
         debugMonsterEntity.add(new DebugCircleComponent(new Vector2(150, 100), 4));
         debugMonsterEntity.add(new VelocityComponent(0f, 0f));
         debugMonsterEntity.add(new DebugColorComponent(Color.FIREBRICK));
-        debugMonsterEntity.add(new AIComponent());
+        debugMonsterEntity.add(new AIComponent(2));
 
         world.addEntity(debugMonsterEntity);
+    }
 
+    private void addDebugChaser() {
+        Entity debugChaser = new Entity();
+        debugChaser.add(new PositionComponent(150, 100));
+        debugChaser.add(new CollisionComponent());
+        debugChaser.add(new CircleCollisionComponent(150f, 100f, 4));
+        debugChaser.add(new DebugCircleComponent(new Vector2(150, 100), 4));
+        debugChaser.add(new VelocityComponent(0f, 0f));
+        debugChaser.add(new DebugColorComponent(Color.GOLDENROD));
+        debugChaser.add(new AIComponent(1));
+
+        world.addEntity(debugChaser);
+    }
+
+    private void addDebugBlinker() {
+        Entity debugBlinker = new Entity();
+        debugBlinker.add(new PositionComponent(150, 100));
+        debugBlinker.add(new CollisionComponent());
+        debugBlinker.add(new CircleCollisionComponent(150f, 150f, 4));
+        debugBlinker.add(new DebugCircleComponent(new Vector2(150, 100), 4));
+        debugBlinker.add(new VelocityComponent(0f, 0f));
+        debugBlinker.add(new DebugColorComponent(Color.CORAL));
+        debugBlinker.add(new AIComponent(3));
+
+        world.addEntity(debugBlinker);
     }
 
 
