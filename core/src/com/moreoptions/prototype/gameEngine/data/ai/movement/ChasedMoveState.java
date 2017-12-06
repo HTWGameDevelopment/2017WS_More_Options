@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.gameEngine.data.ai;
+package com.moreoptions.prototype.gameEngine.data.ai.movement;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
+import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 
 import java.util.ArrayList;
 
@@ -14,12 +15,9 @@ import java.util.ArrayList;
  */
 public class ChasedMoveState implements AIState {
 
-    Vector2 ownPosition = new Vector2();
-    Vector2 velocity = new Vector2();
-
     @Override
-    public void update(Room room, Entity self) {
-        Entity player = getClosestPlayer(room.getPlayerList(),self);
+    public void update(Room room, Entity self, float delta) {
+        Entity player = getClosestPlayer(room.getPlayerList(), self);
 
         try {
 
@@ -36,17 +34,8 @@ public class ChasedMoveState implements AIState {
 
             dirVector.nor();
 
-            ownVel.setVelX(dirVector.x*50);
-            ownVel.setVelY(dirVector.y*50);
-
-            velocity.x = ownVel.getVelX();
-            velocity.y = ownVel.getVelY();
-
-            ownPosition.x = ownPos.getX();
-            ownPosition.y = ownPos.getY();
-
-
-
+            ownVel.setVelX(dirVector.x*25);
+            ownVel.setVelY(dirVector.y*25);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -54,11 +43,9 @@ public class ChasedMoveState implements AIState {
 
     @Override
     public void draw(ShapeRenderer renderer) {
-        renderer.line(velocity.x,velocity.y,ownPosition.x,ownPosition.y);
     }
 
-    public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self){
-
+    public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self) {
         return playerList.get(0);
     }
 }

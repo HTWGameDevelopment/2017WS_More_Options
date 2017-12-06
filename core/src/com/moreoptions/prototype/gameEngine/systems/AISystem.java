@@ -27,7 +27,7 @@ public class AISystem extends EntitySystem {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(f);
         for(Entity e : entities) {
-            e.getComponent(AIComponent.class).getState().update(GameWorld.getInstance().getRoomManager().getCurrentRoom(), e);
+            e.getComponent(AIComponent.class).getState().update(GameWorld.getInstance().getRoomManager().getCurrentRoom(), e, deltaTime);
             e.getComponent(AIComponent.class).getState().draw(renderer);
         }
         renderer.end();

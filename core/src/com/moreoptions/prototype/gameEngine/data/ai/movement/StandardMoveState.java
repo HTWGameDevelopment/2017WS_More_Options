@@ -1,10 +1,11 @@
-package com.moreoptions.prototype.gameEngine.data.ai;
+package com.moreoptions.prototype.gameEngine.data.ai.movement;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
+import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
 
@@ -15,7 +16,7 @@ public class StandardMoveState implements AIState {
     Node target = new Node(0,0);
 
     @Override
-    public void update(Room r, Entity self) {
+    public void update(Room r, Entity self,float delta) {
 
         Entity player = getClosestPlayer(r.getPlayerList(),self);
 

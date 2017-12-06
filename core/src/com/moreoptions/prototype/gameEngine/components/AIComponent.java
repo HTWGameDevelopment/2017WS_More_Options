@@ -2,8 +2,8 @@ package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
-import com.moreoptions.prototype.gameEngine.data.ai.ChasedMoveState;
-import com.moreoptions.prototype.gameEngine.data.ai.StandardMoveState;
+import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
+import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
 
 import java.util.HashMap;
 
@@ -14,7 +14,7 @@ public class AIComponent implements Component {
 
     public AIComponent() {
         // TODO: WURDE GEÄNDERT
-        currentState = new ChasedMoveState();
+        currentState = new BlinkerMoveState();
     }
 
 
