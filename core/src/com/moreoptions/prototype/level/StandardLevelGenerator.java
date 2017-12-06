@@ -95,36 +95,34 @@ public class StandardLevelGenerator implements LevelGenerator {
     private void updateRoomBlueprint() {
 
         for(int k = 0; k <height;k++) {
-            for(int i = 0; i < width; i++) {
-                if(isValid(width,height,i-1, k)) {
-                    if(map[i-1][k].getKind() != RoomBlueprint.EMPTY_ROOM) {
+            for (int i = 0; i < width; i++) {
+                if (isValid(width, height, i - 1, k)) {
+                    if (map[i - 1][k].getKind() != RoomBlueprint.EMPTY_ROOM) {
                         map[i][k].setTop(true);
                     }
                 }
 
-                if(isValid(width,height,i+1, k)) {
-                    if(map[i+1][k].getKind() != RoomBlueprint.EMPTY_ROOM) {
+                if (isValid(width, height, i + 1, k)) {
+                    if (map[i + 1][k].getKind() != RoomBlueprint.EMPTY_ROOM) {
                         map[i][k].setDown(true);
                     }
                 }
 
-                if(isValid(width,height,i, k-1)) {
-                    if(map[i][k-1].getKind() != RoomBlueprint.EMPTY_ROOM) {
+                if (isValid(width, height, i, k - 1)) {
+                    if (map[i][k - 1].getKind() != RoomBlueprint.EMPTY_ROOM) {
                         map[i][k].setLeft(true);
                     }
                 }
 
-                if(isValid(width,height,i, k+1)) {
-                    if(map[i][k+1].getKind() != RoomBlueprint.EMPTY_ROOM) {
+                if (isValid(width, height, i, k + 1)) {
+                    if (map[i][k + 1].getKind() != RoomBlueprint.EMPTY_ROOM) {
                         map[i][k].setRight(true);
                     }
                 }
 
 
-
             }
         }
-
     }
 
     private boolean isValid(int width, int height, int x, int y) {

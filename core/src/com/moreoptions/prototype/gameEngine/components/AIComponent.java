@@ -2,6 +2,7 @@ package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.data.ai.ChasedMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.StandardMoveState;
 
 import java.util.HashMap;
@@ -12,7 +13,8 @@ public class AIComponent implements Component {
     AIState currentState;
 
     public AIComponent() {
-        currentState = new StandardMoveState();
+        // TODO: WURDE GEÄNDERT
+        currentState = new ChasedMoveState();
     }
 
 
