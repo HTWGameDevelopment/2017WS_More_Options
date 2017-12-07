@@ -100,4 +100,8 @@ public class Player {
         playerEntity.add(v);
 
     }
+
+    public PlayerStatistics getStats() {
+        return stats;
+    }
 }

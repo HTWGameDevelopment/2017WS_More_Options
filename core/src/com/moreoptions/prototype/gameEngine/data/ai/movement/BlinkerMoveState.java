@@ -52,7 +52,6 @@ public class BlinkerMoveState implements AIState {
             }
             currentProgress = 0;
         }
-        System.out.println(delta);
         currentProgress += delta;
     }
 

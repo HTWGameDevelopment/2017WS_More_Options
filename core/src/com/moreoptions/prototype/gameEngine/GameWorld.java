@@ -2,6 +2,7 @@ package com.moreoptions.prototype.gameEngine;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -67,6 +68,8 @@ public class GameWorld extends Engine {
         addSystem(new PickupSystem());
         addSystem(new ProjectileSystem());
         addSystem(new AISystem(renderer));
+        addSystem(new PlayerSystem());
+        addSystem(new EnemySystem());
         levelManager = new LevelManager(this);
 
     }
@@ -76,6 +79,7 @@ public class GameWorld extends Engine {
         levelManager.getCurrentRoom().getNavGraph().draw(renderer);
 
         super.update(deltaTime);
+
     }
 
     public void updateInput() {

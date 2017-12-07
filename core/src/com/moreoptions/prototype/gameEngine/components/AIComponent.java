@@ -14,6 +14,10 @@ public class AIComponent implements Component {
     AIState currentState;
 
     // TODO: make this an enum?
+    // TODO mach das richtig du hund
+    // TODO: oben einen punkt vors TODO setzen!
+    // TODO: statt punkt doppelpunkt im obrigen TODO
+
     public AIComponent(int stateNumber) {
         switch (stateNumber) {
             case 1:

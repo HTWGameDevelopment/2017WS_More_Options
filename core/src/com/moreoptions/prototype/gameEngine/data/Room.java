@@ -1,16 +1,15 @@
 package com.moreoptions.prototype.gameEngine.data;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.moreoptions.prototype.gameEngine.components.CircleCollisionComponent;
-import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
-import com.moreoptions.prototype.gameEngine.components.DoorComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.NavGraph;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.level.*;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -65,6 +64,7 @@ public class Room {
     RoomBlueprint blueprint;
 
     ArrayList<Entity> playerList = new ArrayList<Entity>();
+    ArrayList<Entity> doors = new ArrayList<Entity>();
 
 
 
@@ -95,6 +95,31 @@ public class Room {
             navGraph.addEntity(e);
         }
 
+
+    }
+
+    public void generateBarriers() {
+
+        if(leftNeighbour != null) {
+            doors.add(createDoor(0,5,leftNeighbour, Offset.LEFT));
+        } else {
+            doors.add(createWall(0,5,Offset.LEFT));
+        }
+        if(rightNeighbour != null) {
+            doors.add(createDoor(16,5,rightNeighbour, Offset.RIGHT));
+        } else {
+            doors.add(createWall(16,5,Offset.RIGHT));
+        }
+        if(topNeighbour != null) {
+            doors.add(createDoor(8,10,topNeighbour, Offset.TOP));
+        } else {
+            doors.add(createWall(8,10,Offset.TOP));
+        }
+        if(bottomNeighbour != null) {
+            doors.add(createDoor(8,0,bottomNeighbour, Offset.DOWN));
+        } else {
+            doors.add(createWall(8,0,Offset.DOWN));
+        }
     }
 
     public String toString() {
@@ -120,11 +145,7 @@ public class Room {
         ArrayList<Entity> entities = new ArrayList<Entity>();
         entities.addAll(destLayer.getEntities());
         entities.addAll(tileLayer.getEntities());
-
-        if(leftNeighbour != null) entities.add(createDoor(1,6,leftNeighbour, Offset.LEFT));
-        if(rightNeighbour != null) entities.add(createDoor(16,6,rightNeighbour, Offset.RIGHT));
-        if(topNeighbour != null) entities.add(createDoor(8,10,topNeighbour, Offset.TOP));
-        if(bottomNeighbour != null) entities.add(createDoor(8,0,bottomNeighbour, Offset.DOWN));
+        entities.addAll(doors);
 
         return entities;
     }
@@ -139,10 +160,32 @@ public class Room {
         e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
         e.add(new CollisionComponent(new ChangeRoomEvent(room)));
         e.add(new DoorComponent(offset));
+        e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
         e.add(new CircleCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE/2));
 
         return e;
 
+    }
+
+    private Entity createWall(int x, int y, Offset offset) {
+        Entity e = new Entity();
+        e.add(new PositionComponent(x* Consts.TILE_SIZE,y* Consts.TILE_SIZE));
+        e.add(new CollisionComponent());
+        e.add(new BlockedTileComponent());
+        e.add(new SquareCollisionComponent(x* Consts.TILE_SIZE,y * Consts.TILE_SIZE , Consts.TILE_SIZE));
+        e.add(new DebugColorComponent(com.badlogic.gdx.graphics.Color.BROWN));
+        return e;
+    }
+
+    private void openAllDoors() {
+        ComponentMapper<DoorComponent> dcm = ComponentMapper.getFor(DoorComponent.class);
+
+        for(Entity e : doors) {
+            if(dcm.has(e)) {
+                DoorComponent dc = dcm.get(e);
+                dc.setState(DoorComponent.DOOR_OPEN);
+            }
+        }
     }
 
     public void addPlayer(Entity player) {
@@ -192,4 +235,5 @@ public class Room {
     public NavGraph getNavGraph() {
         return navGraph;
     }
+
 }

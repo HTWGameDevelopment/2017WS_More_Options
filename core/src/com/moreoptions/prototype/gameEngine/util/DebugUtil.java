@@ -18,11 +18,11 @@ public class DebugUtil {
         e.add(new TimedComponent(x));
         GameWorld.getInstance().addEntity(e);
     }
-
+/*
     private void createDebugRing(Vector2 center, float radius, float x) {
         Entity e = new Entity();
-        e.add(new DebugCircleComponent(center,radius));
+        e.add(new DebugCircleComponent(center.x, center.y,radius));
         e.add(new TimedComponent(x));
         GameWorld.getInstance().addEntity(e);
-    }
+    }*/
 }

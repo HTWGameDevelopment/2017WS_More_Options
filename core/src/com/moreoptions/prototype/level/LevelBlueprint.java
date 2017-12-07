@@ -52,6 +52,7 @@ public class LevelBlueprint{
                     if(isValid(width,height,x+1,y))
                     generatedRooms[x][y].setBottomNeighbour(generatedRooms[x+1][y]);
                 }
+                generatedRooms[x][y].generateBarriers();
             }
 
             System.out.println();
