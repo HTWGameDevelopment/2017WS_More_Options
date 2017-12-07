@@ -23,17 +23,13 @@ public class LevelBlueprint{
         Room[][] generatedRooms = new Room[width][height];
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                System.out.print(String.format("%1$"+4+ "s", String.valueOf(rooms[x][y].getKind())));
                 if(rooms[x][y].getKind() == RoomBlueprint.EMPTY_ROOM) continue;
                 generatedRooms[x][y] = new Room(rooms[x][y]);
                 if(rooms[x][y].getKind() ==RoomBlueprint.STARTING_ROOM) {
                     startingRoom = generatedRooms[x][y];
                 }
             }
-
-            System.out.println();
         }
-        System.out.println();
 
         int count = 0;
         for(int x = 0; x < width; x++) {
@@ -54,18 +50,8 @@ public class LevelBlueprint{
                 }
                 generatedRooms[x][y].generateBarriers();
             }
-
-            System.out.println();
         }
 
-
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
-                if(rooms[x][y].getKind() != RoomBlueprint.EMPTY_ROOM) System.out.print(String.format("%1$"+4+ "s", String.valueOf(generatedRooms[x][y].getId())));
-                else System.out.print(String.format("%1$"+4+ "s", "0"));
-            }
-            System.out.println();
-        }
         return new Level(generatedRooms, startingRoom);
     }
 

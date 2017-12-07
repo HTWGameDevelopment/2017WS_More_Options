@@ -11,8 +11,7 @@ import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
  */
 public class PlayerSystem extends EntitySystem{
 
-Family f = Family.all(PlayerComponent.class).get();
-
+    Family f = Family.all(PlayerComponent.class).get();
 
     @Override
     public void update(float deltaTime) {

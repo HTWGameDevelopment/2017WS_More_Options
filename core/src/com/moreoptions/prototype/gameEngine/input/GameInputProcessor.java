@@ -28,10 +28,8 @@ public class GameInputProcessor implements InputProcessor {
         }
     }
 
-
     @Override
     public boolean keyDown(int keycode) {
-
 
         if(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode) == null) {
             return true;
@@ -39,7 +37,6 @@ public class GameInputProcessor implements InputProcessor {
 
         switch(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode)) {
             case P1_MOVE_UP:
-                System.out.println("TEST");
                 p1.setMoveUp(true);
                 break;
             case P1_MOVE_DOWN:
@@ -81,8 +78,6 @@ public class GameInputProcessor implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-
-
         if(GameState.getInstance().getGameProfile().getGameHotkeys().get(keycode) == null) {
             return true;
         }
@@ -125,7 +120,6 @@ public class GameInputProcessor implements InputProcessor {
                 p1.setUsePickup(false);
                 break;
         }
-        
         return false;
     }
 
@@ -136,9 +130,7 @@ public class GameInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
         System.out.println(camera.unproject(new Vector3(screenX,screenY,0)));
-
         return false;
     }
 

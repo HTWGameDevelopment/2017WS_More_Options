@@ -21,30 +21,25 @@ public class AssetLoader {
         return ourInstance;
     }
 
-
     private AssetManager assetManager;
     private ArrayList<RoomDefinition> definitions = new ArrayList();
 
     private AssetLoader() {
         assetManager = new AssetManager();
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-
     }
 
     public void loadAll() {
         loadRooms();
     }
 
-
     public void loadRooms() {
-
         FileHandle t = Gdx.files.internal("rooms/");
 
         for(FileHandle file : t.list()) {
             if(file.name().endsWith(".tmx")) assetManager.load(file.path(), TiledMap.class);
 
         }
-
     }
 
     public boolean update() {
@@ -61,7 +56,6 @@ public class AssetLoader {
     }
 
     public ArrayList<RoomDefinition> definition(boolean hasDoorTop, boolean hasDoorBottom, boolean hasDoorLeft, boolean hasDoorRight) {
-
         ArrayList<RoomDefinition> fits = new ArrayList<RoomDefinition>();
         for(RoomDefinition def : definitions) {
             if((def.isDoorNorth() == hasDoorTop || hasDoorTop == false)

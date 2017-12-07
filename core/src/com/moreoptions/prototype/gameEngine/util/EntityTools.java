@@ -21,7 +21,6 @@ public class EntityTools {
         return s.getHitbox();
     }
 
-
     public static void resetEnemy(Entity e) {
         //TODO impl
     }

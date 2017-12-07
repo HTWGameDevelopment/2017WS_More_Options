@@ -10,6 +10,9 @@ import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.level.*;
+import com.moreoptions.prototype.level.layers.DestructibleLayer;
+import com.moreoptions.prototype.level.layers.EnemyLayer;
+import com.moreoptions.prototype.level.layers.TileLayer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -170,7 +173,7 @@ public class Room {
         e.add(new BlockedTileComponent());
         e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
         e.add(new CircleCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE/2));
-        e.add(new DebugColorComponent(Color.FOREST));
+        e.add(new DebugColorComponent(Color.RED));
 
         return e;
 
@@ -193,6 +196,8 @@ public class Room {
             if(dcm.has(e)) {
                 DoorComponent dc = dcm.get(e);
                 BlockedTileComponent b = e.getComponent(BlockedTileComponent.class);
+                DebugColorComponent dcc = e.getComponent(DebugColorComponent.class);
+                dcc.setColor(Color.FOREST);
                 b.setBlocked(false);
                 dc.setState(DoorComponent.DOOR_OPEN);
             }

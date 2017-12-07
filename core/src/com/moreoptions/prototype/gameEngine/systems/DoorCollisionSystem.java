@@ -32,7 +32,7 @@ public class DoorCollisionSystem extends EntitySystem {
                 if(pc.getHitbox().overlaps(doorcc.getHitbox()) && doorComponent.isOpen() ) {
                     door.getComponent(CollisionComponent.class).getOnCollision().onCollision(player,door);
                 } else if(pc.getHitbox().overlaps(doorcc.getHitbox())) {
-                    System.out.println(":(" +  doorComponent.isOpen());
+
                 }
             }
         }

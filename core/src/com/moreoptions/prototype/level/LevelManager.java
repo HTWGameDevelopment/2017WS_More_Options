@@ -32,18 +32,12 @@ public class LevelManager {
     private LevelGenerator levelGenerator;
     private Level currentLevel;
 
-
-
     public LevelManager(GameWorld world) {
         this.levelGenerator = new StandardLevelGenerator();
         this.world = world;
 
         generateNewLevel(10,10,10);
     }
-
-
-
-
 
     public boolean changeRoom(Room targetRoom, Offset offset) {
 
@@ -61,8 +55,6 @@ public class LevelManager {
             if(ecm.has(e)) EntityTools.resetEnemy(e);
             if(dcm.has(e)) EntityTools.resetDestructible(e);
             //remove references to player
-
-
             world.removeEntity(e);
         }
 
@@ -75,7 +67,6 @@ public class LevelManager {
         }
         //Add player entity
         addPlayerEntities(offset,targetRoom);
-
         return true;
     }
 
@@ -99,11 +90,4 @@ public class LevelManager {
         return currentRoom;
     }
 
-    public ArrayList<Node> getPath(Entity debugMonsterEntity, Entity entity) {
-
-
-
-        return  getCurrentRoom().getNavGraph().getPath(debugMonsterEntity.getComponent(PositionComponent.class).getX(),debugMonsterEntity.getComponent(PositionComponent.class).getY(),entity.getComponent(PositionComponent.class).getX(),entity.getComponent(PositionComponent.class).getY() );
-
-    }
 }

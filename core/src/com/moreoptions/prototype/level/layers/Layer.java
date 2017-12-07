@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.level;
+package com.moreoptions.prototype.level.layers;
 
 import com.badlogic.ashley.core.Entity;
 

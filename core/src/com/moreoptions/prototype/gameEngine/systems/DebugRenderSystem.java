@@ -36,7 +36,6 @@ public class DebugRenderSystem extends EntitySystem{
     private ComponentMapper<CircleCollisionComponent> ccc = ComponentMapper.getFor(CircleCollisionComponent.class);
     private ComponentMapper<EnemyComponent> ecm = ComponentMapper.getFor(EnemyComponent.class);
 
-
     public DebugRenderSystem(ShapeRenderer renderer) {
         this.renderer = renderer;
     }
@@ -85,7 +84,6 @@ public class DebugRenderSystem extends EntitySystem{
 
     }
 
-
     private void drawEnemies(ShapeRenderer renderer) {
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -99,12 +97,8 @@ public class DebugRenderSystem extends EntitySystem{
             PositionComponent pc = e.getComponent(PositionComponent.class);
             renderer.setColor(dcc.getColor());
             renderer.circle(pc.getX(),pc.getY(),dlc.getRadius());
-
-
         }
         renderer.end();
-
-
     }
 
     private void drawDebugLines(ShapeRenderer renderer) {

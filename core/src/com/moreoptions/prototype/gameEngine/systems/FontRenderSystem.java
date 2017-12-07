@@ -32,7 +32,6 @@ public class FontRenderSystem extends EntitySystem {
             CombatTextComponent c = e.getComponent(CombatTextComponent.class);
             PositionComponent p = e.getComponent(PositionComponent.class);
             font.draw(batch,c.getText(),p.getX(),p.getY());
-
         }
         batch.end();
     }

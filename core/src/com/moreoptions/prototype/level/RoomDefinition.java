@@ -9,6 +9,9 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
+import com.moreoptions.prototype.level.layers.DestructibleLayer;
+import com.moreoptions.prototype.level.layers.EnemyLayer;
+import com.moreoptions.prototype.level.layers.TileLayer;
 
 import java.util.ArrayList;
 

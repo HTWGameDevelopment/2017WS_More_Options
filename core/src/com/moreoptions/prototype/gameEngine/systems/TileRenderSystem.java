@@ -19,10 +19,7 @@ public class TileRenderSystem extends EntitySystem{
     SpriteBatch tilebatch;
 
     public TileRenderSystem(SpriteBatch batch) {
-
         this.tilebatch = batch;
-
-
     }
 
     @Override
@@ -45,15 +42,10 @@ public class TileRenderSystem extends EntitySystem{
             }
         });
 
-
-
         tilebatch.begin();
         for(Entity ex : sorted) {
             TextureRegion rx = ex.getComponent(TileGraphicComponent.class).getTextureRegion();
             PositionComponent p = ex.getComponent(PositionComponent.class);
-
-
-
             tilebatch.draw(rx,p.getX(),p.getY());
         }
         tilebatch.end();

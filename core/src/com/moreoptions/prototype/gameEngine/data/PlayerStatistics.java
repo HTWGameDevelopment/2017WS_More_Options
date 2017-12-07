@@ -6,7 +6,6 @@ package com.moreoptions.prototype.gameEngine.data;
 
 public class PlayerStatistics {
 
-
     private float deceleration;
     private float speed;
     private float damage;
@@ -16,7 +15,6 @@ public class PlayerStatistics {
     private float projectileSpeed;
     private float range;
     private float currentShotCooldown;
-
 
     public PlayerStatistics() {
         this.speed = 150;

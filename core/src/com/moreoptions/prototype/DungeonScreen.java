@@ -18,10 +18,7 @@ public class DungeonScreen implements Screen {
 
     @Override
     public void show() {
-
         engine.updateInput();
-
-
     }
 
     @Override

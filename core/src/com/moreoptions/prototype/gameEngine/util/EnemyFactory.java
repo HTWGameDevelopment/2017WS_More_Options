@@ -19,7 +19,7 @@ public class EnemyFactory {
 
     public static Entity createEnemy(int enemyId, float x, float y, Room room) {
         Entity e = new Entity();
-//TODO COLORS
+        //TODO COLORS
         e.add(new PositionComponent(x, y));
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 4));
