@@ -8,8 +8,12 @@ import com.moreoptions.prototype.level.Offset;
  */
 public class DoorComponent implements Component {
 
-    boolean open = false;
+    private boolean open = false;
     private Offset offset;
+
+    public static final boolean DOOR_OPEN = true;
+    public static final boolean DOOR_FALSE = false;
+    private boolean state;
 
     public DoorComponent(Offset offset) {
         this.offset = offset;
@@ -22,5 +26,10 @@ public class DoorComponent implements Component {
 
     public Offset getOffset() {
         return offset;
+    }
+
+
+    public void setState(boolean state) {
+        this.state = state;
     }
 }

@@ -170,9 +170,6 @@ public class RoomDefinition {
                     tile.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
                 }
 
-
-
-
                 entities[x][y] = tile;
                 tiles.add(tile);
             }
