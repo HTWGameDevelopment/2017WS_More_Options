@@ -13,10 +13,10 @@ public class AIComponent implements Component {
     HashMap<String, AIState> stateMap= new HashMap<String, AIState>();
     AIState currentState;
 
-    // TODO: make this an enum?
-    // TODO mach das richtig du hund
-    // TODO: oben einen punkt vors TODO setzen!
-    // TODO: statt punkt doppelpunkt im obrigen TODO
+    public AIComponent(AIState state, HashMap<String, AIState> stateMap) {
+        this.currentState = state;
+        this.stateMap = stateMap;
+    }
 
     public AIComponent(int stateNumber) {
         switch (stateNumber) {

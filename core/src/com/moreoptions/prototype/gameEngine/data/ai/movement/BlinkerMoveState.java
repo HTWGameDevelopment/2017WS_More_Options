@@ -2,6 +2,7 @@ package com.moreoptions.prototype.gameEngine.data.ai.movement;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
@@ -24,8 +25,15 @@ public class BlinkerMoveState implements AIState {
     private PositionComponent playerPos;
     private PositionComponent ownPos;
 
-    private Random random;
+    private Random random = new Random();
     private ArrayList<Node> path;
+
+    private Vector2 ownVec = new Vector2();
+    private Vector2 playerVec = new Vector2();
+    private Vector2 distanceVec = new Vector2();
+
+
+    private boolean attacking = false;
     @Override
     public void update(Room room, Entity self, float delta) {
         player = getClosestPlayer(room.getPlayerList(), self);
@@ -35,25 +43,9 @@ public class BlinkerMoveState implements AIState {
                 playerPos = player.getComponent(PositionComponent.class);
                 ownPos = self.getComponent(PositionComponent.class);
 
-                random = new Random();
+                distanceVec = ownVec.sub(playerVec);
 
-                float x;
-                float y;
-                x = random.nextInt(250) + 64;
-                y = random.nextInt(180) + 64;
-                path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
-
-                while(path.isEmpty() || path.size() == 0) {
-
-                    x = random.nextInt(250) + 64;
-                    y = random.nextInt(180) + 64;
-                    path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
-                }
-
-                    ownPos.setX(random.nextInt(250) + 64);
-                    ownPos.setY(random.nextInt(164) + 64);
-
-
+                teleport(room, self);
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -61,6 +53,24 @@ public class BlinkerMoveState implements AIState {
             currentProgress = 0;
         }
         currentProgress += delta;
+    }
+
+    private void teleport(Room room, Entity self) {
+        float x;
+        float y;
+        x = random.nextInt(250) + 64;
+        y = random.nextInt(180) + 64;
+        path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
+
+        while(path.isEmpty() || path.size() == 0) {
+
+            x = random.nextInt(250) + 64;
+            y = random.nextInt(180) + 64;
+            path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
+        }
+
+        ownPos.setX(random.nextInt(250) + 64);
+        ownPos.setY(random.nextInt(164) + 64);
     }
 
     @Override
