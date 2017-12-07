@@ -2,6 +2,7 @@ package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.NavGraph;
@@ -9,7 +10,6 @@ import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.level.*;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -50,6 +50,7 @@ public class Room {
 
     DestructibleLayer destLayer;
     TileLayer tileLayer;
+    EnemyLayer enemyLayer;
 
     NavGraph navGraph = new NavGraph();
 
@@ -87,6 +88,7 @@ public class Room {
         try {
             destLayer = rq.getDestLayer();
             tileLayer = rq.getTileLayer();
+            enemyLayer = rq.getEnemyLayer();
         } catch (MissdefinedTileException e) {
             e.printStackTrace();
         }
@@ -104,21 +106,25 @@ public class Room {
             doors.add(createDoor(0,5,leftNeighbour, Offset.LEFT));
         } else {
             doors.add(createWall(0,5,Offset.LEFT));
+            doors.add(createWall(1,5,Offset.LEFT));
         }
         if(rightNeighbour != null) {
             doors.add(createDoor(16,5,rightNeighbour, Offset.RIGHT));
         } else {
             doors.add(createWall(16,5,Offset.RIGHT));
+            doors.add(createWall(15,5,Offset.RIGHT));
         }
         if(topNeighbour != null) {
             doors.add(createDoor(8,10,topNeighbour, Offset.TOP));
         } else {
             doors.add(createWall(8,10,Offset.TOP));
+            doors.add(createWall(8,9,Offset.TOP));
         }
         if(bottomNeighbour != null) {
             doors.add(createDoor(8,0,bottomNeighbour, Offset.DOWN));
         } else {
             doors.add(createWall(8,0,Offset.DOWN));
+            doors.add(createWall(8,1,Offset.DOWN));
         }
     }
 
@@ -162,6 +168,7 @@ public class Room {
         e.add(new DoorComponent(offset));
         e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
         e.add(new CircleCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE/2));
+        e.add(new DebugColorComponent(Color.FOREST));
 
         return e;
 

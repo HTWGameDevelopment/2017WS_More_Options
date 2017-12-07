@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="16">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="24">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="true"/>
@@ -52,7 +52,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="Object Layer 1" visible="0">
-  <object id="12" name="Pickup" gid="59" x="302" y="158" width="32" height="32"/>
+ <objectgroup name="EnemyLayer">
+  <object id="21" name="Chaser2" x="228.667" y="166.667" width="21" height="19.3333">
+   <properties>
+    <property name="enemyID" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="22" name="Chaser1" x="294" y="169.667" width="22" height="16.3333">
+   <properties>
+    <property name="enemyID" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

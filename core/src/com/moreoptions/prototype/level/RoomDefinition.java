@@ -1,6 +1,8 @@
 package com.moreoptions.prototype.level;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.moreoptions.prototype.gameEngine.components.*;
@@ -32,6 +34,7 @@ public class RoomDefinition {
     private final int BOSS_ROOM     = 2;
     private final int SHOP_ROOM     = 3;
     private TileLayer tileLayer;
+    private EnemyLayer enemyLayer;
 
     public RoomDefinition(TiledMap map) {
 
@@ -146,6 +149,7 @@ public class RoomDefinition {
 
     public TileLayer getTileLayer() throws MissdefinedTileException {
         TiledMapTileLayer t = (TiledMapTileLayer) tiledMap.getLayers().get("TileLayer");
+
         ArrayList<Entity> tiles = new ArrayList<Entity>();
 
         Entity[][] entities = new Entity[t.getWidth()][t.getHeight()];
@@ -176,5 +180,17 @@ public class RoomDefinition {
         }
 
         return new TileLayer(entities, t.getWidth(),t.getHeight());
+    }
+
+    public EnemyLayer getEnemyLayer() {
+
+
+        for(MapObject p : tiledMap.getLayers().get("EnemyLayer").getObjects()) {
+            RectangleMapObject t = (RectangleMapObject)p;
+            System.out.println(t.getRectangle().getX() + "WOOOOORKS");
+
+        }
+
+        return null;
     }
 }
