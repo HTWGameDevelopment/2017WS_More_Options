@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.data.Room;
 
 /**
@@ -8,8 +9,7 @@ import com.moreoptions.prototype.gameEngine.data.Room;
  */
 public class EnemyComponent implements Component {
 
-    private int startPosX;
-    private int startPosY;
+    private Vector2 startPosition;
     private boolean dead;
 
     private Room room;
@@ -17,7 +17,8 @@ public class EnemyComponent implements Component {
     private float health = 3;
     private float currentHealth = 3;
 
-    public EnemyComponent(Room room) {
+    public EnemyComponent(float x, float y,Room room) {
+        startPosition = new Vector2(x,y);
         this.room = room;
     }
 

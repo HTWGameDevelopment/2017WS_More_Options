@@ -28,7 +28,7 @@ public class EnemyFactory {
         e.add(new DebugColorComponent(Color.MAGENTA));
         e.add(getAIFor(enemyId));
         e.add(new EnemyHitboxComponent(10));
-        e.add(new EnemyComponent(room));
+        e.add(new EnemyComponent(x,y,room));
 
         return e;
     }

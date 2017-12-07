@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
 
 /**
@@ -8,8 +9,7 @@ import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
  */
 public class CollisionComponent implements Component{
 
-    private float oldX;
-    private float oldY;
+    private Vector2 oldPosition = new Vector2();
 
     private CollisionEvent event;
 
@@ -25,19 +25,19 @@ public class CollisionComponent implements Component{
 
 
     public void setOldX(float oldX) {
-        this.oldX = oldX;
+        this.oldPosition.x = oldX;
     }
 
     public void setOldY(float oldY) {
-        this.oldY = oldY;
+        this.oldPosition.y = oldY;
     }
 
     public float getOldX() {
-        return oldX;
+        return this.oldPosition.x;
     }
 
     public float getOldY() {
-        return oldY;
+        return this.oldPosition.y;
     }
 
     public CollisionEvent getOnCollision() {
