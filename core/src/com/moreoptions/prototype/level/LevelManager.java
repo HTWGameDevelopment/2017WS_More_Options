@@ -10,7 +10,9 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
+import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
+import com.moreoptions.prototype.gameEngine.util.EnemyFactory;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ public class LevelManager {
 
     private LevelGenerator levelGenerator;
     private Level currentLevel;
+
+
 
     public LevelManager(GameWorld world) {
         this.levelGenerator = new StandardLevelGenerator();
@@ -76,55 +80,9 @@ public class LevelManager {
     }
 
     public void addDebugMonster() {
-        addDebugChased();
-        addDebugChaser();
-        addDebugBlinker();
+        world.addEntity(EnemyFactory.createEnemy(0, 80f, 80f, Color.GOLDENROD));
+        world.addEntity(EnemyFactory.createEnemy(1, 80f, 80f, Color.FIREBRICK));
     }
-
-    private void addDebugChased() {
-        Entity debugMonsterEntity = new Entity();
-        debugMonsterEntity.add(new PositionComponent(150, 100));
-        debugMonsterEntity.add(new CollisionComponent());
-        debugMonsterEntity.add(new CircleCollisionComponent(150f, 100f, 4));
-        debugMonsterEntity.add(new DebugCircleComponent(10));
-        debugMonsterEntity.add(new VelocityComponent(0f, 0f));
-        debugMonsterEntity.add(new DebugColorComponent(Color.FIREBRICK));
-        debugMonsterEntity.add(new EnemyHitboxComponent(10));
-        debugMonsterEntity.add(new AIComponent(2));
-        debugMonsterEntity.add(new EnemyComponent());
-        world.addEntity(debugMonsterEntity);
-    }
-
-    private void addDebugChaser() {
-        Entity debugChaser = new Entity();
-        debugChaser.add(new PositionComponent(150, 100));
-        debugChaser.add(new CollisionComponent());
-        debugChaser.add(new CircleCollisionComponent(150f, 100f, 4));
-        debugChaser.add(new DebugCircleComponent(10));
-        debugChaser.add(new VelocityComponent(0f, 0f));
-        debugChaser.add(new DebugColorComponent(Color.BLUE));
-        debugChaser.add(new EnemyHitboxComponent(10));
-        debugChaser.add(new AIComponent(1));
-        debugChaser.add(new EnemyComponent());
-
-        world.addEntity(debugChaser);
-    }
-
-    private void addDebugBlinker() {
-        Entity debugBlinker = new Entity();
-        debugBlinker.add(new PositionComponent(150, 100));
-        debugBlinker.add(new CollisionComponent());
-        debugBlinker.add(new CircleCollisionComponent(150f, 150f, 4));
-        debugBlinker.add(new DebugCircleComponent(10));
-        debugBlinker.add(new VelocityComponent(0f, 0f));
-        debugBlinker.add(new DebugColorComponent(Color.CORAL));
-        debugBlinker.add(new AIComponent(3));
-        debugBlinker.add(new EnemyHitboxComponent(10));
-        debugBlinker.add(new EnemyComponent());
-
-        world.addEntity(debugBlinker);
-    }
-
 
     public void addPlayerEntities(Offset offset, Room targetroom) {
         ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players
