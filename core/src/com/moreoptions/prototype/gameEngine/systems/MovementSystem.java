@@ -72,6 +72,10 @@ public class MovementSystem extends EntitySystem {
 
     private void resolveXCollision(Entity e, float x,float y) {
             for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
+
+                BlockedTileComponent blockedTileComponent = t.getComponent(BlockedTileComponent.class);
+                if(!blockedTileComponent.isBlocked()) continue;
+
                 try {
                     float r = CollisionUtil.getXOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t),x,y);
 
@@ -87,6 +91,10 @@ public class MovementSystem extends EntitySystem {
 
     private void resolveYCollision(Entity e, float x,float y) {
         for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
+
+            BlockedTileComponent blockedTileComponent = t.getComponent(BlockedTileComponent.class);
+            if(!blockedTileComponent.isBlocked()) continue;
+
             try {
                 float r = CollisionUtil.getYOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t),x,y);
                 if(r != 0) {

@@ -18,18 +18,23 @@ public class DebugRenderSystem extends EntitySystem{
     private Family f = Family.all(DebugColorComponent.class)
             .all(PositionComponent.class)
             .all(CollisionComponent.class)
+            .exclude(EnemyComponent.class)
             .get();
+
+    private Family enemies = Family.all(EnemyComponent.class,PositionComponent.class,CollisionComponent.class).get();
+
     private ShapeRenderer renderer;
 
     private Family debugLines = Family.all(DebugLineComponent.class)
             .get();
-    private Family debugCircles = Family.all(DebugCircleComponent.class)
+    private Family debugCircles = Family.all(DebugCircleComponent.class).exclude(EnemyComponent.class)
             .get();
 
     private ComponentMapper<DebugLineComponent> cm = ComponentMapper.getFor(DebugLineComponent.class);
     private ComponentMapper<DebugCircleComponent> am = ComponentMapper.getFor(DebugCircleComponent.class);
     private ComponentMapper<SquareCollisionComponent> sqm = ComponentMapper.getFor(SquareCollisionComponent.class);
     private ComponentMapper<CircleCollisionComponent> ccc = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<EnemyComponent> ecm = ComponentMapper.getFor(EnemyComponent.class);
 
 
     public DebugRenderSystem(ShapeRenderer renderer) {
@@ -44,15 +49,17 @@ public class DebugRenderSystem extends EntitySystem{
         for(Entity e : getEngine().getEntitiesFor(f)) {
             DebugColorComponent dc = e.getComponent(DebugColorComponent.class);
 
-            if(dc!= null) renderer.setColor(dc.getColor());
-            else renderer.setColor(Color.FIREBRICK);
-            if(sqm.has(e)) {
-                Rectangle hitbox = sqm.get(e).getHitbox();
-                renderer.rect(hitbox.x,hitbox.y,hitbox.getWidth(),hitbox.getHeight());
-            } else if(ccc.has(e)) {
-                Circle c = ccc.get(e).getHitbox();
-                renderer.circle(c.x,c.y,c.radius);
-            }
+
+                if (dc != null) renderer.setColor(dc.getColor());
+                else renderer.setColor(Color.FIREBRICK);
+                if (sqm.has(e)) {
+                    Rectangle hitbox = sqm.get(e).getHitbox();
+                    renderer.rect(hitbox.x, hitbox.y, hitbox.getWidth(), hitbox.getHeight());
+                } else if (ccc.has(e)) {
+                    Circle c = ccc.get(e).getHitbox();
+                    renderer.circle(c.x, c.y, c.radius);
+                }
+
         }
 
         renderer.end();
@@ -74,6 +81,30 @@ public class DebugRenderSystem extends EntitySystem{
         drawDebugCircle(renderer);
 
         renderer.end();
+        drawEnemies(renderer);
+
+    }
+
+
+    private void drawEnemies(ShapeRenderer renderer) {
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        for(Entity e : getEngine().getEntitiesFor(enemies)) {
+            EnemyComponent ec = e.getComponent(EnemyComponent.class);
+            if(ec.isDead()) continue;
+
+            DebugColorComponent dcc = e.getComponent(DebugColorComponent.class);
+            DebugCircleComponent dlc = e.getComponent(DebugCircleComponent.class);
+            PositionComponent pc = e.getComponent(PositionComponent.class);
+            renderer.setColor(dcc.getColor());
+            renderer.circle(pc.getX(),pc.getY(),dlc.getRadius());
+
+
+        }
+        renderer.end();
+
+
     }
 
     private void drawDebugLines(ShapeRenderer renderer) {

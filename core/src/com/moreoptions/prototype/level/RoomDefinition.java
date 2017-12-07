@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 
 import java.util.ArrayList;
@@ -182,15 +183,17 @@ public class RoomDefinition {
         return new TileLayer(entities, t.getWidth(),t.getHeight());
     }
 
-    public EnemyLayer getEnemyLayer() {
+    public EnemyLayer getEnemyLayer(Room room) {
 
+        enemyLayer = new EnemyLayer();
 
         for(MapObject p : tiledMap.getLayers().get("EnemyLayer").getObjects()) {
             RectangleMapObject t = (RectangleMapObject)p;
-            System.out.println(t.getRectangle().getX() + "WOOOOORKS");
+            int id = t.getProperties().get("enemyID", Integer.class);
+            enemyLayer.addEnemy(id, t.getRectangle().getX(), t.getRectangle().y, room);
 
         }
 
-        return null;
+        return enemyLayer;
     }
 }

@@ -44,6 +44,7 @@ public class ProjectileSystem extends EntitySystem {
 
             for(Entity hit : enemies) {
 
+
                 EnemyHitboxComponent ehc = hit.getComponent(EnemyHitboxComponent.class);
                 PositionComponent hitpc = hit.getComponent(PositionComponent.class);
 

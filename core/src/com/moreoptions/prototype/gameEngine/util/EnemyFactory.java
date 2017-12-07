@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
@@ -16,18 +17,18 @@ import java.util.HashMap;
  */
 public class EnemyFactory {
 
-    public static Entity createEnemy(int enemyId, float x, float y, Color color) {
+    public static Entity createEnemy(int enemyId, float x, float y, Room room) {
         Entity e = new Entity();
-
+//TODO COLORS
         e.add(new PositionComponent(x, y));
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 4));
         e.add(new DebugCircleComponent(10));
         e.add(new VelocityComponent(0f, 0f));
-        e.add(new DebugColorComponent(color));
+        e.add(new DebugColorComponent(Color.MAGENTA));
         e.add(getAIFor(enemyId));
         e.add(new EnemyHitboxComponent(10));
-        e.add(new EnemyComponent());
+        e.add(new EnemyComponent(room));
 
         return e;
     }

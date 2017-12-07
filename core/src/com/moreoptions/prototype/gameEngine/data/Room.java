@@ -88,7 +88,7 @@ public class Room {
         try {
             destLayer = rq.getDestLayer();
             tileLayer = rq.getTileLayer();
-            enemyLayer = rq.getEnemyLayer();
+            enemyLayer = rq.getEnemyLayer(this);
         } catch (MissdefinedTileException e) {
             e.printStackTrace();
         }
@@ -151,6 +151,7 @@ public class Room {
         ArrayList<Entity> entities = new ArrayList<Entity>();
         entities.addAll(destLayer.getEntities());
         entities.addAll(tileLayer.getEntities());
+        entities.addAll(enemyLayer.getAliveEntities());
         entities.addAll(doors);
 
         return entities;
@@ -166,6 +167,7 @@ public class Room {
         e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
         e.add(new CollisionComponent(new ChangeRoomEvent(room)));
         e.add(new DoorComponent(offset));
+        e.add(new BlockedTileComponent());
         e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
         e.add(new CircleCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE/2));
         e.add(new DebugColorComponent(Color.FOREST));
@@ -190,6 +192,8 @@ public class Room {
         for(Entity e : doors) {
             if(dcm.has(e)) {
                 DoorComponent dc = dcm.get(e);
+                BlockedTileComponent b = e.getComponent(BlockedTileComponent.class);
+                b.setBlocked(false);
                 dc.setState(DoorComponent.DOOR_OPEN);
             }
         }
@@ -243,4 +247,11 @@ public class Room {
         return navGraph;
     }
 
+    public void checkForClear() {
+        System.out.println("Checking! " + enemyLayer.getAliveEntities().size());
+        if(enemyLayer.getAliveEntities().size() == 0) {
+            openAllDoors();
+            System.out.println("OPENING DOORS");
+        }
+    }
 }

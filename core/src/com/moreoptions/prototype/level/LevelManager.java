@@ -75,14 +75,10 @@ public class LevelManager {
         }
         //Add player entity
         addPlayerEntities(offset,targetRoom);
-        addDebugMonster();
+
         return true;
     }
 
-    public void addDebugMonster() {
-        world.addEntity(EnemyFactory.createEnemy(0, 80f, 80f, Color.GOLDENROD));
-        world.addEntity(EnemyFactory.createEnemy(1, 80f, 80f, Color.FIREBRICK));
-    }
 
     public void addPlayerEntities(Offset offset, Room targetroom) {
         ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players

@@ -12,8 +12,8 @@ public class DoorComponent implements Component {
     private Offset offset;
 
     public static final boolean DOOR_OPEN = true;
-    public static final boolean DOOR_FALSE = false;
-    private boolean state;
+    public static final boolean DOOR_CLOSED = false;
+    private boolean state = DOOR_CLOSED;
 
     public DoorComponent(Offset offset) {
         this.offset = offset;
@@ -30,6 +30,11 @@ public class DoorComponent implements Component {
 
 
     public void setState(boolean state) {
+        System.out.println("Set state" + state);
         this.state = state;
+    }
+
+    public boolean isOpen() {
+        return state;
     }
 }

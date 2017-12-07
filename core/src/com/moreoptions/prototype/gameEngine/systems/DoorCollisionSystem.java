@@ -28,8 +28,11 @@ public class DoorCollisionSystem extends EntitySystem {
             for(Entity door : doors) {
                 CircleCollisionComponent pc = player.getComponent(CircleCollisionComponent.class);
                 CircleCollisionComponent doorcc = door.getComponent(CircleCollisionComponent.class);
-                if(pc.getHitbox().overlaps(doorcc.getHitbox())) {
+                DoorComponent doorComponent = door.getComponent(DoorComponent.class);
+                if(pc.getHitbox().overlaps(doorcc.getHitbox()) && doorComponent.isOpen() ) {
                     door.getComponent(CollisionComponent.class).getOnCollision().onCollision(player,door);
+                } else if(pc.getHitbox().overlaps(doorcc.getHitbox())) {
+                    System.out.println(":(" +  doorComponent.isOpen());
                 }
             }
         }
