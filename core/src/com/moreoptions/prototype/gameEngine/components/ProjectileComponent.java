@@ -12,17 +12,13 @@ public class ProjectileComponent implements Component {
     float distanceTravelled = 0;
     float dmg = 0;
 
-
-
     HitEvent onHit;
-
 
     public ProjectileComponent(float damage, float range) {
         this.range = range;
         this.dmg = damage;
         onHit = new HitEvent.StandardHitEvent();
     }
-
 
     public float getDistanceTravelled() {
         return distanceTravelled;

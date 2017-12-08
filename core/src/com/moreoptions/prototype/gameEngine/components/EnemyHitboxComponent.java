@@ -11,11 +11,8 @@ public class EnemyHitboxComponent implements Component {
 
     private Circle circle = new Circle();
 
-
     public EnemyHitboxComponent(float size) {
-
         circle.setRadius(size);
-
     }
 
     public Circle getCircle() {

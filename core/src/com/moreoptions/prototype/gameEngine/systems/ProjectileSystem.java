@@ -40,11 +40,11 @@ public class ProjectileSystem extends EntitySystem {
 
             p.setDistanceTravelled((float) ( p.getDistanceTravelled() + (Math.hypot(oldX-currentX, oldY - currentY))));
 
-            if(p.getDistanceTravelled() > p.getRange()) getEngine().removeEntity(e);
+            if(p.getDistanceTravelled() > p.getRange()) {
+                getEngine().removeEntity(e);
+            }
 
             for(Entity hit : enemies) {
-
-
                 EnemyHitboxComponent ehc = hit.getComponent(EnemyHitboxComponent.class);
                 PositionComponent hitpc = hit.getComponent(PositionComponent.class);
 
@@ -102,6 +102,7 @@ public class ProjectileSystem extends EntitySystem {
         Entity proj = new Entity();
 
         PlayerStatistics stats = e.getComponent(PlayerComponent.class).getPlayer().getStats();
+        VelocityComponent vc = e.getComponent(VelocityComponent.class);
 
         System.out.println("Shooting down");
         PositionComponent playerPosition = e.getComponent(PositionComponent.class);
@@ -112,9 +113,10 @@ public class ProjectileSystem extends EntitySystem {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
-        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
+        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange() + (Math.abs(vc.getVelY()) * stats.getRange()) / 2));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelY(-pv.getSpeed());
+        pv.setVelY(-pv.getSpeed() + vc.getVelY()/2);
+        pv.setVelX(vc.getVelX()/ 2);
         GameWorld.getInstance().addEntity(proj);
     }
 

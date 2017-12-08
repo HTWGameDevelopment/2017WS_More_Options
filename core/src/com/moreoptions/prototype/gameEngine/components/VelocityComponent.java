@@ -1,13 +1,15 @@
 package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Component that holds information pertaining to acceleration / deceleration of entities.
  */
 public class VelocityComponent implements Component{
 
-    private float velX, velY;
+    private Vector2 velocity = new Vector2();
+
     private float speed;
     private float deceleration;
 
@@ -29,19 +31,19 @@ public class VelocityComponent implements Component{
     }
 
     public float getVelX() {
-        return velX;
+        return velocity.x;
     }
 
     public void setVelX(float velX) {
-        this.velX = velX;
+        this.velocity.x = velX;
     }
 
     public float getVelY() {
-        return velY;
+        return velocity.y;
     }
 
     public void setVelY(float velY) {
-        this.velY = velY;
+        this.velocity.y = velY;
     }
 
     public float getSpeed() {
@@ -54,5 +56,9 @@ public class VelocityComponent implements Component{
 
     public float getDeceleration() {
         return deceleration;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
     }
 }

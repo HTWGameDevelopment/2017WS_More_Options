@@ -19,7 +19,7 @@ public interface HitEvent {
             float currentHealth = hit.getComponent(EnemyComponent.class).getCurrentHealth();
             float dmg = self.getComponent(ProjectileComponent.class).getDmg();
             hit.getComponent(EnemyComponent.class).setCurrentHealth( currentHealth - dmg);
-
+            System.out.println("hit");
 
             //TODO: Make a function out of this
             Entity dmgText = new Entity();
