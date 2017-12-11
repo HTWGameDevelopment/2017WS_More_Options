@@ -106,25 +106,25 @@ public class Room {
     public void generateBarriers() {
 
         if(leftNeighbour != null) {
-            doors.add(createDoor(0,5,leftNeighbour, Offset.LEFT));
+            doors.add(createDoor(1,5,leftNeighbour, Offset.LEFT));
         } else {
             doors.add(createWall(0,5,Offset.LEFT));
             doors.add(createWall(1,5,Offset.LEFT));
         }
         if(rightNeighbour != null) {
-            doors.add(createDoor(16,5,rightNeighbour, Offset.RIGHT));
+            doors.add(createDoor(15,5,rightNeighbour, Offset.RIGHT));
         } else {
             doors.add(createWall(16,5,Offset.RIGHT));
             doors.add(createWall(15,5,Offset.RIGHT));
         }
         if(topNeighbour != null) {
-            doors.add(createDoor(8,10,topNeighbour, Offset.TOP));
+            doors.add(createDoor(8,9,topNeighbour, Offset.TOP));
         } else {
             doors.add(createWall(8,10,Offset.TOP));
             doors.add(createWall(8,9,Offset.TOP));
         }
         if(bottomNeighbour != null) {
-            doors.add(createDoor(8,0,bottomNeighbour, Offset.DOWN));
+            doors.add(createDoor(8,1,bottomNeighbour, Offset.DOWN));
         } else {
             doors.add(createWall(8,0,Offset.DOWN));
             doors.add(createWall(8,1,Offset.DOWN));

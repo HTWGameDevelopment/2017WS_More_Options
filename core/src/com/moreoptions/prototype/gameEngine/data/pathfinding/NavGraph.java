@@ -3,6 +3,7 @@ package com.moreoptions.prototype.gameEngine.data.pathfinding;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
@@ -11,6 +12,7 @@ import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 /**
  * Created by denwe on 02.12.2017.
@@ -20,6 +22,9 @@ public class NavGraph {
     ArrayList<Node> nodes = new ArrayList<Node>();          //All nodes we have
     ArrayList<Entity> entities = new ArrayList<Entity>();     //All entities in our navgraph
     ArrayList<CSpaceRectangle> cSpaceRectangles = new ArrayList<CSpaceRectangle>();
+
+    Random r = new Random();
+    FPSLogger log = new FPSLogger();
 
     public NavGraph() {
 
@@ -35,27 +40,17 @@ public class NavGraph {
         if(icm.has(entity)) {
             CSpaceRectangle c = new CSpaceRectangle(5, entity, entity.getComponent(SquareCollisionComponent.class).getHitbox());
             cSpaceRectangles.add(c);
-
-            //check if any previous connections are ruined by this
-
             updateNodes(c);
-
 
             for(Node n : c.getNodes()) {
                 connectNode(n);
             }
-
             updateBlockedNodes();
-
         }
-
-
         return true;
     }
 
     private void updateNodes(CSpaceRectangle c) {
-
-
         ArrayList<Node> toBeRemoved = new ArrayList<Node>();
 
         for(Node n : nodes) {
@@ -88,9 +83,6 @@ public class NavGraph {
     }
 
     private void connectNode(Node n) {
-
-
-
         for(Node all : nodes) {
             boolean connected = true;
             for(CSpaceRectangle c : cSpaceRectangles) {
@@ -99,25 +91,17 @@ public class NavGraph {
                     break;
                 }
             }
-
             if(connected) {
                 all.addNeighbor(n);
                 n.addNeighbor(all);
             }
         }
         nodes.add(n);
-
     }
 
     private boolean removeEntity(Entity entity) {
-
         if(!entities.contains(entity)) return false;
-
-
-
-
         return true;
-
     }
 
     public void draw(ShapeRenderer renderer) {
@@ -125,17 +109,18 @@ public class NavGraph {
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for(Node n : nodes) {
                 renderer.circle(n.getX(),n.getY(),10);
-
                 for(Node k : n.getNeighbours()) {
                     renderer.line(n.getX(),n.getY(),k.getX(),k.getY());
                 }
         }
+
         renderer.end();
     }
 
 
     public ArrayList<Node> getPath(float startX, float startY, float endX, float endY) {
 
+        float startTime = System.nanoTime();
 
         ArrayList closedSet = new ArrayList();
         PriorityQueue<Node> nodePriorityQueue = new PriorityQueue<Node>(new Comparator<Node>() {
@@ -174,7 +159,6 @@ public class NavGraph {
         }
 
         Node k = end;
-        int count = 0;
         ArrayList<Node> stack = new ArrayList<Node>();
 
         while(k.getCameFrom() != null) {
@@ -183,16 +167,14 @@ public class NavGraph {
             k = k.getCameFrom();
         }
 
+        float endTime = System.nanoTime();
+
+        System.out.println("It took "+ (endTime-startTime) / 1000000 + " milliseconds to calculate a path between " +nodes.size() + " +nodes");
+
+
         removeNode(start);
         removeNode(end);
-
-        long endTime = System.nanoTime();
-
-
-
-
         return stack;
-
 
     }
 

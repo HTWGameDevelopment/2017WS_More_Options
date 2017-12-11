@@ -56,13 +56,8 @@ public class ProjectileSystem extends EntitySystem {
                     }
                     break;
                 }
-
-
             }
-
         }
-
-
     }
 
     public static void shoot(Direction direction, Entity e) {
@@ -89,11 +84,8 @@ public class ProjectileSystem extends EntitySystem {
                     break;
                 default:
                     throw new NullPointerException("Direction was null");
-
             }
-
         }
-
     }
 
 
@@ -107,16 +99,15 @@ public class ProjectileSystem extends EntitySystem {
         System.out.println("Shooting down");
         PositionComponent playerPosition = e.getComponent(PositionComponent.class);
 
-
         proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
         proj.add(new VelocityComponent(stats.getProjectileSpeed(), 10));
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.CORAL));
-        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange() + (Math.abs(vc.getVelY()) * stats.getRange()) / 2));
+        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
         VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelY(-pv.getSpeed() + vc.getVelY()/2);
-        pv.setVelX(vc.getVelX()/ 2);
+        pv.setVelY(-pv.getSpeed());
+        pv.setVelX(0);
         GameWorld.getInstance().addEntity(proj);
     }
 
@@ -126,7 +117,6 @@ public class ProjectileSystem extends EntitySystem {
         PositionComponent playerPosition = e.getComponent(PositionComponent.class);
 
         PlayerStatistics stats = e.getComponent(PlayerComponent.class).getPlayer().getStats();
-
 
         proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
         proj.add(new VelocityComponent(stats.getProjectileSpeed(), 10));
@@ -145,7 +135,6 @@ public class ProjectileSystem extends EntitySystem {
         PositionComponent playerPosition = e.getComponent(PositionComponent.class);
 
         PlayerStatistics stats = e.getComponent(PlayerComponent.class).getPlayer().getStats();
-
 
         proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
         proj.add(new VelocityComponent(stats.getProjectileSpeed(), 10));
@@ -166,7 +155,6 @@ public class ProjectileSystem extends EntitySystem {
 
         PlayerStatistics stats = e.getComponent(PlayerComponent.class).getPlayer().getStats();
 
-
         proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
         proj.add(new VelocityComponent(stats.getProjectileSpeed(), 10));
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
@@ -180,8 +168,6 @@ public class ProjectileSystem extends EntitySystem {
 
 
     public enum Direction {
-
         UP,DOWN,LEFT,RIGHT;
-
     }
 }
