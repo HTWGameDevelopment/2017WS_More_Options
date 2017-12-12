@@ -4,10 +4,15 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.util.Event;
+import com.moreoptions.prototype.gameEngine.util.EventBus;
+
+import java.util.Vector;
 
 /**
  * System that manipulates Entities based on Player Input
@@ -77,13 +82,29 @@ public class InputSystem extends EntitySystem {
         InputState playerInput = p.getInputState();
 
             if (playerInput.isShootDown()) {
-                ProjectileSystem.shoot(ProjectileSystem.Direction.DOWN, e);
+                Event event = new Event("shoot");
+                event.addData("entity", e);
+                event.addData("direction", new Vector2(0,-1));
+                EventBus.getInstance().addEvent(event);
+                //  ProjectileSystem.shoot(ProjectileSystem.Direction.DOWN, e);
             } else if (playerInput.isShootUp()) {
-                ProjectileSystem.shoot(ProjectileSystem.Direction.UP, e);
+//                ProjectileSystem.shoot(ProjectileSystem.Direction.UP, e);
+                Event event = new Event("shoot");
+                event.addData("entity", e);
+                event.addData("direction", new Vector2(0,1));
+                EventBus.getInstance().addEvent(event);
             } else if (playerInput.isShootLeft()) {
-                ProjectileSystem.shoot(ProjectileSystem.Direction.LEFT, e);
+                Event event = new Event("shoot");
+                event.addData("entity", e);
+                event.addData("direction", new Vector2(-1,0));
+                EventBus.getInstance().addEvent(event);
+                //ProjectileSystem.shoot(ProjectileSystem.Direction.LEFT, e);
             } else if (playerInput.isShootRight()) {
-                ProjectileSystem.shoot(ProjectileSystem.Direction.RIGHT, e);
+                Event event = new Event("shoot");
+                event.addData("entity", e);
+                event.addData("direction", new Vector2(1,0));
+                EventBus.getInstance().addEvent(event);
+                //ProjectileSystem.shoot(ProjectileSystem.Direction.RIGHT, e);
             }
     }
 }

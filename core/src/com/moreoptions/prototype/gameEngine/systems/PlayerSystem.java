@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
+import com.moreoptions.prototype.gameEngine.components.StatsComponent;
 
 /**
  * Created by Dennis on 06.12.2017.
@@ -21,8 +22,8 @@ public class PlayerSystem extends EntitySystem{
 
         for(Entity p : players) {
 
-           float x =  p.getComponent(PlayerComponent.class).getPlayer().getStats().getCurrentShotCooldown();
-            p.getComponent(PlayerComponent.class).getPlayer().getStats().setCurrentShotCooldown(x+deltaTime);
+           float x =  p.getComponent(StatsComponent.class).getStats().getCurrentShotCooldown();
+            p.getComponent(StatsComponent.class).getStats().setCurrentShotCooldown(x+deltaTime);
         }
 
     }

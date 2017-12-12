@@ -5,13 +5,18 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 import com.moreoptions.prototype.gameEngine.data.Player;
-import com.moreoptions.prototype.gameEngine.data.PlayerStatistics;
+import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
 import com.moreoptions.prototype.gameEngine.data.projectileEvents.SplitEvent;
+import com.moreoptions.prototype.gameEngine.util.Event;
+import com.moreoptions.prototype.gameEngine.util.EventListener;
+import com.moreoptions.prototype.gameEngine.util.EventSubscriber;
+import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 /**
  * Created by User on 11/20/2017.
@@ -21,6 +26,36 @@ public class ProjectileSystem extends EntitySystem {
 
     private Family projFamily = Family.all(ProjectileComponent.class).get();
     private Family enemyFamily = Family.all(EnemyHitboxComponent.class).get();
+
+    EventSubscriber subscriber;
+
+    public ProjectileSystem() {
+
+        initListeners();
+
+
+    }
+
+    private void initListeners() {
+
+        subscriber = new EventSubscriber();
+        subscriber.subscribe("shoot", new EventListener() {
+            @Override
+            public void trigger(Event e) {
+
+                Entity entity = e.getData("entity", Entity.class);
+                Vector2 direction = e.getData("direction", Vector2.class);
+
+                float ccd = entity.getComponent(StatsComponent.class).getStats().getCurrentShotCooldown();
+                float uppercd = entity.getComponent(StatsComponent.class).getStats().getFireRate();
+                if(ccd >= uppercd) {
+                    Entity projectile = ProjectileFactory.createProjectile(entity, direction);
+                    getEngine().addEntity(projectile);
+                    entity.getComponent(StatsComponent.class).getStats().setCurrentShotCooldown(0);
+                }
+            }
+        });
+    }
 
     @Override
     public void update(float deltatime){
@@ -58,112 +93,6 @@ public class ProjectileSystem extends EntitySystem {
                 }
             }
         }
-    }
-
-    public static void shoot(Direction direction, Entity e) {
-
-        PlayerComponent p = e.getComponent(PlayerComponent.class);
-
-        PlayerStatistics stats = p.getPlayer().getStats();
-
-        if(stats.getCurrentShotCooldown() > stats.getFireRate()) {
-            stats.setCurrentShotCooldown(0);
-            switch (direction) {
-
-                case UP:
-                    shootUp(e);
-                    break;
-                case DOWN:
-                    shootDown(e);
-                    break;
-                case LEFT:
-                    shootLeft(e);
-                    break;
-                case RIGHT:
-                    shootRight(e);
-                    break;
-                default:
-                    throw new NullPointerException("Direction was null");
-            }
-        }
-    }
-
-
-
-    public static void shootDown(Entity e ) {
-        Entity proj = new Entity();
-
-        PlayerStatistics stats = e.getComponent(PlayerComponent.class).getPlayer().getStats();
-        VelocityComponent vc = e.getComponent(VelocityComponent.class);
-
-        System.out.println("Shooting down");
-        PositionComponent playerPosition = e.getComponent(PositionComponent.class);
-
-        proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
-        proj.add(new VelocityComponent(stats.getProjectileSpeed(), 10));
-        proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
-        proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
-        proj.add(new DebugColorComponent(Color.CORAL));
-        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
-        VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelY(-pv.getSpeed());
-        pv.setVelX(0);
-        GameWorld.getInstance().addEntity(proj);
-    }
-
-    public static void shootUp(Entity e ) {
-        Entity proj = new Entity();
-
-        PositionComponent playerPosition = e.getComponent(PositionComponent.class);
-
-        PlayerStatistics stats = e.getComponent(PlayerComponent.class).getPlayer().getStats();
-
-        proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
-        proj.add(new VelocityComponent(stats.getProjectileSpeed(), 10));
-        proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
-        proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
-        proj.add(new DebugColorComponent(Color.CORAL));
-        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
-        VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelY(pv.getSpeed());
-        GameWorld.getInstance().addEntity(proj);
-    }
-
-    public static void shootLeft(Entity e ) {
-        Entity proj = new Entity();
-
-        PositionComponent playerPosition = e.getComponent(PositionComponent.class);
-
-        PlayerStatistics stats = e.getComponent(PlayerComponent.class).getPlayer().getStats();
-
-        proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
-        proj.add(new VelocityComponent(stats.getProjectileSpeed(), 10));
-        proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
-        proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
-        proj.add(new DebugColorComponent(Color.CORAL));
-
-        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
-        VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelX(-pv.getSpeed());
-        GameWorld.getInstance().addEntity(proj);
-    }
-
-    public static void shootRight(Entity e ) {
-        Entity proj = new Entity();
-
-        PositionComponent playerPosition = e.getComponent(PositionComponent.class);
-
-        PlayerStatistics stats = e.getComponent(PlayerComponent.class).getPlayer().getStats();
-
-        proj.add(new PositionComponent(playerPosition.getX(), playerPosition.getY()));
-        proj.add(new VelocityComponent(stats.getProjectileSpeed(), 10));
-        proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
-        proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
-        proj.add(new DebugColorComponent(Color.CORAL));
-        proj.add(new ProjectileComponent(stats.getDamage(),stats.getRange()));
-        VelocityComponent pv = proj.getComponent(VelocityComponent.class);
-        pv.setVelX(pv.getSpeed());
-        GameWorld.getInstance().addEntity(proj);
     }
 
 

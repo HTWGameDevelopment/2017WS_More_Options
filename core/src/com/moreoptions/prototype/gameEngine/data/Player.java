@@ -17,11 +17,11 @@ public class Player {
 
     private Controller controller;
 
-    private PlayerStatistics stats;
+    private Statistics stats;
 
     public Player() {
         inputState = new InputState();
-        stats = new PlayerStatistics();
+        stats = new Statistics();
     }
 
     public InputState getInputState() {
@@ -40,12 +40,18 @@ public class Player {
             addPositionComponent(playerEntity,offset);
             addVelocityComponent(playerEntity);
             addCollisionComponent(playerEntity);
-
+            addStatsComponent(playerEntity);
         } catch (NoOffsetException e) {
             e.printStackTrace();
         }
 
         return playerEntity;
+
+    }
+
+    private void addStatsComponent(Entity playerEntity) {
+
+        playerEntity.add(new StatsComponent(stats));
 
     }
 
@@ -101,7 +107,7 @@ public class Player {
 
     }
 
-    public PlayerStatistics getStats() {
+    public Statistics getStats() {
         return stats;
     }
 }

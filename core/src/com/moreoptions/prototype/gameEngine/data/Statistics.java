@@ -4,7 +4,7 @@ package com.moreoptions.prototype.gameEngine.data;
  *
  */
 
-public class PlayerStatistics {
+public class Statistics {
 
     private float deceleration;
     private float speed;
@@ -16,7 +16,7 @@ public class PlayerStatistics {
     private float range;
     private float currentShotCooldown;
 
-    public PlayerStatistics() {
+    public Statistics() {
         this.speed = 150;
         this.deceleration = 0.75f;
         this.maxHealth = 3;
@@ -28,7 +28,7 @@ public class PlayerStatistics {
         this.range = 100;
 
         this.damage = 1.5f;
-        this.currentShotCooldown = 0;
+        this.currentShotCooldown = fireRate;
 
     }
 
