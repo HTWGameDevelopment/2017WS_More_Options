@@ -1,5 +1,6 @@
 package com.moreoptions.prototype.gameEngine.systems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
@@ -15,8 +16,11 @@ import java.util.Comparator;
 
 public class TileRenderSystem extends EntitySystem{
 
-    Family tiles = Family.all(TileGraphicComponent.class).get();
-    SpriteBatch tilebatch;
+    private Family tiles = Family.all(TileGraphicComponent.class).get();
+    private SpriteBatch tilebatch;
+
+    private ComponentMapper<TileGraphicComponent> tgcMapper = ComponentMapper.getFor(TileGraphicComponent.class);
+    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
 
     public TileRenderSystem(SpriteBatch batch) {
         this.tilebatch = batch;
@@ -34,8 +38,8 @@ public class TileRenderSystem extends EntitySystem{
             @Override
             public int compare(Entity o1, Entity o2) {
 
-                if(o1.getComponent(TileGraphicComponent.class).getZIndex() > o2.getComponent(TileGraphicComponent.class).getZIndex()) return 1;
-                if(o1.getComponent(TileGraphicComponent.class).getZIndex() < o2.getComponent(TileGraphicComponent.class).getZIndex()) return -1;
+                if(tgcMapper.get(o1).getZIndex() > tgcMapper.get(o2).getZIndex()) return 1;
+                if(tgcMapper.get(o1).getZIndex() < tgcMapper.get(o2).getZIndex()) return -1;
 
 
                 return 0;
@@ -45,7 +49,7 @@ public class TileRenderSystem extends EntitySystem{
         tilebatch.begin();
         for(Entity ex : sorted) {
             TextureRegion rx = ex.getComponent(TileGraphicComponent.class).getTextureRegion();
-            PositionComponent p = ex.getComponent(PositionComponent.class);
+            PositionComponent p = posMapper.get(ex);
             tilebatch.draw(rx,p.getX(),p.getY());
         }
         tilebatch.end();

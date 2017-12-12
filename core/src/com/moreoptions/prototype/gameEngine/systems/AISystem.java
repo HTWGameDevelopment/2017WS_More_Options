@@ -1,5 +1,6 @@
 package com.moreoptions.prototype.gameEngine.systems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
@@ -13,8 +14,10 @@ import com.moreoptions.prototype.gameEngine.components.AIComponent;
  */
 public class AISystem extends EntitySystem {
 
-    Family f = Family.all(AIComponent.class).get();
-    ShapeRenderer renderer;
+    private Family f = Family.all(AIComponent.class).get();
+    private ShapeRenderer renderer;
+    private static ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
+
 
     public AISystem(ShapeRenderer renderer) {
         this.renderer =renderer;
@@ -27,8 +30,10 @@ public class AISystem extends EntitySystem {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(f);
         for(Entity e : entities) {
-            e.getComponent(AIComponent.class).getState().update(GameWorld.getInstance().getRoomManager().getCurrentRoom(), e, deltaTime);
-            e.getComponent(AIComponent.class).getState().draw(renderer);
+            AIComponent aiComponent = aiMapper.get(e);
+
+            aiComponent.getState().update(GameWorld.getInstance().getRoomManager().getCurrentRoom(), e, deltaTime);
+            aiComponent.getState().draw(renderer);
         }
         renderer.end();
 

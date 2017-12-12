@@ -16,6 +16,7 @@ public class PickupSystem extends EntitySystem {
     private Family p = Family.all(PlayerComponent.class).get();
 
     private ComponentMapper<CircleCollisionComponent> cmapper = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<PickupComponent> pucMapper = ComponentMapper.getFor(PickupComponent.class);
 
     @Override
     public void update(float deltaTime) {
@@ -27,7 +28,8 @@ public class PickupSystem extends EntitySystem {
         for(Entity p : players) {
             for(Entity pickup : pickups) {
                 if(cmapper.get(p).getHitbox().overlaps(cmapper.get(pickup).getHitbox())) {
-                    if(pickup.getComponent(PickupComponent.class).trigger(p)) getEngine().removeEntity(pickup);
+                    PickupComponent pickupComponent = pucMapper.get(pickup);
+                    if(pickupComponent.trigger(p)) getEngine().removeEntity(pickup);
                 }
             }
         }

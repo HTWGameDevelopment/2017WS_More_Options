@@ -1,10 +1,12 @@
 package com.moreoptions.prototype.gameEngine.systems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.StatsComponent;
 
 /**
@@ -12,18 +14,21 @@ import com.moreoptions.prototype.gameEngine.components.StatsComponent;
  */
 public class PlayerSystem extends EntitySystem{
 
-    Family f = Family.all(PlayerComponent.class).get();
+    private Family f = Family.all(PlayerComponent.class).get();
+
+    private ComponentMapper<StatsComponent> scMapper = ComponentMapper.getFor(StatsComponent.class);
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
 
+
         ImmutableArray<Entity> players = getEngine().getEntitiesFor(f);
 
         for(Entity p : players) {
 
-           float x =  p.getComponent(StatsComponent.class).getStats().getCurrentShotCooldown();
-            p.getComponent(StatsComponent.class).getStats().setCurrentShotCooldown(x+deltaTime);
+           float x =  scMapper.get(p).getStats().getCurrentShotCooldown();
+            scMapper.get(p).getStats().setCurrentShotCooldown(x+deltaTime);
         }
 
     }

@@ -1,5 +1,6 @@
 package com.moreoptions.prototype.gameEngine.systems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
@@ -22,12 +23,19 @@ import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
  * Created by User on 11/20/2017.
  */
 public class ProjectileSystem extends EntitySystem {
-    private Family family = Family.all(PlayerComponent.class).get();
 
     private Family projFamily = Family.all(ProjectileComponent.class).get();
     private Family enemyFamily = Family.all(EnemyHitboxComponent.class).get();
 
-    EventSubscriber subscriber;
+    private EventSubscriber subscriber;
+
+    private ComponentMapper<StatsComponent> scMapper = ComponentMapper.getFor(StatsComponent.class);
+    private ComponentMapper<EnemyHitboxComponent> ehcMapper = ComponentMapper.getFor(EnemyHitboxComponent.class);
+    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<CollisionComponent> ccMapper = ComponentMapper.getFor(CollisionComponent.class);
+    private ComponentMapper<ProjectileComponent> pcMapper = ComponentMapper.getFor(ProjectileComponent.class);
+    private ComponentMapper<CircleCollisionComponent> cccMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
+
 
     public ProjectileSystem() {
 
@@ -51,7 +59,7 @@ public class ProjectileSystem extends EntitySystem {
                 if(ccd >= uppercd) {
                     Entity projectile = ProjectileFactory.createProjectile(entity, direction);
                     getEngine().addEntity(projectile);
-                    entity.getComponent(StatsComponent.class).getStats().setCurrentShotCooldown(0);
+                    scMapper.get(entity).getStats().setCurrentShotCooldown(0);
                 }
             }
         });
@@ -63,10 +71,10 @@ public class ProjectileSystem extends EntitySystem {
         ImmutableArray<Entity> enemies = getEngine().getEntitiesFor(enemyFamily);
 
         for (Entity e : entities){
-            ProjectileComponent p = e.getComponent(ProjectileComponent.class);
-            CollisionComponent c = e.getComponent(CollisionComponent.class);
-            PositionComponent pc = e.getComponent(PositionComponent.class);
-            CircleCollisionComponent projectileCircleCollisionComponent = e.getComponent(CircleCollisionComponent.class);
+            ProjectileComponent p = pcMapper.get(e);
+            CollisionComponent c = ccMapper.get(e);
+            PositionComponent pc = posMapper.get(e);
+            CircleCollisionComponent projectileCircleCollisionComponent = cccMapper.get(e);
 
             float oldX = c.getOldX();
             float oldY = c.getOldY();
@@ -80,8 +88,8 @@ public class ProjectileSystem extends EntitySystem {
             }
 
             for(Entity hit : enemies) {
-                EnemyHitboxComponent ehc = hit.getComponent(EnemyHitboxComponent.class);
-                PositionComponent hitpc = hit.getComponent(PositionComponent.class);
+                EnemyHitboxComponent ehc = ehcMapper.get(hit);
+                PositionComponent hitpc = posMapper.get(hit);
 
                 ehc.getCircle().setPosition(hitpc.getX(),hitpc.getY());
 

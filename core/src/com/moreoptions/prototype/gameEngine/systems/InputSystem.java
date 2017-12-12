@@ -1,11 +1,13 @@
 package com.moreoptions.prototype.gameEngine.systems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 import com.moreoptions.prototype.gameEngine.data.Player;
@@ -19,6 +21,9 @@ import java.util.Vector;
  */
 
 public class InputSystem extends EntitySystem {
+
+    private ComponentMapper<PlayerComponent> pcMapper = ComponentMapper.getFor(PlayerComponent.class);
+    private ComponentMapper<VelocityComponent> vcMapper = ComponentMapper.getFor(VelocityComponent.class);
 
     private static InputSystem instance = new InputSystem();
 
@@ -47,8 +52,9 @@ public class InputSystem extends EntitySystem {
 
     private void updateVelocity(Entity e) {
 
-        Player p = e.getComponent(PlayerComponent.class).getPlayer();
-        VelocityComponent v = e.getComponent(VelocityComponent.class);
+        PlayerComponent pc = pcMapper.get(e);
+        Player p = pc.getPlayer();
+        VelocityComponent v = vcMapper.get(e);
 
         InputState playerInput = p.getInputState();
 
@@ -77,7 +83,8 @@ public class InputSystem extends EntitySystem {
 
     public void updateShots(Entity e) {
 
-        Player p = e.getComponent(PlayerComponent.class).getPlayer();
+        PlayerComponent pc = pcMapper.get(e);
+        Player p = pc.getPlayer();
 
         InputState playerInput = p.getInputState();
 

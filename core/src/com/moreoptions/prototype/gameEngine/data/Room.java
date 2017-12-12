@@ -172,7 +172,6 @@ public class Room {
         e.add(new DoorComponent(offset));
         e.add(new BlockedTileComponent());
         e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
-        e.add(new CircleCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE/2));
         e.add(new DebugColorComponent(Color.RED));
 
         return e;
