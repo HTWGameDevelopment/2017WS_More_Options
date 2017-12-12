@@ -10,8 +10,6 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.moreoptions.prototype.gameEngine.components.*;
 
-import static com.sun.javafx.geom.BaseBounds.BoundsType.RECTANGLE;
-
 /**
  * Basic ShapeRenderer
  */
@@ -20,18 +18,25 @@ public class DebugRenderSystem extends EntitySystem{
     private Family f = Family.all(DebugColorComponent.class)
             .all(PositionComponent.class)
             .all(CollisionComponent.class)
+            .exclude(EnemyComponent.class)
             .get();
+
+    private Family enemies = Family.all(EnemyComponent.class,PositionComponent.class,CollisionComponent.class).get();
+
     private ShapeRenderer renderer;
 
     private Family debugLines = Family.all(DebugLineComponent.class)
             .get();
-    private Family debugCircles = Family.all(DebugCircleComponent.class)
+    private Family debugCircles = Family.all(DebugCircleComponent.class).exclude(EnemyComponent.class)
             .get();
 
+    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<DebugLineComponent> cm = ComponentMapper.getFor(DebugLineComponent.class);
     private ComponentMapper<DebugCircleComponent> am = ComponentMapper.getFor(DebugCircleComponent.class);
-    private ComponentMapper<SquareCollisionComponent> sqm = ComponentMapper.getFor(SquareCollisionComponent.class);
-    private ComponentMapper<CircleCollisionComponent> ccc = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<SquareCollisionComponent> sqcMapper = ComponentMapper.getFor(SquareCollisionComponent.class);
+    private ComponentMapper<CircleCollisionComponent> cccMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<DebugColorComponent> dcolorMapper = ComponentMapper.getFor(DebugColorComponent.class);
+    private ComponentMapper<DebugCircleComponent> dccMapper = ComponentMapper.getFor(DebugCircleComponent.class);
 
 
     public DebugRenderSystem(ShapeRenderer renderer) {
@@ -44,17 +49,18 @@ public class DebugRenderSystem extends EntitySystem{
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(0,0,1,1);
         for(Entity e : getEngine().getEntitiesFor(f)) {
-            DebugColorComponent dc = e.getComponent(DebugColorComponent.class);
+            DebugColorComponent dc = dcolorMapper.get(e);
 
-            renderer.setColor(dc.getColor());
 
-            if(sqm.has(e)) {
-                Rectangle hitbox = sqm.get(e).getHitbox();
-                renderer.rect(hitbox.x,hitbox.y,hitbox.getWidth(),hitbox.getHeight());
-            } else if(ccc.has(e)) {
-                Circle c = ccc.get(e).getHitbox();
-                renderer.circle(c.x,c.y,c.radius);
-            }
+                if (dc != null) renderer.setColor(dc.getColor());
+                else renderer.setColor(Color.FIREBRICK);
+                if (sqcMapper.has(e)) {
+                    Rectangle hitbox = sqcMapper.get(e).getHitbox();
+                    renderer.rect(hitbox.x, hitbox.y, hitbox.getWidth(), hitbox.getHeight());
+                } else if (cccMapper.has(e)) {
+                    Circle c = cccMapper.get(e).getHitbox();
+                    renderer.circle(c.x, c.y, c.radius);
+                }
 
         }
 
@@ -64,11 +70,11 @@ public class DebugRenderSystem extends EntitySystem{
         for(Entity e : getEngine().getEntitiesFor(f)) {
             renderer.setColor(Color.CYAN);
 
-            if(sqm.has(e)) {
-                Rectangle hitbox = sqm.get(e).getHitbox();
+            if(sqcMapper.has(e)) {
+                Rectangle hitbox = sqcMapper.get(e).getHitbox();
                 renderer.rect(hitbox.x,hitbox.y,hitbox.getWidth(),hitbox.getHeight());
-            } else if(ccc.has(e)) {
-                Circle c = ccc.get(e).getHitbox();
+            } else if(cccMapper.has(e)) {
+                Circle c = cccMapper.get(e).getHitbox();
                 renderer.circle(c.x,c.y,c.radius);
             }
         }
@@ -76,6 +82,25 @@ public class DebugRenderSystem extends EntitySystem{
         drawDebugLines(renderer);
         drawDebugCircle(renderer);
 
+        renderer.end();
+        drawEnemies(renderer);
+
+    }
+
+    private void drawEnemies(ShapeRenderer renderer) {
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        for(Entity e : getEngine().getEntitiesFor(enemies)) {
+            EnemyComponent ec = e.getComponent(EnemyComponent.class);
+            if(ec.isDead()) continue;
+
+            DebugColorComponent dcc = dcolorMapper.get(e);
+            DebugCircleComponent dlc = dccMapper.get(e);
+            PositionComponent pc = posMapper.get(e);
+            renderer.setColor(dcc.getColor());
+            renderer.circle(pc.getX(),pc.getY(),dlc.getRadius());
+        }
         renderer.end();
     }
 
@@ -89,7 +114,9 @@ public class DebugRenderSystem extends EntitySystem{
     private void drawDebugCircle(ShapeRenderer renderer) {
         renderer.setColor(Color.RED);
         for(Entity e : getEngine().getEntitiesFor(debugCircles)) {
-            renderer.circle(am.get(e).getCenter().x,am.get(e).getCenter().y, am.get(e).getRadius());
+            PositionComponent pc = posMapper.get(e);
+            DebugCircleComponent cc = dccMapper.get(e);
+            renderer.circle(pc.getX(),pc.getY(), cc.getRadius());
         }
     }
 }

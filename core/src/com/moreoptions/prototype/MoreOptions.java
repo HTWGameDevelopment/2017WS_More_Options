@@ -1,54 +1,41 @@
 package com.moreoptions.prototype;
 
-import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.moreoptions.prototype.gameEngine.GameEngine;
-import com.moreoptions.prototype.gameEngine.components.DebugColorComponent;
-import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
-import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
-import com.moreoptions.prototype.gameEngine.data.Profile;
-import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
-import com.moreoptions.prototype.gameEngine.systems.DebugRenderSystem;
-import com.moreoptions.prototype.gameEngine.systems.MovementSystem;
-import com.moreoptions.prototype.gameEngine.systems.InputSystem;
+import com.moreoptions.prototype.gameEngine.GameWorld;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 
-public class MoreOptions extends ApplicationAdapter {
+public class MoreOptions extends Game {
 
-	private GameEngine engine;
+	private GameWorld engine;
 	private FPSLogger logger;
+	private StartGameScreen screen;
+	private DungeonScreen dungeonScreen;
+
 	
-	@Override
-	public void create () {
-        engine = GameEngine.getInstance();
-        logger = new FPSLogger();
-	}
-
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        engine.update(Gdx.graphics.getDeltaTime());
-        logger.log();
-
-	}
-	
-	@Override
-	public void dispose () {
+	public MoreOptions() {
 
 	}
 
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        engine.resize(width,height);
-    }
+	public void create() {
+
+
+		AssetLoader.getInstance().loadRooms();
+
+		while(!AssetLoader.getInstance().update()) {
+			System.out.println("Updating");
+		}
+		screen = new StartGameScreen(this);
+		dungeonScreen = new DungeonScreen(this);
+		setScreen(dungeonScreen);
+	}
+
+	public void showDungeon() {
+		setScreen(dungeonScreen);
+	}
+
+	public void showStartScreen() {
+		setScreen(screen);
+	}
+
 }

@@ -1,5 +1,6 @@
-package com.moreoptions.prototype.gameEngine;
+package com.moreoptions.prototype.gameEngine.systems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
@@ -14,13 +15,16 @@ import com.moreoptions.prototype.gameEngine.components.PositionComponent;
  */
 public class FontRenderSystem extends EntitySystem {
 
-    SpriteBatch batch;
-    BitmapFont font;
-    Family f = Family.all(CombatTextComponent.class).get();
+    private SpriteBatch batch;
+    private BitmapFont font;
+    private Family f = Family.all(CombatTextComponent.class).get();
 
-    public FontRenderSystem(SpriteBatch batch, BitmapFont font) {
+    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<CombatTextComponent> ctMapper = ComponentMapper.getFor(CombatTextComponent.class);
+
+    public FontRenderSystem(SpriteBatch batch) {
         this.batch = batch;
-        this.font = font;
+        this.font = new BitmapFont();
     }
 
     @Override
@@ -29,13 +33,11 @@ public class FontRenderSystem extends EntitySystem {
         ImmutableArray<Entity> entites = getEngine().getEntitiesFor(f);
         batch.begin();
         for(Entity e : entites) {
-            CombatTextComponent c = e.getComponent(CombatTextComponent.class);
-            PositionComponent p = e.getComponent(PositionComponent.class);
+            CombatTextComponent c = ctMapper.get(e);
+            PositionComponent p = posMapper.get(e);
             font.draw(batch,c.getText(),p.getX(),p.getY());
-
         }
         batch.end();
-
-
     }
+
 }

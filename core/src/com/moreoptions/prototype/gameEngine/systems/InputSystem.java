@@ -1,15 +1,20 @@
 package com.moreoptions.prototype.gameEngine.systems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
-import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.util.Event;
+import com.moreoptions.prototype.gameEngine.util.EventBus;
+
+import java.util.Vector;
 
 /**
  * System that manipulates Entities based on Player Input
@@ -17,10 +22,13 @@ import com.moreoptions.prototype.gameEngine.data.Player;
 
 public class InputSystem extends EntitySystem {
 
+    private ComponentMapper<PlayerComponent> pcMapper = ComponentMapper.getFor(PlayerComponent.class);
+    private ComponentMapper<VelocityComponent> vcMapper = ComponentMapper.getFor(VelocityComponent.class);
+
     private static InputSystem instance = new InputSystem();
 
     public static InputSystem getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new InputSystem();
         }
         return instance;
@@ -30,20 +38,23 @@ public class InputSystem extends EntitySystem {
 
     }
 
-    private Family family = Family.all(PlayerComponent.class).get();
+    private Family family = Family.one(PlayerComponent.class).get();
 
     @Override
     public void update(float deltaTime) {
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(family);
 
-        for(Entity e : entities) {
+        for (Entity e : entities) {
             updateVelocity(e);
+            updateShots(e);
         }
     }
 
     private void updateVelocity(Entity e) {
-        Player p = e.getComponent(PlayerComponent.class).getPlayer();
-        VelocityComponent v = e.getComponent(VelocityComponent.class);
+
+        PlayerComponent pc = pcMapper.get(e);
+        Player p = pc.getPlayer();
+        VelocityComponent v = vcMapper.get(e);
 
         InputState playerInput = p.getInputState();
 
@@ -67,5 +78,40 @@ public class InputSystem extends EntitySystem {
         } else if (!playerInput.isMoveLeft() && !playerInput.isMoveRight()) {
             v.setVelX(v.getVelX() * v.getDeceleration());
         }
+
+    }
+
+    public void updateShots(Entity e) {
+
+        PlayerComponent pc = pcMapper.get(e);
+        Player p = pc.getPlayer();
+
+        InputState playerInput = p.getInputState();
+
+            if (playerInput.isShootDown()) {
+                Event event = new Event("shoot");
+                event.addData("entity", e);
+                event.addData("direction", new Vector2(0,-1));
+                EventBus.getInstance().addEvent(event);
+                //  ProjectileSystem.shoot(ProjectileSystem.Direction.DOWN, e);
+            } else if (playerInput.isShootUp()) {
+//                ProjectileSystem.shoot(ProjectileSystem.Direction.UP, e);
+                Event event = new Event("shoot");
+                event.addData("entity", e);
+                event.addData("direction", new Vector2(0,1));
+                EventBus.getInstance().addEvent(event);
+            } else if (playerInput.isShootLeft()) {
+                Event event = new Event("shoot");
+                event.addData("entity", e);
+                event.addData("direction", new Vector2(-1,0));
+                EventBus.getInstance().addEvent(event);
+                //ProjectileSystem.shoot(ProjectileSystem.Direction.LEFT, e);
+            } else if (playerInput.isShootRight()) {
+                Event event = new Event("shoot");
+                event.addData("entity", e);
+                event.addData("direction", new Vector2(1,0));
+                EventBus.getInstance().addEvent(event);
+                //ProjectileSystem.shoot(ProjectileSystem.Direction.RIGHT, e);
+            }
     }
 }

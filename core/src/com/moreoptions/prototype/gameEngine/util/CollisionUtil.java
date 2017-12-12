@@ -1,11 +1,9 @@
 package com.moreoptions.prototype.gameEngine.util;
 
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.*;
-import com.moreoptions.prototype.gameEngine.GameEngine;
-import com.moreoptions.prototype.gameEngine.components.CollisionComponent;
-import com.moreoptions.prototype.gameEngine.components.DebugLineComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -217,5 +215,16 @@ public class CollisionUtil {
                 - baY * abScalingFactor2);
         return Arrays.asList(p1, p2);
     }
+
+    public static boolean intersectSegmentRectangle(float x1,float y1, float x2, float y2, Rectangle rect) {
+
+        if(Intersector.intersectSegments(x1,y1,x2,y2,rect.x,rect.y,rect.x+rect.width,rect.y,null)) return true;
+        if(Intersector.intersectSegments(x1,y1,x2,y2,rect.x,rect.y,rect.x+rect.width,rect.y+rect.height,null)) return true;
+        if(Intersector.intersectSegments(x1,y1,x2,y2,rect.x,rect.y,rect.x,rect.y+rect.getHeight(),null)) return true;
+        if(Intersector.intersectSegments(x1,y1,x2,y2,rect.x+rect.width,rect.y+rect.height,rect.x+rect.width,rect.y,null)) return true;
+
+        return false;
+    }
+
 
 }
