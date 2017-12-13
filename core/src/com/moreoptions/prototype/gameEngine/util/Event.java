@@ -16,8 +16,7 @@ public class Event {
     }
 
     public <T> T getData(String identifier, Class<T> data) {
-        T t = data.cast(eventData.get(identifier));
-        return t;
+        return data.cast(eventData.get(identifier));
     }
 
 
