@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.gameEngine.util;
+package com.moreoptions.prototype.gameEngine.util.eventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,9 +17,6 @@ public class EventBus {
     }
 
     public void addEvent(Event event) {
-
-        System.out.println("Received Event " + event.getIdentifier());
-
         String identifier = event.getIdentifier();
 
         for(String key : subscriberMap.keySet()) {

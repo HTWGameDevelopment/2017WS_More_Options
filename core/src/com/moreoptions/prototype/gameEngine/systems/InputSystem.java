@@ -7,14 +7,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 import com.moreoptions.prototype.gameEngine.data.Player;
-import com.moreoptions.prototype.gameEngine.util.Event;
-import com.moreoptions.prototype.gameEngine.util.EventBus;
-
-import java.util.Vector;
+import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
 
 /**
  * System that manipulates Entities based on Player Input

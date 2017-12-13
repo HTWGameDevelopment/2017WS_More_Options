@@ -5,18 +5,11 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
-import com.moreoptions.prototype.gameEngine.data.InputState;
-import com.moreoptions.prototype.gameEngine.data.Player;
-import com.moreoptions.prototype.gameEngine.data.Statistics;
-import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
-import com.moreoptions.prototype.gameEngine.data.projectileEvents.SplitEvent;
-import com.moreoptions.prototype.gameEngine.util.Event;
-import com.moreoptions.prototype.gameEngine.util.EventListener;
-import com.moreoptions.prototype.gameEngine.util.EventSubscriber;
+import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 /**

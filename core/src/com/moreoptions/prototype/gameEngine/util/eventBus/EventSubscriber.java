@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.gameEngine.util;
+package com.moreoptions.prototype.gameEngine.util.eventBus;
 
 import java.util.HashMap;
 
