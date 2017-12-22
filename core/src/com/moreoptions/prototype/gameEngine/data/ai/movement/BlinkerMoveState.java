@@ -36,7 +36,7 @@ public class BlinkerMoveState implements AIState {
     private boolean attacking = false;
     @Override
     public void update(Room room, Entity self, float delta) {
-        player = getClosestPlayer(room.getPlayerList(), self);
+      /*  player = getClosestPlayer(room.getPlayerList(), self);
 
         if(currentProgress > cooldown) {
             try {
@@ -52,7 +52,7 @@ public class BlinkerMoveState implements AIState {
             }
             currentProgress = 0;
         }
-        currentProgress += delta;
+        currentProgress += delta;*/
     }
 
     private void teleport(Room room, Entity self) {

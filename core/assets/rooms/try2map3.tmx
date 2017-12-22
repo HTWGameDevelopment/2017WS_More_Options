@@ -41,13 +41,13 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,185,0,0,185,0,0,185,0,0,0,0,0,
-0,0,0,0,0,0,0,185,185,185,0,0,0,0,0,0,0,
+0,0,0,0,0,185,0,0,0,0,0,185,0,0,0,0,0,
+0,0,0,185,0,0,0,0,0,0,0,0,0,185,0,0,0,
+0,0,0,0,0,185,0,0,185,0,0,185,0,185,0,0,0,
+0,0,0,185,0,0,0,185,185,185,0,0,0,185,0,0,0,
 0,0,0,0,0,185,0,185,185,185,0,185,0,0,0,0,0,
-0,0,0,0,0,0,0,0,185,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,185,0,0,0,0,185,0,0,0,0,185,0,0,0,
+0,0,0,0,0,185,0,0,0,0,185,0,185,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
@@ -55,22 +55,22 @@
  <objectgroup name="EnemyLayer">
   <object id="16" name="Chased2" x="337" y="239">
    <properties>
-    <property name="enemyID" type="int" value="1"/>
+    <property name="enemyID" type="int" value="2"/>
    </properties>
   </object>
   <object id="18" name="Chased4" x="335.5" y="111.5">
    <properties>
-    <property name="enemyID" type="int" value="1"/>
+    <property name="enemyID" type="int" value="2"/>
    </properties>
   </object>
   <object id="19" name="Chased3" x="209" y="111">
    <properties>
-    <property name="enemyID" type="int" value="1"/>
+    <property name="enemyID" type="int" value="0"/>
    </properties>
   </object>
   <object id="20" name="Chased1" x="207" y="240.5">
    <properties>
-    <property name="enemyID" type="int" value="1"/>
+    <property name="enemyID" type="int" value="0"/>
    </properties>
   </object>
  </objectgroup>

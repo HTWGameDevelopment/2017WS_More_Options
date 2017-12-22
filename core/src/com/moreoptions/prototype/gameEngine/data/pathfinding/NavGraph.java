@@ -169,7 +169,7 @@ public class NavGraph {
 
         float endTime = System.nanoTime();
 
-        System.out.println("It took "+ (endTime-startTime) / 1000000 + " milliseconds to calculate a path between " +nodes.size() + " +nodes");
+        //System.out.println("It took "+ (endTime-startTime) / 1000000 + " milliseconds to calculate a path between " +nodes.size() + " +nodes");
 
 
         removeNode(start);

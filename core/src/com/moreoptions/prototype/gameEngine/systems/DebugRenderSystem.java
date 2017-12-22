@@ -80,10 +80,11 @@ public class DebugRenderSystem extends EntitySystem{
         }
 
         drawDebugLines(renderer);
-        drawDebugCircle(renderer);
 
         renderer.end();
         drawEnemies(renderer);
+        drawDebugCircle(renderer);
+
 
     }
 
@@ -112,12 +113,14 @@ public class DebugRenderSystem extends EntitySystem{
     }
 
     private void drawDebugCircle(ShapeRenderer renderer) {
-        renderer.setColor(Color.RED);
+        renderer.setColor(Color.BROWN);
+        renderer.begin(ShapeRenderer.ShapeType.Line);
         for(Entity e : getEngine().getEntitiesFor(debugCircles)) {
             PositionComponent pc = posMapper.get(e);
             DebugCircleComponent cc = dccMapper.get(e);
             renderer.circle(pc.getX(),pc.getY(), cc.getRadius());
         }
+        renderer.end();
     }
 }
 

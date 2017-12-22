@@ -12,6 +12,8 @@ public class PlayerComponent implements Component {
 
     private Player player;
 
+
+
     public PlayerComponent(Player player) {
         this.player = player;
     }

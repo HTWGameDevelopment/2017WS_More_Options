@@ -40,6 +40,10 @@ public class CollisionComponent implements Component{
         return this.oldPosition.y;
     }
 
+    public Vector2 getOldPosition() {
+        return oldPosition;
+    }
+
     public CollisionEvent getOnCollision() {
         return event;
     }
