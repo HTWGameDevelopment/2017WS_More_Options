@@ -138,6 +138,7 @@ public class RoomDefinition {
                 if (t.getCell(x, y).getTile().getProperties().containsKey("inner")) {
                     if(t.getCell(x, y).getTile().getProperties().get("inner", boolean.class))
                         tile.add(new InnerTileComponent());
+                        tile.add(new ObstacleComponent());
                 }
 
 

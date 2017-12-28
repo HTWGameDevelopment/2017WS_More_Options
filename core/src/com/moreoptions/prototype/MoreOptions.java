@@ -20,10 +20,10 @@ public class MoreOptions extends Game {
 	public void create() {
 
 
-		AssetLoader.getInstance().loadRooms();
+		AssetLoader.getInstance().loadAll();
 
 		while(!AssetLoader.getInstance().update()) {
-			System.out.println("Updating");
+
 		}
 		screen = new StartGameScreen(this);
 		dungeonScreen = new DungeonScreen(this);

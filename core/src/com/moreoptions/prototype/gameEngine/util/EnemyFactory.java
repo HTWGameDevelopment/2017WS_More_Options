@@ -26,6 +26,7 @@ public class EnemyFactory {
         e.add(new DebugCircleComponent(10));
         e.add(new VelocityComponent(0f, 0f));
         e.add(new DebugColorComponent(Color.MAGENTA));
+        e.add(new DisplacableComponent(10));
         e.add(getAIFor(enemyId));
         e.add(new EnemyHitboxComponent(10));
         e.add(new EnemyComponent(x,y,room));

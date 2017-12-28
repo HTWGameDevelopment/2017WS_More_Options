@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -12,6 +13,7 @@ import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.level.LevelManager;
 
 /**
@@ -26,6 +28,7 @@ public class GameWorld extends Engine {
     private FitViewport fv;
     private LevelManager levelManager;
     private GameInputProcessor processor;
+    BitmapFont font;
 
     private GameWorld() {
         demoSetup();
@@ -46,6 +49,8 @@ public class GameWorld extends Engine {
 
         renderer.setProjectionMatrix(camera.combined);
 
+        font = AssetLoader.getInstance().getAssetManager().get("fonts/RobotoSlab-Bold.ttf", BitmapFont.class);
+
         processor = new GameInputProcessor(camera);
         Gdx.input.setInputProcessor(processor);
 
@@ -65,6 +70,8 @@ public class GameWorld extends Engine {
         addSystem(new AISystem(renderer));
         addSystem(new PlayerSystem());
         addSystem(new EnemySystem());
+        addSystem(new QuadTreeDebug(batch, renderer));
+        addSystem(new NavigationSystem(renderer,this, batch,font));
         levelManager = new LevelManager(this);
 
     }

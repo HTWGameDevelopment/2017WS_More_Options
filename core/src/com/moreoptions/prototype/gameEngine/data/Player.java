@@ -41,6 +41,7 @@ public class Player {
             addVelocityComponent(playerEntity);
             addCollisionComponent(playerEntity);
             addStatsComponent(playerEntity);
+            playerEntity.add(new DisplacableComponent(30));
         } catch (NoOffsetException e) {
             e.printStackTrace();
         }

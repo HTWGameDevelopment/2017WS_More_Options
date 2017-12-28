@@ -15,6 +15,7 @@ public class Statistics {
     private float projectileSpeed;
     private float range;
     private float currentShotCooldown;
+    private int pushability;
 
     public Statistics() {
         this.speed = 150;
@@ -24,6 +25,7 @@ public class Statistics {
 
         this.fireRate = 0.75f;
         this.projectileSpeed = 120;
+        this.pushability = 5;
 
         this.range = 100;
 
@@ -102,5 +104,9 @@ public class Statistics {
 
     public void setCurrentShotCooldown(float currentShotCooldown) {
         this.currentShotCooldown = currentShotCooldown;
+    }
+
+    public int getPushability() {
+        return pushability;
     }
 }

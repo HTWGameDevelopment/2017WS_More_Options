@@ -7,10 +7,14 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
 
 
 /**
@@ -30,10 +34,14 @@ public class MovementSystem extends EntitySystem {
     private ComponentMapper<VelocityComponent>  velMapper   = ComponentMapper.getFor(VelocityComponent.class);
     private ComponentMapper<CircleCollisionComponent> cMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
     private ComponentMapper<SquareCollisionComponent> sqMapper = ComponentMapper.getFor(SquareCollisionComponent.class);
+    private ComponentMapper<DisplacableComponent> dcMapper = ComponentMapper.getFor(DisplacableComponent.class);
+    private ComponentMapper<StatsComponent> statsMapper = ComponentMapper.getFor(StatsComponent.class);
 
     private Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class,
             CircleCollisionComponent.class).exclude(TileComponent.class).get();
-    private Family circlColl = Family.one(PlayerComponent.class, EnemyComponent.class).get();
+
+    private Family playColl = Family.one(PlayerComponent.class).get();
+    private Family enemyColl = Family.one(EnemyComponent.class).get();
 
     private Family blockedTilesFamily = Family.all(BlockedTileComponent.class).get();
     private ImmutableArray<Entity> entities;
@@ -61,26 +69,206 @@ public class MovementSystem extends EntitySystem {
             col.setOldX(pos.getX());
             col.setOldY(pos.getY());
 
+
+
+
+
             pos.setX(pos.getX() + vel.getVelX() * deltaTime);
+            if(dcMapper.has(e)) pos.setX(pos.getX() + dcMapper.get(e).getDir().x);
             if(sqMapper.has(e)) sqMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
             if(cMapper.has(e)) cMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
-            resolveXCollision(e,col.getOldX(), col.getOldY());
+            boolean xCollision = resolveXCollision(e,col.getOldX(), col.getOldY());
 
             pos.setY(pos.getY() + vel.getVelY() * deltaTime);
+            if(dcMapper.has(e)) {
+                pos.setY(pos.getY() + dcMapper.get(e).getDir().y);
+
+            }
             if(sqMapper.has(e)) sqMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
             if(cMapper.has(e)) cMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
-            resolveYCollision(e,col.getOldX(), col.getOldY());
-            //Add smooth edge movement
+            boolean yCollsion = resolveYCollision(e,col.getOldX(), col.getOldY());
 
-            resolveCollision(e);
+            //SMOOTH EDGE MOVEMENT
+/*
+
+            if(vel.getVelX() > 0 && xCollision) {
+
+                if(!checkSensor(Sensor.TOP_RIGHT, e)) {
+
+                    vel.setVelY(vel.getVelY() + 3);
+
+                } else if(!checkSensor(Sensor.BOT_RIGHT, e)){
+
+                    vel.setVelY(vel.getVelY() - 3);
+                }
+
+                resolveYCollision(e,col.getOldX(), col.getOldY());
+
+            } else if(vel.getVelX() < 0 && xCollision) {
+                if(!checkSensor(Sensor.TOP_LEFT, e)) {
+                    vel.setVelY(vel.getVelY() + 3);
+
+                } else if(!checkSensor(Sensor.BOT_LEFT, e)){
+
+                    vel.setVelY(vel.getVelY() - 3);
+                }
+
+                resolveYCollision(e,col.getOldX(), col.getOldY());
+            }
+
+
+
+
+            if(vel.getVelY() > 0 && yCollsion) {
+
+                if(!checkSensor(Sensor.TOP_LEFT, e)) {
+
+                    vel.setVelX(vel.getVelX() - 3);
+
+                } else if(!checkSensor(Sensor.TOP_RIGHT, e)){
+                    vel.setVelX(vel.getVelX() + 3);
+                }
+
+            } else if(vel.getVelY() < 0 && yCollsion) {
+                if(!checkSensor(Sensor.BOT_LEFT, e)) {
+                    vel.setVelX(vel.getVelX() - 3);
+                } else if(!checkSensor(Sensor.BOT_RIGHT, e)){
+                    vel.setVelX(vel.getVelX() + 3);
+                }
+            }
+
+            resolveXCollision(e,col.getOldX(), col.getOldY());
+*/
+
+
+            if(dcMapper.has(e)) {
+                dcMapper.get(e).getDir().scl(0.9f);
+            }
+
 
 
         }
+        ArrayList<Pair<Entity,Entity>> collisionList = getCollisions();
+
+        for(Pair<Entity, Entity> collision : collisionList) {
+
+            Entity player = collision.getKey();
+            Entity enemy = collision.getValue();
+
+            Circle a = cMapper.get(player).getHitbox();
+            Circle b = cMapper.get(enemy).getHitbox();
+
+            PositionComponent apos = posMapper.get(player);
+            PositionComponent bpos = posMapper.get(enemy);
+
+            StatsComponent stats = statsMapper.get(player);
+
+            CollisionComponent cc = colMapper.get(player);
+            CollisionComponent cd = colMapper.get(enemy);
+
+            //First check if still colliding
+
+            //Then undo movement
+
+            applyKnockback(player, stats.getStats().getPushability(), enemy);
+
+
+
+
+        }
+
+        for(Pair<Entity, Entity> collision : collisionList) {
+
+            Entity player = collision.getKey();
+            Entity enemy = collision.getValue();
+
+            Circle a = cMapper.get(player).getHitbox();
+            Circle b = cMapper.get(enemy).getHitbox();
+
+            if(a.overlaps(b)) System.out.println("Naaaaa");
+
+
+        }
+
     }
 
-    private void resolveCollision(Entity e) {
+    private boolean checkSensor(Sensor sensor, Entity e) {
 
-        ImmutableArray<Entity> circles = getEngine().getEntitiesFor(circlColl);
+        float posX = 0;
+        float posY = 0;
+
+        PositionComponent p = posMapper.get(e);
+        CircleCollisionComponent cp = cMapper.get(e);
+
+        switch (sensor) {
+            case TOP_RIGHT:
+                posX = p.getX() + cp.getHitbox().radius;
+                posY = p.getY() + cp.getHitbox().radius;
+                break;
+            case BOT_LEFT:
+                posX = p.getX() - cp.getHitbox().radius;
+                posY = p.getY() - cp.getHitbox().radius;
+                break;
+            case BOT_RIGHT:
+                posX = p.getX() + cp.getHitbox().radius;
+                posY = p.getY() - cp.getHitbox().radius;
+                break;
+            case TOP_LEFT:
+                posX = p.getX() - cp.getHitbox().radius;
+                posY = p.getY() + cp.getHitbox().radius;
+                break;
+        }
+
+        ImmutableArray<Entity> entities = getEngine().getEntitiesFor(blockedTilesFamily);
+        for(Entity ex : entities) {
+            SquareCollisionComponent sqcc = sqMapper.get(ex);
+            if(sqcc.getHitbox().contains(posX,posY)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    private void applyKnockback(Entity player, int i, Entity enemy) {
+
+        DisplacableComponent dc = dcMapper.get(player);
+
+        if(!dc.isImmune()) {
+
+            Vector2 norm = getDirectionVector(enemy, player);
+
+            dc.applyForce(norm, i);
+
+        }
+
+
+
+    }
+
+    private ArrayList<Pair<Entity,Entity>> getCollisions() {
+
+        ImmutableArray<Entity> players = getEngine().getEntitiesFor(playColl);
+        ImmutableArray<Entity> enemies = getEngine().getEntitiesFor(enemyColl);
+
+        ArrayList<Pair<Entity,Entity>> collisionList = new ArrayList<Pair<Entity, Entity>>();
+
+        for(Entity player : players) {
+            for(Entity enemy : enemies) {
+
+                Circle a = cMapper.get(player).getHitbox();
+                Circle b = cMapper.get(enemy).getHitbox();
+
+                if(a.overlaps(b)) {
+
+                    collisionList.add(new Pair<Entity, Entity>(player, enemy));
+
+                }
+
+            }
+        }
+        return collisionList;
+        /*
         for(Entity ex : circles) {
             if(ex.equals(e)) continue;
             Circle a = cMapper.get(e).getHitbox();
@@ -89,7 +277,42 @@ public class MovementSystem extends EntitySystem {
             PositionComponent apos = posMapper.get(e);
             PositionComponent bpos = posMapper.get(ex);
 
+            CollisionComponent cc = colMapper.get(e);
+            CollisionComponent cd = colMapper.get(ex);
+
+
             if(a.overlaps(b)) {
+
+                a.setX(cc.getOldX());
+                b.setX(cd.getOldX());
+
+                if(a.overlaps(b)) {
+
+                    a.setY(cc.getOldY());
+                    b.setY(cd.getOldY());
+                }
+
+                //X
+                apos.getPosition().x = cc.getOldX();
+
+                apos.getPosition().set(cc.getOldX(),cc.getOldY());
+
+
+                bpos.getPosition().set(cd.getOldX(),cd.getOldY());
+
+                a.setPosition(apos.getX(),apos.getY());
+                b.setPosition(bpos.getX(),bpos.getY());
+
+                if(a.overlaps(b)) {
+                    System.out.println("NEIN");
+                }
+
+                //applyForce(e,ex);
+
+
+
+                *//*
+
                 DebugColorComponent d = e.getComponent(DebugColorComponent.class);
                 d.setColor(Color.RED);
 
@@ -105,49 +328,61 @@ public class MovementSystem extends EntitySystem {
 
                 Vector2 directional = bpos.getPosition().cpy().sub(apos.getPosition());
                 directional = directional.nor();
-                directional.scl(overlap*1.9f);
-
+                directional.scl(overlap*1.0000001f);
                 System.out.println("Correcting by:" + directional.len());
                 System.out.println("Precorrection:" + apos.getPosition());
 
                 apos.getPosition().sub(directional);
                 a.setPosition(apos.getX(), apos.getY());
 
-                System.out.println(a.overlaps(b));
+                System.out.println(a.overlaps(b));*//*
 
 
 
             } else {
                 DebugColorComponent d = e.getComponent(DebugColorComponent.class);
                 d.setColor(Color.YELLOW);
-            }
+            }*/
 
-        }
 
 
     }
 
-    private void resolveXCollision(Entity e, float x,float y) {
-            for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
+    private void applyForce(Entity e, Entity ex) {
 
-                BlockedTileComponent blockedTileComponent = btcMapper.get(t);
-                if(!blockedTileComponent.isBlocked()) continue;
+        DisplacableComponent c = e.getComponent(DisplacableComponent.class);
+        DisplacableComponent d = ex.getComponent(DisplacableComponent.class);
 
-                try {
-                    float r = CollisionUtil.getXOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t),x,y);
+        c.applyForce(ex);
+        d.applyForce(e);
 
-                    if(r != 0) {
-                        CollisionComponent cc = colMapper.get(e);
-                        cc.getOnCollision().onCollision(e,t);
-                    }
-                    updateEntityXPosition(e,r);
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+    }
+
+    private boolean resolveXCollision(Entity e, float x,float y) {
+        boolean corrected = false;
+        for (Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
+
+            BlockedTileComponent blockedTileComponent = btcMapper.get(t);
+            if (!blockedTileComponent.isBlocked()) continue;
+
+            try {
+                float r = CollisionUtil.getXOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t), x, y);
+
+                if (r != 0) {
+                    CollisionComponent cc = colMapper.get(e);
+                    cc.getOnCollision().onCollision(e, t);
+                    corrected = true;
                 }
+                updateEntityXPosition(e, r);
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
+        }
+        return corrected;
     }
 
-    private void resolveYCollision(Entity e, float x,float y) {
+    private boolean resolveYCollision(Entity e, float x,float y) {
+        boolean corrected = false;
         for(Entity t : getEngine().getEntitiesFor(blockedTilesFamily)) {
 
             BlockedTileComponent blockedTileComponent = btcMapper.get(t);
@@ -157,12 +392,14 @@ public class MovementSystem extends EntitySystem {
                 float r = CollisionUtil.getYOverlap(EntityTools.getCircleHitbox(e), EntityTools.getSquareHitbox(t),x,y);
                 if(r != 0) {
                     colMapper.get(e).getOnCollision().onCollision(e,t);
+                    corrected = true;
                 }
                 updateEntityYPosition(e, r);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
         }
+        return corrected;
     }
 
     private void updateEntityXPosition(Entity e, float r) {
@@ -182,4 +419,11 @@ public class MovementSystem extends EntitySystem {
     }
 
 
+    public Vector2 getDirectionVector(Entity e, Entity e2) {
+        PositionComponent pe1 = posMapper.get(e);
+        PositionComponent pe2 = posMapper.get(e2);
+
+        return pe2.getPosition().cpy().sub(pe1.getPosition()).nor();
+
+    }
 }
