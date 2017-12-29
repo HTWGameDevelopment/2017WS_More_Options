@@ -9,10 +9,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by denwe on 02.12.2017.
@@ -174,6 +171,7 @@ public class NavGraph {
 
         removeNode(start);
         removeNode(end);
+        Collections.reverse(stack);
         return stack;
 
     }

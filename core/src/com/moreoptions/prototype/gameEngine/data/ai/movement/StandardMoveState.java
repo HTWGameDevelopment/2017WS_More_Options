@@ -40,10 +40,6 @@ public class StandardMoveState implements AIState {
 
                 target = path.get(0);
 
-                while(target.getCameFrom().getX() != posC.getX() && target.getY() != posC.getY()) {
-                    target = target.getCameFrom();
-                }
-
 
                 tx = target.getX() - posC.getX();
                 ty = target.getY() - posC.getY();

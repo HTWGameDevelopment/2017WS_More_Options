@@ -60,7 +60,7 @@ public class QuadTreeDebug extends EntitySystem{
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
 
-        tree.visualize(renderer);
+        //tree.visualize(renderer);
         renderer.end();
         batch.begin();
         tree.drawNumbers(batch, font);
