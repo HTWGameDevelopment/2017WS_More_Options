@@ -19,13 +19,12 @@ public class EnemyFactory {
 
     public static Entity createEnemy(int enemyId, float x, float y, Room room) {
         Entity e = new Entity();
-        //TODO COLORS
         e.add(new PositionComponent(x, y));
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 4));
         e.add(new DebugCircleComponent(10));
         e.add(new VelocityComponent(0f, 0f));
-        e.add(new DebugColorComponent(Color.MAGENTA));
+        e.add(getColorFor(enemyId));            // Chaser - Forest, Chased - Gold, Blinker - Cyan
         e.add(new DisplacableComponent(10));
         e.add(getAIFor(enemyId));
         e.add(new EnemyHitboxComponent(10));
@@ -34,6 +33,42 @@ public class EnemyFactory {
         return e;
     }
 
+    /**
+     * switch to get the ColorComponent of an enemy
+     * @param enemyId ID of the enemy
+     * @return the DebugColorComponent of the selected enemy
+     */
+    private static Component getColorFor(int enemyId) {
+        DebugColorComponent colorComponent;
+
+        switch(enemyId) {
+            case 0:
+                // Chaser
+                colorComponent = new DebugColorComponent(Color.FOREST);
+                break;
+
+            case 1:
+                // Chased
+                colorComponent = new DebugColorComponent(Color.GOLD);
+                break;
+
+            case 2:
+                // Blinker
+                colorComponent = new DebugColorComponent(Color.CYAN);
+                break;
+
+            default:
+                colorComponent = new DebugColorComponent(Color.BLACK);
+        }
+
+        return colorComponent;
+    }
+
+    /**
+     * switch to get the AiComponent of an enemy
+     * @param enemyId ID of the enemy
+     * @return the AiComponent of the selected enemy
+     */
     private static Component getAIFor(int enemyId) {
         AIComponent aiComponent;
         AIState state;

@@ -37,23 +37,30 @@ public class BlinkerMoveState implements AIState {
     private boolean attacking = false;
     @Override
     public void update(Room room, Entity self, float delta) {
-      /*  player = getClosestPlayer(room.getPlayerList(), self);
+        player = getClosestPlayer(room.getPlayerList(), self);
 
         if(currentProgress > cooldown) {
             try {
                 playerPos = player.getComponent(PositionComponent.class);
                 ownPos = self.getComponent(PositionComponent.class);
 
+                // get distance between player and monster
+                // if distanceVec < x  --> attack and stay
+                // else             --> wait 2 seconds and teleport again
                 distanceVec = ownVec.sub(playerVec);
 
-                teleport(room, self);
+                if (distanceVec.len2() <= 5) {
+                    attacking = true;
 
+                } else {
+                    teleport(room, self);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             currentProgress = 0;
         }
-        currentProgress += delta;*/
+        currentProgress += delta;
     }
 
     private void teleport(Room room, Entity self) {
