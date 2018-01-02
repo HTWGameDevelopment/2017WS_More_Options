@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public class BlinkerMoveState implements AIState {
 
-    private float cooldown = 1;
+    private static final float COOLDOWN = 1;
     private float currentProgress = 0;
 
     private Entity player;
@@ -35,31 +35,32 @@ public class BlinkerMoveState implements AIState {
 
 
     private boolean attacking = false;
+
     @Override
     public void update(Room room, Entity self, float delta) {
         player = getClosestPlayer(room.getPlayerList(), self);
 
-        if(currentProgress > cooldown) {
-            try {
-                playerPos = player.getComponent(PositionComponent.class);
-                ownPos = self.getComponent(PositionComponent.class);
+        try {
 
-                // get distance between player and monster
-                // if distanceVec < x  --> attack and stay
-                // else             --> wait 2 seconds and teleport again
-                distanceVec = ownVec.sub(playerVec);
+            playerPos = player.getComponent(PositionComponent.class);
+            ownPos = self.getComponent(PositionComponent.class);
 
-                if (distanceVec.len2() <= 5) {
-                    attacking = true;
+            distanceVec = ownVec.sub(playerVec);
 
-                } else {
+
+            if (distanceVec.len2() <= 1) {
+                attacking = true;
+                System.out.println("BLINKER IS ATTACKING");
+            } else {
+                if (currentProgress > COOLDOWN) {
+                    System.out.println("BLINKER IS TELEPORTING");
                     teleport(room, self);
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
             }
-            currentProgress = 0;
+        } catch(Exception ex) {
+            ex.printStackTrace();
         }
+
         currentProgress += delta;
     }
 

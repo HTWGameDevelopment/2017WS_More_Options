@@ -65,14 +65,20 @@ public class StandardMoveState implements AIState {
     public void draw(ShapeRenderer renderer) {
         if(path != null) {
             ArrayList<Node> nodes = path.getNodes();
-            if(nodes != null)
-            if(!nodes.isEmpty()) {
-                for (int i = 0; i < nodes.size() - 1; i++) {
-                    Node start = nodes.get(i);
-                    Node end = nodes.get(i + 1);
 
-                    renderer.line(start.getX(), start.getY(), end.getX(), end.getY());
 
+            if(nodes != null) {
+                Node t = nodes.get(0);
+                renderer.line(posC.getX(), posC.getY(), t.getX(), t.getY());
+
+                if (!nodes.isEmpty()) {
+                    for (int i = 0; i < nodes.size() - 1; i++) {
+                        Node start = nodes.get(i);
+                        Node end = nodes.get(i + 1);
+
+                        renderer.line(start.getX(), start.getY(), end.getX(), end.getY());
+
+                    }
                 }
             }
         }
