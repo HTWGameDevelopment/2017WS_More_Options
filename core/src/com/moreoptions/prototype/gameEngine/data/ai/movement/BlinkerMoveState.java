@@ -21,10 +21,10 @@ import java.util.Random;
  */
 public class BlinkerMoveState implements AIState {
 
-    private static final float COOLDOWN = 0.5f;
+    private static final float COOLDOWN = 1.5f;
     private float currentProgress = 0;
 
-    private boolean attacking = false;
+    private boolean shot = false;
 
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
 
@@ -39,14 +39,20 @@ public class BlinkerMoveState implements AIState {
 
             float distance = ownPos.getPosition().dst(playerPos.getPosition());
 
-
-            if (distance > 70 && currentProgress > COOLDOWN) {
+            if (distance > 70 && currentProgress >= COOLDOWN) {
                 teleport(room, self, ownPos);
                 currentProgress = 0;
+                shot = false;
 
-            } else if (distance <= 70){
-                aiMapper.get(self).setState("ATTACK");
-                attacking = true;
+            } else if (distance <= 70) {
+                if (!shot) {
+                    aiMapper.get(self).setState("ATTACK");
+                    shot = true;
+                } else if (currentProgress > COOLDOWN){
+                    teleport(room, self, ownPos);
+                    currentProgress = 0;
+                    shot = false;
+                }
             }
         } catch(Exception ex) {
             ex.printStackTrace();
