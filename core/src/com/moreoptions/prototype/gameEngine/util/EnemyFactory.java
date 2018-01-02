@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine.util;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
@@ -8,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
+import com.moreoptions.prototype.gameEngine.data.ai.movement.SplitterMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.StandardMoveState;
 
 import java.util.HashMap;
@@ -17,18 +19,47 @@ import java.util.HashMap;
  */
 public class EnemyFactory {
 
+    private static ComponentMapper<EnemyComponent> enMapper = ComponentMapper.getFor(EnemyComponent.class);
+
     public static Entity createEnemy(int enemyId, float x, float y, Room room) {
+
+        switch (enemyId) {
+            case 20:
+                return createSplitter(x,y,room);
+
+
+            default:
+
+                Entity e = new Entity();
+                e.add(new PositionComponent(x, y));
+                e.add(new CollisionComponent());
+                e.add(new CircleCollisionComponent(150f, 150f, 4));
+                e.add(new DebugCircleComponent(10));
+                e.add(new VelocityComponent(0f, 0f));
+                e.add(getColorFor(enemyId));            // Chaser - Forest, Chased - Gold, Blinker - Cyan
+                e.add(new DisplacableComponent(10));
+                e.add(getAIFor(enemyId));
+                e.add(new EnemyHitboxComponent(10));
+                e.add(new EnemyComponent(x, y, room));
+
+                return e;
+        }
+    }
+
+    private static Entity createSplitter(float x, float y, Room room) {
+
         Entity e = new Entity();
         e.add(new PositionComponent(x, y));
         e.add(new CollisionComponent());
-        e.add(new CircleCollisionComponent(150f, 150f, 4));
-        e.add(new DebugCircleComponent(10));
+        e.add(new CircleCollisionComponent(150f, 150f, 20));
+        e.add(new DebugCircleComponent(24));
         e.add(new VelocityComponent(0f, 0f));
-        e.add(getColorFor(enemyId));            // Chaser - Forest, Chased - Gold, Blinker - Cyan
-        e.add(new DisplacableComponent(10));
-        e.add(getAIFor(enemyId));
-        e.add(new EnemyHitboxComponent(10));
-        e.add(new EnemyComponent(x,y,room));
+        e.add(getColorFor(20));
+        e.add(new DisplacableComponent(100));
+        e.add(getAIFor(20));
+        e.add(new EnemyHitboxComponent(20));
+        e.add(new EnemyComponent(x, y, room));
+        enMapper.get(e).setCurrentHealth(25);
 
         return e;
     }
@@ -55,6 +86,11 @@ public class EnemyFactory {
             case 2:
                 // Blinker
                 colorComponent = new DebugColorComponent(Color.CYAN);
+                break;
+
+            case 20:
+                // Splitter Boss
+                colorComponent = new DebugColorComponent(Color.RED);
                 break;
 
             default:
@@ -98,6 +134,13 @@ public class EnemyFactory {
                 stateMap.put("MOVE", state);
                 aiComponent = new AIComponent(state, stateMap);
                 break;
+
+            case 20:
+
+                //Splitter Boss
+                state = new SplitterMoveState();
+                stateMap.put("MOVE", state);
+                aiComponent = new AIComponent(state,stateMap);
 
             default:
                 // default --> Chaser
