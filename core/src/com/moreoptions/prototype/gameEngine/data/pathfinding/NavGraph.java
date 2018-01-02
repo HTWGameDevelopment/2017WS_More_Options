@@ -115,7 +115,7 @@ public class NavGraph {
     }
 
 
-    public ArrayList<Node> getPath(float startX, float startY, float endX, float endY) {
+    public Path getPath(float startX, float startY, float endX, float endY) {
 
         float startTime = System.nanoTime();
 
@@ -172,7 +172,8 @@ public class NavGraph {
         removeNode(start);
         removeNode(end);
         Collections.reverse(stack);
-        return stack;
+        Path p = new Path(stack,this);
+        return p;
 
     }
 
@@ -193,7 +194,7 @@ public class NavGraph {
     }
 
 
-    public ArrayList<Node> getPath(Entity self, Entity player) throws NoValidComponentException {
+    public Path getPath(Entity self, Entity player) throws NoValidComponentException {
 
         ComponentMapper<PositionComponent> cmp = ComponentMapper.getFor(PositionComponent.class);
 
@@ -205,5 +206,10 @@ public class NavGraph {
         return getPath(selfPos.getX(),selfPos.getY(), theirPos.getX(), theirPos.getY());
 
 
+    }
+
+    public boolean checkPath(Path path) {
+        //TODO impl
+        return false;
     }
 }

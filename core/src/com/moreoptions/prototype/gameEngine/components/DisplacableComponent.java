@@ -60,7 +60,7 @@ public class DisplacableComponent implements Component {
         this.immune = immune;
     }
 
-    public void applyForce(Vector2 norm, int i) {
-        this.dir = norm.scl(i);
+    public void applyForce(Vector2 norm, float f) {
+        this.dir = norm.scl(f);
     }
 }

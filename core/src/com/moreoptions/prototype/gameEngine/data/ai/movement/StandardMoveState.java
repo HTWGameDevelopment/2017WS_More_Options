@@ -8,6 +8,7 @@ import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
+import com.moreoptions.prototype.gameEngine.data.pathfinding.Path;
 import javafx.geometry.Pos;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class StandardMoveState implements AIState {
     private float tx;
     private float ty;
     private float dist;
+    private Path path;
 
 
     @Override
@@ -31,14 +33,14 @@ public class StandardMoveState implements AIState {
         player = getClosestPlayer(r.getPlayerList(),self);
 
         try {
-            ArrayList<Node> path = r.getNavGraph().getPath(self,player);
-            if(!path.isEmpty()) {
+            path = r.getNavGraph().getPath(self,player);
+            if(path.isValid()) {
 
 
                 velC = self.getComponent(VelocityComponent.class);
                 posC = self.getComponent(PositionComponent.class);
 
-                target = path.get(0);
+                target = path.getNext();
 
 
                 tx = target.getX() - posC.getX();
@@ -49,6 +51,9 @@ public class StandardMoveState implements AIState {
                 velC.setVelY((ty / dist) * 100);
 
 
+            } else {
+                velC.setVelX(0);
+                velC.setVelY(0);
             }
         } catch (NoValidComponentException e) {
             e.printStackTrace();
@@ -58,6 +63,19 @@ public class StandardMoveState implements AIState {
 
     @Override
     public void draw(ShapeRenderer renderer) {
+        if(path != null) {
+            ArrayList<Node> nodes = path.getNodes();
+            if(nodes != null)
+            if(!nodes.isEmpty()) {
+                for (int i = 0; i < nodes.size() - 1; i++) {
+                    Node start = nodes.get(i);
+                    Node end = nodes.get(i + 1);
+
+                    renderer.line(start.getX(), start.getY(), end.getX(), end.getY());
+
+                }
+            }
+        }
         renderer.circle(target.getX(),target.getY(),5);
     }
 

@@ -7,6 +7,7 @@ import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
+import com.moreoptions.prototype.gameEngine.data.pathfinding.Path;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,7 +27,7 @@ public class BlinkerMoveState implements AIState {
     private PositionComponent ownPos;
 
     private Random random = new Random();
-    private ArrayList<Node> path;
+    private Path path;
 
     private Vector2 ownVec = new Vector2();
     private Vector2 playerVec = new Vector2();
@@ -62,7 +63,7 @@ public class BlinkerMoveState implements AIState {
         y = random.nextInt(180) + 64;
         path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
 
-        while(path.isEmpty() || path.size() == 0) {
+        while(path.isValid()) {
 
             x = random.nextInt(250) + 64;
             y = random.nextInt(180) + 64;

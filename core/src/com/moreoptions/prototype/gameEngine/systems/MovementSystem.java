@@ -69,10 +69,6 @@ public class MovementSystem extends EntitySystem {
             col.setOldX(pos.getX());
             col.setOldY(pos.getY());
 
-
-
-
-
             pos.setX(pos.getX() + vel.getVelX() * deltaTime);
             if(dcMapper.has(e)) pos.setX(pos.getX() + dcMapper.get(e).getDir().x);
             if(sqMapper.has(e)) sqMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
@@ -144,10 +140,8 @@ public class MovementSystem extends EntitySystem {
             if(dcMapper.has(e)) {
                 dcMapper.get(e).getDir().scl(0.9f);
             }
-
-
-
         }
+
         ArrayList<Pair<Entity,Entity>> collisionList = getCollisions();
 
         for(Pair<Entity, Entity> collision : collisionList) {
@@ -161,35 +155,20 @@ public class MovementSystem extends EntitySystem {
             PositionComponent apos = posMapper.get(player);
             PositionComponent bpos = posMapper.get(enemy);
 
-            StatsComponent stats = statsMapper.get(player);
+            if(statsMapper.has(player)){
+                StatsComponent stats = statsMapper.get(player);
+                applyKnockback(player, stats.getStats().getPushability(), enemy);
+                applyKnockback(enemy, stats.getStats().getPushability(), player);
+            } else {
+
+                applyKnockback(player, 0.5f, enemy);
+                applyKnockback(enemy, 0.5f, player);
+            }
 
             CollisionComponent cc = colMapper.get(player);
             CollisionComponent cd = colMapper.get(enemy);
 
-            //First check if still colliding
-
-            //Then undo movement
-
-            applyKnockback(player, stats.getStats().getPushability(), enemy);
-
-
-
-
         }
-
-        for(Pair<Entity, Entity> collision : collisionList) {
-
-            Entity player = collision.getKey();
-            Entity enemy = collision.getValue();
-
-            Circle a = cMapper.get(player).getHitbox();
-            Circle b = cMapper.get(enemy).getHitbox();
-
-            if(a.overlaps(b)) System.out.println("Naaaaa");
-
-
-        }
-
     }
 
     private boolean checkSensor(Sensor sensor, Entity e) {
@@ -230,20 +209,14 @@ public class MovementSystem extends EntitySystem {
 
     }
 
-    private void applyKnockback(Entity player, int i, Entity enemy) {
+    private void applyKnockback(Entity player, float f, Entity enemy) {
 
         DisplacableComponent dc = dcMapper.get(player);
 
         if(!dc.isImmune()) {
-
             Vector2 norm = getDirectionVector(enemy, player);
-
-            dc.applyForce(norm, i);
-
+            dc.applyForce(norm, f);
         }
-
-
-
     }
 
     private ArrayList<Pair<Entity,Entity>> getCollisions() {
@@ -260,13 +233,27 @@ public class MovementSystem extends EntitySystem {
                 Circle b = cMapper.get(enemy).getHitbox();
 
                 if(a.overlaps(b)) {
-
                     collisionList.add(new Pair<Entity, Entity>(player, enemy));
-
                 }
-
             }
         }
+
+        for(int i = 0; i < enemies.size(); i++) {
+            for(int k = 0; k < enemies.size(); k++) {
+                if(i==k) continue;
+
+                Entity enemy1 = enemies.get(i);
+                Entity enemy2 = enemies.get(k);
+
+                Circle a = cMapper.get(enemy1).getHitbox();
+                Circle b = cMapper.get(enemy2).getHitbox();
+
+                if(a.overlaps(b)) {
+                    collisionList.add(new Pair<Entity, Entity>(enemy1, enemy2));
+                }
+            }
+        }
+
         return collisionList;
         /*
         for(Entity ex : circles) {
@@ -345,16 +332,6 @@ public class MovementSystem extends EntitySystem {
             }*/
 
 
-
-    }
-
-    private void applyForce(Entity e, Entity ex) {
-
-        DisplacableComponent c = e.getComponent(DisplacableComponent.class);
-        DisplacableComponent d = ex.getComponent(DisplacableComponent.class);
-
-        c.applyForce(ex);
-        d.applyForce(e);
 
     }
 
