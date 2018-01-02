@@ -22,6 +22,8 @@ public class Player {
     public Player() {
         inputState = new InputState();
         stats = new Statistics();
+        stats.setFireRate(1);
+        stats.setSpeed(100);
     }
 
     public InputState getInputState() {

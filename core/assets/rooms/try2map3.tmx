@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="21">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="23">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="true"/>
@@ -56,21 +56,25 @@
   <object id="16" name="Chased2" x="337" y="239">
    <properties>
     <property name="enemyID" type="int" value="2"/>
+    <property name="type" type="int" value="0"/>
    </properties>
   </object>
   <object id="18" name="Chased4" x="335.5" y="111.5">
    <properties>
     <property name="enemyID" type="int" value="2"/>
+    <property name="type" type="int" value="0"/>
    </properties>
   </object>
   <object id="19" name="Chased3" x="209" y="111">
    <properties>
     <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="0"/>
    </properties>
   </object>
   <object id="20" name="Chased1" x="207" y="240.5">
    <properties>
     <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="0"/>
    </properties>
   </object>
  </objectgroup>

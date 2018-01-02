@@ -65,7 +65,9 @@ public class AssetLoader {
             System.out.println("Done loading");
             System.out.println("Loaded "+assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size + " assets.");
             for(TiledMap t : assetManager.getAll(TiledMap.class, new Array<TiledMap>())) {
-                definitions.add(new RoomDefinition(t));
+                RoomDefinition r = new RoomDefinition(t);
+                definitions.add(r);
+                System.out.println("Loaded Entity with: " + r.getRoomKind());
             }
 
             System.out.println("TEST: "+ assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size);
@@ -73,16 +75,26 @@ public class AssetLoader {
         } return false;
     }
 
-    public ArrayList<RoomDefinition> definition(boolean hasDoorTop, boolean hasDoorBottom, boolean hasDoorLeft, boolean hasDoorRight) {
+    public ArrayList<RoomDefinition> definition(boolean hasDoorTop, boolean hasDoorBottom, boolean hasDoorLeft, boolean hasDoorRight, int kind) {
         ArrayList<RoomDefinition> fits = new ArrayList<RoomDefinition>();
         for(RoomDefinition def : definitions) {
             if((def.isDoorNorth() == hasDoorTop || hasDoorTop == false)
                 && (def.isDoorSouth() == hasDoorBottom || hasDoorBottom == false)
                 && (def.isDoorWest() == hasDoorLeft || hasDoorLeft == false)
-                && (def.isDoorEast() == hasDoorRight || hasDoorRight== false)) {
+                && (def.isDoorEast() == hasDoorRight || hasDoorRight== false)
+                    && (def.getRoomKind() == kind)) {
                 fits.add(def);
             }
         }
+
+        if(fits.size() == 0) {
+            System.out.println("DoorNorth: " + hasDoorTop +
+            "DoorSouth: "+hasDoorBottom +
+            "DoorLeft: "+hasDoorLeft +
+            "DoorRight "+hasDoorRight +
+            "Kind" + kind);
+        }
+
         return fits;
     }
 

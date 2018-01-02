@@ -84,8 +84,8 @@ public class Room {
         //TODO refactor this!
         ArrayList<RoomDefinition> roomlist = AssetLoader
                 .getInstance()
-                .definition(roomBlueprint.isTop(),roomBlueprint.isDown(),roomBlueprint.isLeft(),roomBlueprint.isRight());
-
+                .definition(roomBlueprint.isTop(),roomBlueprint.isDown(),roomBlueprint.isLeft(),roomBlueprint.isRight(), roomBlueprint.getKind());
+        System.out.println(roomBlueprint.getKind());
         RoomDefinition rq = roomlist.get(r.nextInt(roomlist.size()));
 
         try {
@@ -99,6 +99,8 @@ public class Room {
         for(Entity e : destLayer.getEntities()) {
             navGraph.addEntity(e);
         }
+
+
 
 
     }
@@ -155,6 +157,7 @@ public class Room {
         entities.addAll(destLayer.getEntities());
         entities.addAll(tileLayer.getEntities());
         entities.addAll(enemyLayer.getAliveEntities());
+        entities.addAll(enemyLayer.getItems());
         entities.addAll(doors);
 
         return entities;

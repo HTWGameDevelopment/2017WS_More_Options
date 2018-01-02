@@ -7,9 +7,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
+import com.moreoptions.prototype.gameEngine.components.StatsComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.InputState;
 import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
 
@@ -23,6 +25,7 @@ public class InputSystem extends EntitySystem {
     private ComponentMapper<VelocityComponent> vcMapper = ComponentMapper.getFor(VelocityComponent.class);
 
     private static InputSystem instance = new InputSystem();
+    private ComponentMapper<StatsComponent> statsMapper = ComponentMapper.getFor(StatsComponent.class);
 
     public static InputSystem getInstance() {
         if (instance == null) {
@@ -52,6 +55,7 @@ public class InputSystem extends EntitySystem {
         PlayerComponent pc = pcMapper.get(e);
         Player p = pc.getPlayer();
         VelocityComponent v = vcMapper.get(e);
+        Statistics stats = statsMapper.get(e).getStats();
 
         InputState playerInput = p.getInputState();
 
@@ -59,9 +63,9 @@ public class InputSystem extends EntitySystem {
             v.setVelY(v.getVelY() * v.getDeceleration());
 
         } else if (playerInput.isMoveUp()) {
-            v.setVelY(v.getSpeed());
+            v.setVelY(stats.getSpeed());
         } else if (playerInput.isMoveDown()) {
-            v.setVelY(-v.getSpeed());
+            v.setVelY(-stats.getSpeed());
         } else if (!playerInput.isMoveUp() && !playerInput.isMoveDown()) {
             v.setVelY(v.getVelY() * v.getDeceleration()); //TODO move this to own system?
         }
@@ -69,9 +73,9 @@ public class InputSystem extends EntitySystem {
         if (playerInput.isMoveLeft() && playerInput.isMoveRight()) {
             v.setVelX(v.getVelX() * v.getDeceleration());
         } else if (playerInput.isMoveLeft()) {
-            v.setVelX(-v.getSpeed());
+            v.setVelX(-stats.getSpeed());
         } else if (playerInput.isMoveRight()) {
-            v.setVelX(v.getSpeed());
+            v.setVelX(stats.getSpeed());
         } else if (!playerInput.isMoveLeft() && !playerInput.isMoveRight()) {
             v.setVelX(v.getVelX() * v.getDeceleration());
         }

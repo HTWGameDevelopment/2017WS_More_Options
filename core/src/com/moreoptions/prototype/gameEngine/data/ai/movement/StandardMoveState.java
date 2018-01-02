@@ -51,9 +51,6 @@ public class StandardMoveState implements AIState {
                 velC.setVelY((ty / dist) * 100);
 
 
-            } else {
-                velC.setVelX(0);
-                velC.setVelY(0);
             }
         } catch (NoValidComponentException e) {
             e.printStackTrace();

@@ -56,11 +56,13 @@
   <object id="16" name="Chaser2" x="207" y="175">
    <properties>
     <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="0"/>
    </properties>
   </object>
   <object id="19" name="Chaser1" x="335.333" y="175">
    <properties>
     <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="0"/>
    </properties>
   </object>
  </objectgroup>
