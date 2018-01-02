@@ -35,4 +35,8 @@ public class AIComponent implements Component {
     public AIState getState() {
         return currentState;
     }
+
+    public void setState(String state) {
+        this.currentState = stateMap.get(state);
+    }
 }

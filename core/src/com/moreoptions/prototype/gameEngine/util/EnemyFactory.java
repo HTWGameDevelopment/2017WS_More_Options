@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.data.ai.attacking.StandardAttackState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.StandardMoveState;
@@ -19,6 +20,7 @@ public class EnemyFactory {
 
     public static Entity createEnemy(int enemyId, float x, float y, Room room) {
         Entity e = new Entity();
+        e.add(getStatsFor(enemyId));
         e.add(new PositionComponent(x, y));
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 4));
@@ -30,7 +32,12 @@ public class EnemyFactory {
         e.add(new EnemyHitboxComponent(10));
         e.add(new EnemyComponent(x,y,room));
 
+
         return e;
+    }
+
+    private static Component getStatsFor(int enemyId) {
+        return new StatsComponent();
     }
 
     /**
@@ -97,6 +104,7 @@ public class EnemyFactory {
                 state = new BlinkerMoveState();
                 stateMap.put("MOVE", state);
                 aiComponent = new AIComponent(state, stateMap);
+                stateMap.put("ATTACK", new StandardAttackState());
                 break;
 
             default:

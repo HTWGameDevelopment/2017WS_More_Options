@@ -1,8 +1,11 @@
 package com.moreoptions.prototype.gameEngine.data.ai.movement;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.moreoptions.prototype.gameEngine.components.AIComponent;
+import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
@@ -18,44 +21,32 @@ import java.util.Random;
  */
 public class BlinkerMoveState implements AIState {
 
-    private static final float COOLDOWN = 1;
+    private static final float COOLDOWN = 0.5f;
     private float currentProgress = 0;
-
-    private Entity player;
-
-    private PositionComponent playerPos;
-    private PositionComponent ownPos;
-
-    private Random random = new Random();
-    private Path path;
-
-    private Vector2 ownVec = new Vector2();
-    private Vector2 playerVec = new Vector2();
-    private Vector2 distanceVec = new Vector2();
-
 
     private boolean attacking = false;
 
+    private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
+
     @Override
     public void update(Room room, Entity self, float delta) {
-        player = getClosestPlayer(room.getPlayerList(), self);
+        Entity player = getClosestPlayer(room.getPlayerList(), self);
 
         try {
 
-            playerPos = player.getComponent(PositionComponent.class);
-            ownPos = self.getComponent(PositionComponent.class);
+            PositionComponent playerPos = player.getComponent(PositionComponent.class);
+            PositionComponent ownPos = self.getComponent(PositionComponent.class);
 
-            distanceVec = ownVec.sub(playerVec);
+            float distance = ownPos.getPosition().dst(playerPos.getPosition());
 
 
-            if (distanceVec.len2() <= 1) {
+            if (distance > 70 && currentProgress > COOLDOWN) {
+                teleport(room, self, ownPos);
+                currentProgress = 0;
+
+            } else if (distance <= 70){
+                aiMapper.get(self).setState("ATTACK");
                 attacking = true;
-                System.out.println("BLINKER IS ATTACKING");
-            } else {
-                if (currentProgress > COOLDOWN) {
-                    System.out.println("BLINKER IS TELEPORTING");
-                    teleport(room, self);
-                }
             }
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -64,22 +55,12 @@ public class BlinkerMoveState implements AIState {
         currentProgress += delta;
     }
 
-    private void teleport(Room room, Entity self) {
-        float x;
-        float y;
-        x = random.nextInt(250) + 64;
-        y = random.nextInt(180) + 64;
-        path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
+    private void teleport(Room room, Entity self, PositionComponent ownPos) {
 
-        while(path.isValid()) {
+        Vector2 randPos = room.getNavGraph().getRandomPosition(self);
 
-            x = random.nextInt(250) + 64;
-            y = random.nextInt(180) + 64;
-            path = room.getNavGraph().getPath(ownPos.getX(), ownPos.getY(), x, y);
-        }
-
-        ownPos.setX(random.nextInt(250) + 64);
-        ownPos.setY(random.nextInt(164) + 64);
+        ownPos.setX(randPos.x);
+        ownPos.setY(randPos.y);
     }
 
     @Override
