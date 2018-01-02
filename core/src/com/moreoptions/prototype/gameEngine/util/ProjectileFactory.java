@@ -24,8 +24,6 @@ public class ProjectileFactory {
 
     public static Entity enemyProjectile (Entity entity, Vector2 v2){
         Entity proj = new Entity();
-
-        Statistics eStats = entity.getComponent(StatsComponent.class).getStats();
         VelocityComponent vc = entity.getComponent(VelocityComponent.class);
         PositionComponent pc = poMapper.get(entity);
 
@@ -34,12 +32,11 @@ public class ProjectileFactory {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.SKY));
-        proj.add(new ProjectileComponent(eStats.getDamage(),eStats.getRange()));
+        proj.add(new ProjectileComponent(1,150, true)); //TODO change this to stats for enemy
         VelocityComponent projVelocity = velMapper.get(proj);
 
-        projVelocity.setVelX(v2.x*(eStats.getProjectileSpeed()));
-        projVelocity.setVelY(v2.y*(eStats.getProjectileSpeed()));
-
+        projVelocity.setVelX(v2.x*(10));
+        projVelocity.setVelY(v2.y*(10));
 
         return proj;
     }
@@ -59,7 +56,7 @@ public class ProjectileFactory {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.SKY));
-        proj.add(new ProjectileComponent(pStats.getDamage(),pStats.getRange()));
+        proj.add(new ProjectileComponent(pStats.getDamage(),pStats.getRange(), false));
 
         proj.getComponent(VelocityComponent.class).setVelX(v2.x*(pStats.getProjectileSpeed()));
         proj.getComponent(VelocityComponent.class).setVelY(v2.y*(pStats.getProjectileSpeed()));

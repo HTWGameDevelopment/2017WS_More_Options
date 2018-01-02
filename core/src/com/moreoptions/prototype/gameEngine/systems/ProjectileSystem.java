@@ -19,6 +19,7 @@ public class ProjectileSystem extends EntitySystem {
 
     private Family projFamily = Family.all(ProjectileComponent.class).get();
     private Family enemyFamily = Family.all(EnemyHitboxComponent.class).get();
+    private Family playerFamily = Family.all(PlayerComponent.class).get();
 
     private EventSubscriber subscriber;
 
@@ -62,6 +63,7 @@ public class ProjectileSystem extends EntitySystem {
     public void update(float deltatime){
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(projFamily);
         ImmutableArray<Entity> enemies = getEngine().getEntitiesFor(enemyFamily);
+        ImmutableArray<Entity>  players = getEngine().getEntitiesFor(playerFamily);
 
         for (Entity e : entities){
             ProjectileComponent p = pcMapper.get(e);
@@ -80,17 +82,31 @@ public class ProjectileSystem extends EntitySystem {
                 getEngine().removeEntity(e);
             }
 
-            for(Entity hit : enemies) {
-                EnemyHitboxComponent ehc = ehcMapper.get(hit);
-                PositionComponent hitpc = posMapper.get(hit);
+            if(p.isEnemy()) {
+                for (Entity hit : players) {
+                    CircleCollisionComponent ccc = cccMapper.get(hit);
+                    PositionComponent  hitpc = posMapper.get(hit);
 
-                ehc.getCircle().setPosition(hitpc.getX(),hitpc.getY());
-
-                if(ehc.getCircle().overlaps(projectileCircleCollisionComponent.getHitbox())) {
-                    if(p.getHitEvent().onHit(e,hit)) {
-                        getEngine().removeEntity(e);
+                    if (ccc.getHitbox().overlaps(projectileCircleCollisionComponent.getHitbox())) {
+                        if (p.getHitEvent().onHit(e, hit)) {
+                            getEngine().removeEntity(e);
+                        }
                     }
-                    break;
+                }
+
+            } else {
+                for (Entity hit : enemies) {
+                    EnemyHitboxComponent ehc = ehcMapper.get(hit);
+                    PositionComponent hitpc = posMapper.get(hit);
+
+                    ehc.getCircle().setPosition(hitpc.getX(), hitpc.getY());
+
+                    if (ehc.getCircle().overlaps(projectileCircleCollisionComponent.getHitbox())) {
+                        if (p.getHitEvent().onHit(e, hit)) {
+                            getEngine().removeEntity(e);
+                        }
+                        break;
+                    }
                 }
             }
         }

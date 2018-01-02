@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.data.ai.attacking.StandardAttackState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.SplitterMoveState;
@@ -49,6 +50,7 @@ public class EnemyFactory {
     private static Entity createSplitter(float x, float y, Room room) {
 
         Entity e = new Entity();
+        e.add(getStatsFor(enemyId));
         e.add(new PositionComponent(x, y));
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 20));
@@ -61,7 +63,12 @@ public class EnemyFactory {
         e.add(new EnemyComponent(x, y, room));
         enMapper.get(e).setCurrentHealth(25);
 
+
         return e;
+    }
+
+    private static Component getStatsFor(int enemyId) {
+        return new StatsComponent();
     }
 
     /**
@@ -133,6 +140,7 @@ public class EnemyFactory {
                 state = new BlinkerMoveState();
                 stateMap.put("MOVE", state);
                 aiComponent = new AIComponent(state, stateMap);
+                stateMap.put("ATTACK", new StandardAttackState());
                 break;
 
             case 20:
