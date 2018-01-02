@@ -23,20 +23,23 @@ public class ProjectileFactory {
     }
 
     public static Entity enemyProjectile (Entity entity, Vector2 v2){
+        Statistics estats = entity.getComponent(StatsComponent.class).getStats();
         Entity proj = new Entity();
         VelocityComponent vc = entity.getComponent(VelocityComponent.class);
         PositionComponent pc = poMapper.get(entity);
 
+        proj.add(new StatsComponent());
         proj.add(new PositionComponent(new Vector2(pc.getPosition())));
         proj.add(new VelocityComponent(vc.getSpeed(),vc.getDeceleration()));
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.SKY));
-        proj.add(new ProjectileComponent(1,150, true)); //TODO change this to stats for enemy
+        proj.add(new ProjectileComponent(estats.getDamage(),estats.getRange(), true));
+        //TODO change this to stats for enemy
         VelocityComponent projVelocity = velMapper.get(proj);
 
-        projVelocity.setVelX(v2.x*(10));
-        projVelocity.setVelY(v2.y*(10));
+        projVelocity.setVelX(v2.x*(estats.getProjectileSpeed()));
+        projVelocity.setVelY(v2.y*(estats.getProjectileSpeed()));
 
         return proj;
     }

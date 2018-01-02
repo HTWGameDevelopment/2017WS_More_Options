@@ -6,7 +6,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Room;
+import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.data.ai.attacking.SplitterAttackState;
 import com.moreoptions.prototype.gameEngine.data.ai.attacking.StandardAttackState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
@@ -32,6 +34,7 @@ public class EnemyFactory {
             default:
 
                 Entity e = new Entity();
+                e.add(getStatsFor(enemyId));
                 e.add(new PositionComponent(x, y));
                 e.add(new CollisionComponent());
                 e.add(new CircleCollisionComponent(150f, 150f, 4));
@@ -50,25 +53,38 @@ public class EnemyFactory {
     private static Entity createSplitter(float x, float y, Room room) {
 
         Entity e = new Entity();
-        e.add(getStatsFor(enemyId));
+        e.add(getStatsFor(20));
         e.add(new PositionComponent(x, y));
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 20));
-        e.add(new DebugCircleComponent(24));
+        e.add(new DebugCircleComponent(20));
         e.add(new VelocityComponent(0f, 0f));
         e.add(getColorFor(20));
         e.add(new DisplacableComponent(100));
         e.add(getAIFor(20));
         e.add(new EnemyHitboxComponent(20));
         e.add(new EnemyComponent(x, y, room));
-        enMapper.get(e).setCurrentHealth(25);
 
 
         return e;
     }
 
     private static Component getStatsFor(int enemyId) {
-        return new StatsComponent();
+        switch(enemyId){
+            case 20:
+                StatsComponent stats = new StatsComponent();
+                stats.getStats().setMaxHealth(30);
+                stats.getStats().setCurrentHealth(30);
+                stats.getStats().setDamage(2);
+                stats.getStats().setSpeed(30);
+                stats.getStats().setProjectileSpeed(140);
+                stats.getStats().setRange(300);
+                return stats;
+
+            default:
+                return new StatsComponent();
+        }
+
     }
 
     /**
@@ -146,9 +162,12 @@ public class EnemyFactory {
             case 20:
 
                 //Splitter Boss
+                System.out.println("BOSSTIME");
                 state = new SplitterMoveState();
                 stateMap.put("MOVE", state);
+                stateMap.put("ATTACK", new SplitterAttackState());
                 aiComponent = new AIComponent(state,stateMap);
+                break;
 
             default:
                 // default --> Chaser

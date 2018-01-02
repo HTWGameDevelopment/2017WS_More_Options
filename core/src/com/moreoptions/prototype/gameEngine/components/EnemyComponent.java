@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
+import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 
 /**
  * Created by denwe on 15.11.2017.
@@ -50,5 +51,6 @@ public class EnemyComponent implements Component {
     public Room getRoom() {
         return room;
     }
+
 
 }
