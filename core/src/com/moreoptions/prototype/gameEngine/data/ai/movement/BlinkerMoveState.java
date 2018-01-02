@@ -65,8 +65,8 @@ public class BlinkerMoveState implements AIState {
 
         Vector2 randPos = room.getNavGraph().getRandomPosition(self);
 
-        ownPos.setX(randPos.x);
-        ownPos.setY(randPos.y);
+        ownPos.setX(randPos.cpy().x);
+        ownPos.setY(randPos.cpy().y);
     }
 
     @Override
