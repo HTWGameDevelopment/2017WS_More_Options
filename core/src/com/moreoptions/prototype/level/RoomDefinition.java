@@ -34,11 +34,16 @@ public class RoomDefinition {
 
     private TiledMap tiledMap;
 
-    private final int TREASURE_ROOM = 1;
-    private final int BOSS_ROOM     = 2;
-    private final int SHOP_ROOM     = 3;
+    private final int EMPTY_ROOM    = 1;
+    private final int STANDARD_ROOM = 2;
+    private final int TREASURE_ROOM = 5;
+    private final int BOSS_ROOM     = 3;
+    private final int SHOP_ROOM     = 4;
+    private final int SECRET_ROOM     = 6;
+
     private TileLayer tileLayer;
     private EnemyLayer enemyLayer;
+    private int kind;
 
     public RoomDefinition(TiledMap map) {
 
@@ -68,19 +73,30 @@ public class RoomDefinition {
         if(map.getProperties().containsKey("roomType"))  {
             switch (map.getProperties().get("roomType", Integer.class)) {
                 case TREASURE_ROOM:
+                    kind = TREASURE_ROOM;
                     treasureRoom = true;
                     break;
                 case BOSS_ROOM:
+                    kind = BOSS_ROOM;
                     bossRoom = true;
                     break;
                 case SHOP_ROOM:
+                    kind = SHOP_ROOM;
                     shopRoom = true;
                     break;
+                case SECRET_ROOM:
+                    kind = SECRET_ROOM;
+                    break;
+                case EMPTY_ROOM:
+                    kind = EMPTY_ROOM;
+                    break;
                 default:
+                    kind = STANDARD_ROOM;
                     standardRoom = true;
                     break;
             }
         } else {
+            kind = STANDARD_ROOM;
             standardRoom = true;
         }
 
@@ -117,28 +133,27 @@ public class RoomDefinition {
 
                 tile.add(new TileGraphicComponent(t.getCell(x, y).getTile().getTextureRegion(),1));
 
-                if (!t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
-                    throw new MissdefinedTileException("No blocked flag set");
+                if (t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
+                    boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
+                    if (blocked) {
+                        tile.add(new BlockedTileComponent());
+                    } else {
+                        tile.add(new WalkableTileComponent());
+                    }
                 }
 
-                if (!t.getCell(x, y).getTile().getProperties().containsKey("destructible")) {
-                    throw new MissdefinedTileException("No destructible flag set");
+                if (t.getCell(x, y).getTile().getProperties().containsKey("destructible")) {
+                    boolean destructible = t.getCell(x, y).getTile().getProperties().get("destructible", boolean.class);
+                    if(destructible) tile.add(new DestructibleComponent());
                 }
 
-                boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
-                if (blocked) {
-                    tile.add(new BlockedTileComponent());
-                } else {
-                    tile.add(new WalkableTileComponent());
-                }
 
-                boolean destructible = t.getCell(x, y).getTile().getProperties().get("destructible", boolean.class);
-                if(destructible) tile.add(new DestructibleComponent());
+
+
 
                 if (t.getCell(x, y).getTile().getProperties().containsKey("inner")) {
                     if(t.getCell(x, y).getTile().getProperties().get("inner", boolean.class))
                         tile.add(new InnerTileComponent());
-                        tile.add(new ObstacleComponent());
                 }
 
 
@@ -166,9 +181,7 @@ public class RoomDefinition {
                 if(t.getCell(x,y) == null) continue;
 
                 tile.add(new TileGraphicComponent(t.getCell(x, y).getTile().getTextureRegion(),1));
-                if (!t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
-                    throw new MissdefinedTileException("No blocked flag set");
-                } else {
+                if (t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
                     boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
                     if (blocked) {
                         tile.add(new BlockedTileComponent());
@@ -192,12 +205,38 @@ public class RoomDefinition {
         enemyLayer = new EnemyLayer();
 
         for(MapObject p : tiledMap.getLayers().get("EnemyLayer").getObjects()) {
+            //TODO refactor this, prototype code
             RectangleMapObject t = (RectangleMapObject)p;
-            int id = t.getProperties().get("enemyID", Integer.class);
-            enemyLayer.addEnemy(id, t.getRectangle().getX(), t.getRectangle().y, room);
+            if(t.getProperties().containsKey("type")) {
+                switch (t.getProperties().get("type", Integer.class)) {
+                    case Consts.ITEM: {
 
+                        int id = t.getProperties().get("id", Integer.class);
+                        enemyLayer.addItem(id,t.getRectangle().getX(), t.getRectangle().y, room, enemyLayer);
+                    }
+
+
+                        break;
+                    case Consts.ENEMY: {
+                        int id = t.getProperties().get("enemyID", Integer.class);
+                        enemyLayer.addEnemy(id, t.getRectangle().getX(), t.getRectangle().y, room);
+
+                        break;
+                    }
+                    default: {
+                        int id = t.getProperties().get("enemyID", Integer.class);
+                        enemyLayer.addEnemy(id, t.getRectangle().getX(), t.getRectangle().y, room);
+                        break;
+                        //TODO enemy
+                    }
+                }
+            }
         }
 
         return enemyLayer;
+    }
+
+    public int getRoomKind() {
+        return kind;
     }
 }

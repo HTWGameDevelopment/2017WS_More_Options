@@ -10,4 +10,6 @@ public class Consts {
     public static final int GAME_HEIGHT = 11 * TILE_SIZE;
 
 
+    public static final int ENEMY = 0;
+    public static final int ITEM = 1;
 }
