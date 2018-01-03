@@ -6,35 +6,30 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.AIComponent;
-import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
-import com.moreoptions.prototype.gameEngine.components.StatsComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
-import com.moreoptions.prototype.gameEngine.util.EnemyFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SplitterAttackState implements AIState {
+public class SplitterSubAttackState implements AIState {
 
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
-    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
-    private ComponentMapper<EnemyComponent> enMapper = ComponentMapper.getFor(EnemyComponent.class);
 
-    private static final float COOLDOWN = 1.5f;
-    private float currentProgress = 3.5f;
+    private static final float COOLDOWN = 1.0f;
+    private float currentProgress = 0f;
 
 
     @Override
     public void update(Room room, Entity self, float deltaTime) {
         Entity player = getClosestPlayer(room.getPlayerList(), self);
-        PositionComponent playerPos = posMapper.get(player);
-        PositionComponent pos = posMapper.get(self);
-        EnemyComponent en = enMapper.get(self);
+        PositionComponent playerPos = player.getComponent(PositionComponent.class);
+        PositionComponent ownPos = self.getComponent(PositionComponent.class);
 
-        float distance = pos.getPosition().dst(playerPos.getPosition());
+        float distance = ownPos.getPosition().dst(playerPos.getPosition());
+
 
         try {
 
@@ -45,10 +40,10 @@ public class SplitterAttackState implements AIState {
             if( currentProgress >= COOLDOWN) {
 
                 Random random = new Random();
-                Vector2 dir = new Vector2(playerPos.getX() - pos.getX(), playerPos.getY() - pos.getY());
+                Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
                 dir.nor();
 
-                for(int i = 0; i < 4; i++) {
+                for(int i = 0; i < 2; i++) {
                     Entity projectile1 = ProjectileFactory.enemyProjectile(self, dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50));
 
                     GameWorld.getInstance().addEntity(projectile1);

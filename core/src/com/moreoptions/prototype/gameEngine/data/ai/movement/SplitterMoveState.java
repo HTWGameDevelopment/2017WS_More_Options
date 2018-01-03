@@ -32,21 +32,25 @@ public class SplitterMoveState implements AIState {
     private boolean attacking = false;
 
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
+    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<EnemyComponent> enMapper = ComponentMapper.getFor(EnemyComponent.class);
+
 
 
     @Override
     public void update(Room r, Entity self,float delta) {
 
+        PositionComponent pos = posMapper.get(self);
+        EnemyComponent en = enMapper.get(self);
         player = getClosestPlayer(r.getPlayerList(),self);
 
         try {
 
-            PositionComponent playerPos = player.getComponent(PositionComponent.class);
-            PositionComponent ownPos = self.getComponent(PositionComponent.class);
-
-            float distance = ownPos.getPosition().dst(playerPos.getPosition());
+            PositionComponent playerPos = posMapper.get(player);
 
 
+
+            float distance = pos.getPosition().dst(playerPos.getPosition());
 
             path = r.getNavGraph().getPath(self,player);
             if(path.isValid()) {
@@ -78,13 +82,6 @@ public class SplitterMoveState implements AIState {
         } catch (NoValidComponentException e) {
             e.printStackTrace();
         }
-        System.out.println(self.getComponent(StatsComponent.class).getStats().getCurrentHealth());
-        if ( self.getComponent(StatsComponent.class).getStats().getCurrentHealth() < 20){
-            System.out.println("asdasdfdssdkjgSAKJD");
-            GameWorld.getInstance().addEntity(EnemyFactory.createEnemy(20,posC.getX()+5,posC.getY(), GameWorld.getInstance().getRoomManager().getCurrentRoom()));
-            GameWorld.getInstance().addEntity(EnemyFactory.createEnemy(20,posC.getX()-5,posC.getY(), GameWorld.getInstance().getRoomManager().getCurrentRoom()));
-        }
-
     }
 
     @Override

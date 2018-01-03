@@ -23,4 +23,8 @@ public class Event {
     public String getIdentifier() {
         return identifier;
     }
+
+    public HashMap<String,Object> getDatas() {
+        return eventData;
+    }
 }

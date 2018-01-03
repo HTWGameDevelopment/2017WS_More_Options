@@ -11,7 +11,7 @@ public class SquareCollisionComponent implements Component {
     private Rectangle square;
 
     public SquareCollisionComponent(float x, float y, float size) {
-        square = new Rectangle(x,y,size,size);
+        this.square = new Rectangle(x,y,size,size);
     }
 
     public void update(PositionComponent p) {

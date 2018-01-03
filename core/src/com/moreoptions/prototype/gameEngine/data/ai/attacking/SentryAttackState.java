@@ -17,13 +17,13 @@ import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SplitterAttackState implements AIState {
+public class SentryAttackState implements AIState {
 
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
     private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<EnemyComponent> enMapper = ComponentMapper.getFor(EnemyComponent.class);
 
-    private static final float COOLDOWN = 1.5f;
+    private static final float COOLDOWN = 10.0f;
     private float currentProgress = 3.5f;
 
 
@@ -34,27 +34,15 @@ public class SplitterAttackState implements AIState {
         PositionComponent pos = posMapper.get(self);
         EnemyComponent en = enMapper.get(self);
 
-        float distance = pos.getPosition().dst(playerPos.getPosition());
-
         try {
 
-            if (distance > 100){
-                aiMapper.get(self).setState("MOVE");
-            }
-
             if( currentProgress >= COOLDOWN) {
-
-                Random random = new Random();
                 Vector2 dir = new Vector2(playerPos.getX() - pos.getX(), playerPos.getY() - pos.getY());
                 dir.nor();
 
-                for(int i = 0; i < 4; i++) {
-                    Entity projectile1 = ProjectileFactory.enemyProjectile(self, dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50));
+                Entity projectile1 = ProjectileFactory.enemyProjectile(self, dir.cpy());
 
-                    GameWorld.getInstance().addEntity(projectile1);
-                }
-
-
+                GameWorld.getInstance().addEntity(projectile1);
 
                 currentProgress = 0;
             }

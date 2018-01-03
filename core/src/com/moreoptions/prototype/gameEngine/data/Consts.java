@@ -10,4 +10,5 @@ public class Consts {
     public static final int GAME_HEIGHT = 11 * TILE_SIZE;
 
 
+    public static final String SPAWN_ENEMY = "SPAWN_ENEMY";
 }
