@@ -218,6 +218,11 @@ public class EnemyFactory {
                 statsSentry.getStats().setRange(500);
                 return statsSentry;
 
+            case 100:
+                StatsComponent statsBulletMan = new StatsComponent();
+                statsBulletMan.getStats().setSpeed(100);
+                statsBulletMan.getStats().setFireRate(1f);
+                return statsBulletMan;
             default:
                 return new StatsComponent();
         }

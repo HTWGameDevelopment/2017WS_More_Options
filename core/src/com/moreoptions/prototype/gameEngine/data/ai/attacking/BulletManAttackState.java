@@ -9,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.components.AIComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
@@ -52,45 +53,20 @@ public class BulletManAttackState implements AIState{
         PositionComponent ppc = player.getComponent(PositionComponent.class);
         PositionComponent opc = self.getComponent(PositionComponent.class);
 
-        try {
-            ArrayList<Vector2> projectiles = new ArrayList<Vector2>();
-            ArrayList<Vector2> directions = new ArrayList<Vector2>();
-            for (int i = 0; i <= 15; i++) {
-                Vector2 shot = new Vector2(ppc.getX() - opc.getX(), ppc.getY() - opc.getY());
-                shot.nor();
-                shot.rotate(random.nextInt(60) - 60 );
-
-
-            }
-
-            for(Vector2 projectile : projectiles) {
-                Vector2 dir = projectile.nor();
-                dir.rotate(random.nextInt(30));
-                directions.add(dir);
-            }
-
-            for (Vector2 dir : directions) {
-                Entity shot = ProjectileFactory.enemyProjectile(self, dir);
-                GameWorld.getInstance().addEntity(shot);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        for (int i = 0; i <= 15; i++) {
+            Vector2 shot = new Vector2(ppc.getX() - opc.getX(), ppc.getY() - opc.getY());
+            shot.nor();
+            shot.rotate(random.nextInt(60) - 60);
+            EventFactory.createShot(self, shot);
         }
     }
 
     private void shootInAllDirections(Entity self) {
-        ArrayList<Vector2> projectiles = new ArrayList<Vector2>();
         for (int i = 0; i <= 8; i++) {
             Vector2 dir = new Vector2(1, 0);
-            projectiles.add(dir);
-        }
+            dir.rotate(45 * i);
+            EventFactory.createShot(self, dir);
 
-        int count = 1;
-        for (Vector2 dir : projectiles) {
-            dir.rotate(45*count);
-            Entity projectile = ProjectileFactory.enemyProjectile(self, dir);
-            GameWorld.getInstance().addEntity(projectile);
-            count++;
         }
     }
 

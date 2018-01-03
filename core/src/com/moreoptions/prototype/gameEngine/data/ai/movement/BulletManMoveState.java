@@ -4,11 +4,9 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.moreoptions.prototype.gameEngine.components.AIComponent;
-import com.moreoptions.prototype.gameEngine.components.CircleCollisionComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
-import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
+import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Room;
+import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 
@@ -27,19 +25,21 @@ public class BulletManMoveState implements AIState {
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
 
     private float shotProgress = 0;
+    private ComponentMapper<StatsComponent> statsMapper = ComponentMapper.getFor(StatsComponent.class);
 
     @Override
     public void update(Room room, Entity self, float deltaTime) {
         try {
             PositionComponent ownPos = self.getComponent(PositionComponent.class);
             VelocityComponent ownVel = self.getComponent(VelocityComponent.class);
+            Statistics stats        = self.getComponent(StatsComponent.class).getStats();
 
             move(room, self, ownPos, ownVel);
             // shoot
-            if (shotProgress >= SHOOT_COOLDOWN) {
+            if (stats.getCurrentShotCooldown() >= stats.getFireRate()) {
                 if (!shot) {
                     aiMapper.get(self).setState("ATTACK");
-                    shotProgress = 0;
+                    stats.setCurrentShotCooldown(0);
                     shot = true;
                 } else {
                     // move around
@@ -68,19 +68,17 @@ public class BulletManMoveState implements AIState {
 
                 directionVector = calculateDirection(targetPos, ownPos);
 
-                chase(ownVel, directionVector);
+                chase(ownVel, directionVector,self);
             } else {
                 directionVector = calculateDirection(targetPos, ownPos);
-                chase(ownVel, directionVector);
+                chase(ownVel, directionVector, self);
             }
         }
     }
 
     private boolean hasReached(Entity self) {
         CircleCollisionComponent hitbox = self.getComponent(CircleCollisionComponent.class);
-
         return hitbox.getHitbox().contains(targetPos.x, targetPos.y);
-
     }
 
     private Vector2 calculateDirection(Vector2 targetPos, PositionComponent ownPos) {
@@ -89,8 +87,9 @@ public class BulletManMoveState implements AIState {
         return hf;
     }
 
-    private void chase(VelocityComponent ownVel, Vector2 dir) {
-        ownVel.setVelX(dir.x * 25);
-        ownVel.setVelY(dir.y * 25);
+    private void chase(VelocityComponent ownVel, Vector2 dir,Entity self) {
+        StatsComponent p = statsMapper.get(self);
+        ownVel.setVelX(dir.x * p.getStats().getSpeed());
+        ownVel.setVelY(dir.y * p.getStats().getSpeed());
     }
 }
