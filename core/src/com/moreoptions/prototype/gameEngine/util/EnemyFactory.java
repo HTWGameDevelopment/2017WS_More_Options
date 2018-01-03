@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.data.ai.attacking.BulletManAttackState;
 import com.moreoptions.prototype.gameEngine.data.ai.attacking.StandardAttackState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
@@ -64,6 +65,10 @@ public class EnemyFactory {
                 colorComponent = new DebugColorComponent(Color.CYAN);
                 break;
 
+            case 100:
+                // BulletMan
+                colorComponent = new DebugColorComponent(Color.MAROON);
+
             default:
                 colorComponent = new DebugColorComponent(Color.BLACK);
         }
@@ -100,12 +105,20 @@ public class EnemyFactory {
                 break;
 
             case 2:
-
                 // Blinker
                 state = new BlinkerMoveState();
                 stateMap.put("MOVE", state);
                 aiComponent = new AIComponent(state, stateMap);
                 stateMap.put("ATTACK", new StandardAttackState());
+                break;
+
+            case 100:
+                // BulletMan
+                // TODO: eigenen movestat
+                state = new ChasedMoveState();
+                stateMap.put("MOVE", state);
+                aiComponent = new AIComponent(state, stateMap);
+                stateMap.put("ATTACK", new BulletManAttackState());
                 break;
 
             default:

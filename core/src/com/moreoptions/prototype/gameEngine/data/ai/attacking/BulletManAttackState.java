@@ -24,15 +24,24 @@ public class BulletManAttackState implements AIState{
         Entity player = getClosestPlayer(room.getPlayerList(), self);
 
         try {
-            PositionComponent playerPos = player.getComponent(PositionComponent.class);
-            PositionComponent ownPos = self.getComponent(PositionComponent.class);
+            // PositionComponent playerPos = player.getComponent(PositionComponent.class);
+            // PositionComponent ownPos = self.getComponent(PositionComponent.class);
 
-            Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
-            dir.nor();
+            Vector2 dirNorth = new Vector2(0, 1);
+            Vector2 dirSouth = new Vector2(0, -1);
+            Vector2 dirWest = new Vector2(-1, 0);
+            Vector2 dirEast = new Vector2(1, 0);
 
-            Entity projectile = ProjectileFactory.enemyProjectile(self, dir);
-            GameWorld.getInstance().addEntity(projectile);
+            Entity projectileNorth = ProjectileFactory.enemyProjectile(self, dirNorth);
+            Entity projectileSouth = ProjectileFactory.enemyProjectile(self, dirSouth);
+            Entity projectileWest = ProjectileFactory.enemyProjectile(self, dirWest);
+            Entity projectileEast = ProjectileFactory.enemyProjectile(self, dirEast);
+            GameWorld.getInstance().addEntity(projectileNorth);
+            GameWorld.getInstance().addEntity(projectileSouth);
+            GameWorld.getInstance().addEntity(projectileWest);
+            GameWorld.getInstance().addEntity(projectileEast);
 
+            aiMapper.get(self).setState("MOVE");
 
         } catch (Exception ex) {
             ex.printStackTrace();

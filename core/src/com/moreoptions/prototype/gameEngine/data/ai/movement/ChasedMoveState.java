@@ -14,34 +14,25 @@ import java.util.ArrayList;
  * Created by Andreas on 06.12.2017.
  */
 public class ChasedMoveState implements AIState {
-    private PositionComponent playerPos;
-    private VelocityComponent playerVel;
-
-    private PositionComponent ownPos;
-    private VelocityComponent ownVel;
-
     private Vector2 playerVec = new Vector2();
     private Vector2 ownVec = new Vector2();
-    private Vector2 dirVector = new Vector2();
-
-    private Entity player;
 
     @Override
     public void update(Room room, Entity self, float delta) {
-        player = getClosestPlayer(room.getPlayerList(), self);
+        Entity player = getClosestPlayer(room.getPlayerList(), self);
 
         try {
 
-            playerPos = player.getComponent(PositionComponent.class);
-            playerVel = player.getComponent(VelocityComponent.class);
+            PositionComponent playerPos = player.getComponent(PositionComponent.class);
+            VelocityComponent playerVel = player.getComponent(VelocityComponent.class);
 
-            ownPos = self.getComponent(PositionComponent.class);
-            ownVel = self.getComponent(VelocityComponent.class);
+            PositionComponent ownPos = self.getComponent(PositionComponent.class);
+            VelocityComponent ownVel = self.getComponent(VelocityComponent.class);
 
             playerVec.set(playerPos.getX(), playerPos.getY());
             ownVec.set(ownPos.getX(), ownPos.getY());
 
-            dirVector = ownVec.sub(playerVec);
+             Vector2 dirVector = ownVec.sub(playerVec);
             dirVector.nor();
 
             ownVel.setVelX(dirVector.x * 25);

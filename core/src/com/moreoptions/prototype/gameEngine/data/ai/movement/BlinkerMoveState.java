@@ -21,7 +21,7 @@ import java.util.Random;
  */
 public class BlinkerMoveState implements AIState {
 
-    private static final float COOLDOWN = 1.5f;
+    private static final float COOLDOWN = 3.0f;
     private float currentProgress = 0;
 
     private boolean shot = false;
