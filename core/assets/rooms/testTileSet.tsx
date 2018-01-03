@@ -929,48 +929,56 @@
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="154">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="155">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="156">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="157">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="158">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="159">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="160">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="161">
@@ -1103,12 +1111,14 @@
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="183">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="184">
@@ -1122,30 +1132,35 @@
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="186">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="187">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="188">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="189">
   <properties>
    <property name="blocked" type="bool" value="true"/>
    <property name="destructible" type="bool" value="false"/>
+   <property name="inner" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="190">
