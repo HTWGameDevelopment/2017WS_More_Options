@@ -3,14 +3,15 @@ package com.moreoptions.prototype.gameEngine.data.ai.movement;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.moreoptions.prototype.gameEngine.GameWorld;
-import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.components.AIComponent;
+import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Path;
-import com.moreoptions.prototype.gameEngine.util.EnemyFactory;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,6 @@ public class SplitterMoveState implements AIState {
     Node target = new Node(0,0);
     private Entity player;
 
-
     private VelocityComponent velC;
     private PositionComponent posC;
 
@@ -29,38 +29,27 @@ public class SplitterMoveState implements AIState {
     private float dist;
     private Path path;
 
-    private boolean attacking = false;
-
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
     private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
-    private ComponentMapper<EnemyComponent> enMapper = ComponentMapper.getFor(EnemyComponent.class);
-
-
 
     @Override
     public void update(Room r, Entity self,float delta) {
 
         PositionComponent pos = posMapper.get(self);
-        EnemyComponent en = enMapper.get(self);
         player = getClosestPlayer(r.getPlayerList(),self);
 
         try {
-
             PositionComponent playerPos = posMapper.get(player);
-
-
 
             float distance = pos.getPosition().dst(playerPos.getPosition());
 
             path = r.getNavGraph().getPath(self,player);
             if(path.isValid()) {
 
-
                 velC = self.getComponent(VelocityComponent.class);
                 posC = self.getComponent(PositionComponent.class);
 
                 target = path.getNext();
-
 
                 tx = target.getX() - posC.getX();
                 ty = target.getY() - posC.getY();
@@ -68,7 +57,6 @@ public class SplitterMoveState implements AIState {
 
                 velC.setVelX((tx / dist) * 100);
                 velC.setVelY((ty / dist) * 100);
-
 
             } else {
                 velC.setVelX(0);
@@ -100,7 +88,6 @@ public class SplitterMoveState implements AIState {
                         Node end = nodes.get(i + 1);
 
                         renderer.line(start.getX(), start.getY(), end.getX(), end.getY());
-
                     }
                 }
             }

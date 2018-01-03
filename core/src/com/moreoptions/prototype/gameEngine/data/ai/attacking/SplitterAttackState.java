@@ -6,12 +6,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.AIComponent;
-import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
-import com.moreoptions.prototype.gameEngine.components.StatsComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
-import com.moreoptions.prototype.gameEngine.util.EnemyFactory;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
@@ -21,23 +19,19 @@ public class SplitterAttackState implements AIState {
 
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
     private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
-    private ComponentMapper<EnemyComponent> enMapper = ComponentMapper.getFor(EnemyComponent.class);
 
     private static final float COOLDOWN = 1.5f;
     private float currentProgress = 3.5f;
-
 
     @Override
     public void update(Room room, Entity self, float deltaTime) {
         Entity player = getClosestPlayer(room.getPlayerList(), self);
         PositionComponent playerPos = posMapper.get(player);
         PositionComponent pos = posMapper.get(self);
-        EnemyComponent en = enMapper.get(self);
 
         float distance = pos.getPosition().dst(playerPos.getPosition());
 
         try {
-
             if (distance > 100){
                 aiMapper.get(self).setState("MOVE");
             }
@@ -49,16 +43,12 @@ public class SplitterAttackState implements AIState {
                 dir.nor();
 
                 for(int i = 0; i < 4; i++) {
-                    Entity projectile1 = ProjectileFactory.enemyProjectile(self, dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50));
+                    Vector2 oi = dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50);
+                    EventFactory.createShot(self, oi);
 
-                    GameWorld.getInstance().addEntity(projectile1);
                 }
-
-
-
                 currentProgress = 0;
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -66,9 +56,7 @@ public class SplitterAttackState implements AIState {
     }
 
     @Override
-    public void draw(ShapeRenderer renderer) {
-
-    }
+    public void draw(ShapeRenderer renderer) {    }
 
     public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self) {
         return playerList.get(0);

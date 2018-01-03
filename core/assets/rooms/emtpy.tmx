@@ -5,7 +5,7 @@
   <property name="doorNorth" type="bool" value="true"/>
   <property name="doorSouth" type="bool" value="true"/>
   <property name="doorWest" type="bool" value="true"/>
-  <property name="roomType" type="int" value="1"/>
+  <property name="roomType" type="int" value="3"/>
  </properties>
  <tileset firstgid="1" source="testTileSet.tsx"/>
  <layer name="TileLayer" width="17" height="11">

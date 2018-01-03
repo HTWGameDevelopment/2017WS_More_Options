@@ -57,6 +57,8 @@ public class EnemySystem extends EntitySystem{
 
                 ec.getRoom().checkForClear();
                 GameWorld.getInstance().removeEntity(e);
+            } else {
+                stats.setCurrentShotCooldown(stats.getCurrentShotCooldown() + deltaTime);
             }
         }
     }

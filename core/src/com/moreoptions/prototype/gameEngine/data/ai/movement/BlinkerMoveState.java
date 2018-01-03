@@ -5,15 +5,11 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.AIComponent;
-import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
-import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
-import com.moreoptions.prototype.gameEngine.data.pathfinding.Path;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 
 /**

@@ -9,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.components.AIComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
@@ -30,26 +31,18 @@ public class SplitterSubAttackState implements AIState {
 
         float distance = ownPos.getPosition().dst(playerPos.getPosition());
 
-
         try {
-
             if (distance > 100){
                 aiMapper.get(self).setState("MOVE");
-            }
-
-            if( currentProgress >= COOLDOWN) {
+            } if( currentProgress >= COOLDOWN) {
 
                 Random random = new Random();
                 Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
                 dir.nor();
 
                 for(int i = 0; i < 2; i++) {
-                    Entity projectile1 = ProjectileFactory.enemyProjectile(self, dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50));
-
-                    GameWorld.getInstance().addEntity(projectile1);
+                    EventFactory.createShot(self, dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50));
                 }
-
-
 
                 currentProgress = 0;
             }
@@ -61,9 +54,7 @@ public class SplitterSubAttackState implements AIState {
     }
 
     @Override
-    public void draw(ShapeRenderer renderer) {
-
-    }
+    public void draw(ShapeRenderer renderer) {    }
 
     public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self) {
         return playerList.get(0);

@@ -6,10 +6,9 @@ import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
-import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
+import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.Path;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 
@@ -50,12 +49,10 @@ public class StandardMoveState implements AIState {
                 velC.setVelX((tx / dist) * 100);
                 velC.setVelY((ty / dist) * 100);
 
-
             }
         } catch (NoValidComponentException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -72,9 +69,7 @@ public class StandardMoveState implements AIState {
                     for (int i = 0; i < nodes.size() - 1; i++) {
                         Node start = nodes.get(i);
                         Node end = nodes.get(i + 1);
-
                         renderer.line(start.getX(), start.getY(), end.getX(), end.getY());
-
                     }
                 }
             }
@@ -83,7 +78,6 @@ public class StandardMoveState implements AIState {
     }
 
     public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self){
-
         return playerList.get(0);
     }
 }

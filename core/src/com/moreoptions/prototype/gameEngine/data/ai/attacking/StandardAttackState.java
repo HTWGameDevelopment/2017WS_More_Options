@@ -9,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.components.AIComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
@@ -31,8 +32,7 @@ public class StandardAttackState implements AIState {
             Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
             dir.nor();
 
-            Entity projectile = ProjectileFactory.enemyProjectile(self, dir);
-            GameWorld.getInstance().addEntity(projectile);
+            EventFactory.createShot(self, dir);
 
             aiMapper.get(self).setState("MOVE");
         } catch (Exception ex) {
@@ -41,9 +41,7 @@ public class StandardAttackState implements AIState {
     }
 
     @Override
-    public void draw(ShapeRenderer renderer) {
-
-    }
+    public void draw(ShapeRenderer renderer) {    }
 
     public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self) {
         return playerList.get(0);

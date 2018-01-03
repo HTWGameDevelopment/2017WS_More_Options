@@ -12,6 +12,10 @@ public class Consts {
     public static final String SPAWN_ENEMY = "SPAWN_ENEMY";
     public static final int ENEMY = 0;
     public static final int ITEM = 1;
-    public static final String DOOR_STAT = "DOOR_STAT" ;
+    public static final String DOOR_STAT = "DOOR_STAT";
     public static final String ACHIEVEMENT_EVENT_ID = "Achievement_Event";
     public static final String INT = "Int";
+    public static String SHOOT_EVENT = "Shoot";
+    public static String ENTITY = "Entity";
+    public static String DIRECTION = "Direction";
+}

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Room;
-import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.ai.attacking.*;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
@@ -27,7 +26,6 @@ public class EnemyFactory {
 
     private static ComponentMapper<EnemyComponent> enMapper = ComponentMapper.getFor(EnemyComponent.class);
     private static ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
-
 
     public static Entity createEnemy(int enemyId, float x, float y, Room room) {
 
@@ -77,9 +75,7 @@ public class EnemyFactory {
         e.add(new EnemyComponent(x, y, room,20));
 
         return e;
-
     }
-
 
     private static Entity createSplitter(float x, float y, Room room) {
 
@@ -218,7 +214,6 @@ public class EnemyFactory {
                 statsSentry.getStats().setProjectileSpeed(7);
                 statsSentry.getStats().setRange(500);
                 return statsSentry;
-
 
             default:
                 return new StatsComponent();

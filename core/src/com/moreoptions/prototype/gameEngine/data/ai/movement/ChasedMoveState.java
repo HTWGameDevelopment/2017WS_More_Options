@@ -52,8 +52,7 @@ public class ChasedMoveState implements AIState {
     }
 
     @Override
-    public void draw(ShapeRenderer renderer) {
-    }
+    public void draw(ShapeRenderer renderer) { }
 
     public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self) {
         return playerList.get(0);

@@ -9,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.components.AIComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ public class SplitterSubSubAttackState implements AIState {
     private static final float COOLDOWN = 0.5f;
     private float currentProgress = 0f;
 
-
     @Override
     public void update(Room room, Entity self, float deltaTime) {
         Entity player = getClosestPlayer(room.getPlayerList(), self);
@@ -29,7 +29,6 @@ public class SplitterSubSubAttackState implements AIState {
         PositionComponent ownPos = self.getComponent(PositionComponent.class);
 
         float distance = ownPos.getPosition().dst(playerPos.getPosition());
-
 
         try {
 
@@ -43,9 +42,7 @@ public class SplitterSubSubAttackState implements AIState {
                 Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
                 dir.nor();
 
-                Entity projectile1 = ProjectileFactory.enemyProjectile(self, dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50));
-
-                GameWorld.getInstance().addEntity(projectile1);
+                EventFactory.createShot(self, dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50));
 
                 currentProgress = 0;
             }
