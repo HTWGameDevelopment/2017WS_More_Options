@@ -37,6 +37,7 @@ public class DebugRenderSystem extends EntitySystem{
     private ComponentMapper<CircleCollisionComponent> cccMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
     private ComponentMapper<DebugColorComponent> dcolorMapper = ComponentMapper.getFor(DebugColorComponent.class);
     private ComponentMapper<DebugCircleComponent> dccMapper = ComponentMapper.getFor(DebugCircleComponent.class);
+    private ComponentMapper<DebugSquareComponent> dscMapper = ComponentMapper.getFor(DebugSquareComponent.class);
 
 
     public DebugRenderSystem(ShapeRenderer renderer) {
@@ -98,9 +99,11 @@ public class DebugRenderSystem extends EntitySystem{
 
             DebugColorComponent dcc = dcolorMapper.get(e);
             DebugCircleComponent dlc = dccMapper.get(e);
+            DebugSquareComponent dsc = dscMapper.get(e);
             PositionComponent pc = posMapper.get(e);
             renderer.setColor(dcc.getColor());
-            renderer.circle(pc.getX(),pc.getY(),dlc.getRadius());
+            if (dccMapper.has(e)) renderer.circle(pc.getX(),pc.getY(),dlc.getRadius());
+            if (dscMapper.has(e)) renderer.rect(pc.getX(),pc.getY(),dsc.getSize(),dsc.getSize());
         }
         renderer.end();
     }

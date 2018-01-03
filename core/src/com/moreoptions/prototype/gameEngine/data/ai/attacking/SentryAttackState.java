@@ -5,39 +5,43 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
-import com.moreoptions.prototype.gameEngine.components.AIComponent;
+import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
+import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 
 import java.util.ArrayList;
 
-/**
- * Created by Andreas on 02.01.2018.
- */
-public class StandardAttackState implements AIState {
+public class SentryAttackState implements AIState {
 
-    private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
+    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
+
+    private static final float COOLDOWN = 10.0f;
+    private float currentProgress = 3.5f;
+
 
     @Override
     public void update(Room room, Entity self, float deltaTime) {
         Entity player = getClosestPlayer(room.getPlayerList(), self);
+        PositionComponent playerPos = posMapper.get(player);
+        PositionComponent pos = posMapper.get(self);
 
         try {
-            PositionComponent playerPos = player.getComponent(PositionComponent.class);
-            PositionComponent ownPos = self.getComponent(PositionComponent.class);
 
-            Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
-            dir.nor();
+            if( currentProgress >= COOLDOWN) {
+                Vector2 dir = new Vector2(playerPos.getX() - pos.getX(), playerPos.getY() - pos.getY());
+                dir.nor();
+                EventFactory.createShot(self,dir);
+                currentProgress = 0;
+            }
 
-            EventFactory.createShot(self, dir);
-
-            aiMapper.get(self).setState("MOVE");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        currentProgress += deltaTime;
     }
 
     @Override
@@ -47,3 +51,5 @@ public class StandardAttackState implements AIState {
         return playerList.get(0);
     }
 }
+
+

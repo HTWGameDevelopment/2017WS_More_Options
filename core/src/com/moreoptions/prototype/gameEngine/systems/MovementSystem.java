@@ -8,6 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
@@ -228,6 +229,7 @@ public class MovementSystem extends EntitySystem {
 
         for(Entity player : players) {
             for(Entity enemy : enemies) {
+
 
                 Circle a = cMapper.get(player).getHitbox();
                 Circle b = cMapper.get(enemy).getHitbox();

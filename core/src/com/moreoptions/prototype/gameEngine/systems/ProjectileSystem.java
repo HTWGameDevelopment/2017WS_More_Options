@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
@@ -34,27 +35,21 @@ public class ProjectileSystem extends EntitySystem {
     public ProjectileSystem() {
 
         initListeners();
-
-
     }
 
     private void initListeners() {
 
         subscriber = new EventSubscriber();
-        subscriber.subscribe("shoot", new EventListener() {
+        subscriber.subscribe(Consts.SHOOT_EVENT, new EventListener() {
             @Override
             public void trigger(Event e) {
 
-                Entity entity = e.getData("entity", Entity.class);
-                Vector2 direction = e.getData("direction", Vector2.class);
-
-                float ccd = entity.getComponent(StatsComponent.class).getStats().getCurrentShotCooldown();
-                float uppercd = entity.getComponent(StatsComponent.class).getStats().getFireRate();
-                if(ccd >= uppercd) {
+                Entity entity = e.getData(Consts.ENTITY, Entity.class);
+                Vector2 direction = e.getData(Consts.DIRECTION, Vector2.class);
                     Entity projectile = ProjectileFactory.createProjectile(entity, direction);
+                    System.out.println(direction);
                     getEngine().addEntity(projectile);
-                    scMapper.get(entity).getStats().setCurrentShotCooldown(0);
-                }
+
             }
         });
     }
@@ -110,10 +105,5 @@ public class ProjectileSystem extends EntitySystem {
                 }
             }
         }
-    }
-
-
-    public enum Direction {
-        UP,DOWN,LEFT,RIGHT;
     }
 }

@@ -13,37 +13,54 @@ import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-/**
- * Created by Andreas on 02.01.2018.
- */
-public class StandardAttackState implements AIState {
+public class SplitterSubSubAttackState implements AIState {
 
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
+
+    private static final float COOLDOWN = 0.5f;
+    private float currentProgress = 0f;
 
     @Override
     public void update(Room room, Entity self, float deltaTime) {
         Entity player = getClosestPlayer(room.getPlayerList(), self);
+        PositionComponent playerPos = player.getComponent(PositionComponent.class);
+        PositionComponent ownPos = self.getComponent(PositionComponent.class);
+
+        float distance = ownPos.getPosition().dst(playerPos.getPosition());
 
         try {
-            PositionComponent playerPos = player.getComponent(PositionComponent.class);
-            PositionComponent ownPos = self.getComponent(PositionComponent.class);
 
-            Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
-            dir.nor();
+            if (distance > 100){
+                aiMapper.get(self).setState("MOVE");
+            }
 
-            EventFactory.createShot(self, dir);
+            if( currentProgress >= COOLDOWN) {
 
-            aiMapper.get(self).setState("MOVE");
+                Random random = new Random();
+                Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
+                dir.nor();
+
+                EventFactory.createShot(self, dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50));
+
+                currentProgress = 0;
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        currentProgress += deltaTime;
     }
 
     @Override
-    public void draw(ShapeRenderer renderer) {    }
+    public void draw(ShapeRenderer renderer) {
+
+    }
 
     public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self) {
         return playerList.get(0);
     }
 }
+
+

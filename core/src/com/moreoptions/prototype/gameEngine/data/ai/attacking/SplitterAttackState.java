@@ -13,31 +13,46 @@ import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-/**
- * Created by Andreas on 02.01.2018.
- */
-public class StandardAttackState implements AIState {
+public class SplitterAttackState implements AIState {
 
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
+    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
+
+    private static final float COOLDOWN = 1.5f;
+    private float currentProgress = 3.5f;
 
     @Override
     public void update(Room room, Entity self, float deltaTime) {
         Entity player = getClosestPlayer(room.getPlayerList(), self);
+        PositionComponent playerPos = posMapper.get(player);
+        PositionComponent pos = posMapper.get(self);
+
+        float distance = pos.getPosition().dst(playerPos.getPosition());
 
         try {
-            PositionComponent playerPos = player.getComponent(PositionComponent.class);
-            PositionComponent ownPos = self.getComponent(PositionComponent.class);
+            if (distance > 100){
+                aiMapper.get(self).setState("MOVE");
+            }
 
-            Vector2 dir = new Vector2(playerPos.getX() - ownPos.getX(), playerPos.getY() - ownPos.getY());
-            dir.nor();
+            if( currentProgress >= COOLDOWN) {
 
-            EventFactory.createShot(self, dir);
+                Random random = new Random();
+                Vector2 dir = new Vector2(playerPos.getX() - pos.getX(), playerPos.getY() - pos.getY());
+                dir.nor();
 
-            aiMapper.get(self).setState("MOVE");
+                for(int i = 0; i < 4; i++) {
+                    Vector2 oi = dir.cpy().rotate(random.nextInt(50 + 50 + 1) - 50);
+                    EventFactory.createShot(self, oi);
+
+                }
+                currentProgress = 0;
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        currentProgress += deltaTime;
     }
 
     @Override
@@ -47,3 +62,5 @@ public class StandardAttackState implements AIState {
         return playerList.get(0);
     }
 }
+
+

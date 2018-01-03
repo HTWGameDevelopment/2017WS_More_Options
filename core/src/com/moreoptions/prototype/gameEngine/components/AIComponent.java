@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
+import com.moreoptions.prototype.gameEngine.data.ai.movement.SplitterMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.StandardMoveState;
 
 import java.util.HashMap;
@@ -29,6 +30,8 @@ public class AIComponent implements Component {
             case 3:
                 currentState = new BlinkerMoveState();
                 break;
+            case 4:
+                currentState = new SplitterMoveState();
         }
     }
 
