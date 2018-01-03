@@ -23,9 +23,6 @@ public class BulletManAttackState implements AIState{
     private Entity player;
     private int attackType;
 
-    private float x;
-    private float y;
-
     @Override
     public void update(Room room, Entity self, float deltaTime) {
         try {
@@ -59,11 +56,11 @@ public class BulletManAttackState implements AIState{
             ArrayList<Vector2> projectiles = new ArrayList<Vector2>();
             ArrayList<Vector2> directions = new ArrayList<Vector2>();
             for (int i = 0; i <= 15; i++) {
+                Vector2 shot = new Vector2(ppc.getX() - opc.getX(), ppc.getY() - opc.getY());
+                shot.nor();
+                shot.rotate(random.nextInt(60) - 60 );
 
-                x = ppc.getX();
-                y = ppc.getY();
-                Vector2 shot = new Vector2(x - opc.getX(), y - opc.getY());
-                projectiles.add(shot);
+
             }
 
             for(Vector2 projectile : projectiles) {
