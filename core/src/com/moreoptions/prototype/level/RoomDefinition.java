@@ -133,23 +133,23 @@ public class RoomDefinition {
 
                 tile.add(new TileGraphicComponent(t.getCell(x, y).getTile().getTextureRegion(),1));
 
-                if (!t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
-                    throw new MissdefinedTileException("No blocked flag set");
+                if (t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
+                    boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
+                    if (blocked) {
+                        tile.add(new BlockedTileComponent());
+                    } else {
+                        tile.add(new WalkableTileComponent());
+                    }
                 }
 
-                if (!t.getCell(x, y).getTile().getProperties().containsKey("destructible")) {
-                    throw new MissdefinedTileException("No destructible flag set");
+                if (t.getCell(x, y).getTile().getProperties().containsKey("destructible")) {
+                    boolean destructible = t.getCell(x, y).getTile().getProperties().get("destructible", boolean.class);
+                    if(destructible) tile.add(new DestructibleComponent());
                 }
 
-                boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
-                if (blocked) {
-                    tile.add(new BlockedTileComponent());
-                } else {
-                    tile.add(new WalkableTileComponent());
-                }
 
-                boolean destructible = t.getCell(x, y).getTile().getProperties().get("destructible", boolean.class);
-                if(destructible) tile.add(new DestructibleComponent());
+
+
 
                 if (t.getCell(x, y).getTile().getProperties().containsKey("inner")) {
                     if(t.getCell(x, y).getTile().getProperties().get("inner", boolean.class))
@@ -181,9 +181,7 @@ public class RoomDefinition {
                 if(t.getCell(x,y) == null) continue;
 
                 tile.add(new TileGraphicComponent(t.getCell(x, y).getTile().getTextureRegion(),1));
-                if (!t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
-                    throw new MissdefinedTileException("No blocked flag set");
-                } else {
+                if (t.getCell(x, y).getTile().getProperties().containsKey("blocked")) {
                     boolean blocked = t.getCell(x, y).getTile().getProperties().get("blocked", boolean.class);
                     if (blocked) {
                         tile.add(new BlockedTileComponent());

@@ -82,7 +82,7 @@ public class Player {
                 p = new PositionComponent(15*32 + 16, 6 * 32 - 16);
                 break;
             case NONE:
-                p = new PositionComponent(150,150);
+                p = new PositionComponent(Consts.GAME_WIDTH / 2,Consts.GAME_HEIGHT / 2);
                 break;
             default:
                 throw new NoOffsetException();
