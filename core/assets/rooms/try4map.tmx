@@ -56,31 +56,31 @@
  <objectgroup name="EnemyLayer">
   <object id="21" name="Chaser2" x="228.667" y="166.667" width="21" height="19.3333">
    <properties>
-    <property name="enemyID" type="int" value="2"/>
+    <property name="enemyID" type="int" value="0"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
   <object id="22" name="Chaser1" x="294" y="169.667" width="22" height="16.3333">
    <properties>
-    <property name="enemyID" type="int" value="2"/>
+    <property name="enemyID" type="int" value="0"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
   <object id="24" name="Chaser1" x="256" y="146.833" width="22" height="16.3333">
    <properties>
-    <property name="enemyID" type="int" value="2"/>
+    <property name="enemyID" type="int" value="0"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
   <object id="25" name="Chaser1" x="225" y="201.833" width="22" height="16.3333">
    <properties>
-    <property name="enemyID" type="int" value="2"/>
+    <property name="enemyID" type="int" value="0"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
   <object id="26" name="Chaser1" x="294" y="201.833" width="22" height="16.3333">
    <properties>
-    <property name="enemyID" type="int" value="2"/>
+    <property name="enemyID" type="int" value="0"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
