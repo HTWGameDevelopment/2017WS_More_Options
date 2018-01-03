@@ -5,7 +5,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 
@@ -22,6 +24,11 @@ public class NavGraph {
 
     Random r = new Random();
     FPSLogger log = new FPSLogger();
+
+
+    ComponentMapper<PositionComponent> cmp = ComponentMapper.getFor(PositionComponent.class);
+
+
 
     public NavGraph() {
 
@@ -195,9 +202,6 @@ public class NavGraph {
 
 
     public Path getPath(Entity self, Entity player) throws NoValidComponentException {
-
-        ComponentMapper<PositionComponent> cmp = ComponentMapper.getFor(PositionComponent.class);
-
         if(!cmp.has(self)|| !cmp.has(player)) throw new NoValidComponentException("None of the given entities has a positioncomponent");
 
         PositionComponent selfPos = cmp.get(self);
@@ -211,5 +215,32 @@ public class NavGraph {
     public boolean checkPath(Path path) {
         //TODO impl
         return false;
+    }
+
+    public Vector2 getRandomPosition(Entity self) {
+
+
+        Node n = createRandomUnblockedNode();
+        return new Vector2(n.getX(), n.getY());
+
+    }
+
+    private Node createRandomUnblockedNode() {
+
+        Node n = new Node(0,0);
+        connectNode(n);
+        n.setBlocked(true);
+
+        Random rand = new Random();
+        while(n.isBlocked()) {
+            removeNode(n);
+            n.setX(rand.nextInt(Consts.GAME_WIDTH - Consts.TILE_SIZE * 4) + Consts.TILE_SIZE * 2);
+            n.setY(rand.nextInt(Consts.GAME_HEIGHT - Consts.TILE_SIZE * 4) + Consts.TILE_SIZE * 2);
+            connectNode(n);
+            updateBlockedNodes();
+        }
+        removeNode(n);
+        return n;
+
     }
 }

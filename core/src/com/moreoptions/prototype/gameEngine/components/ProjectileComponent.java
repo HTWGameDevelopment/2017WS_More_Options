@@ -11,12 +11,14 @@ public class ProjectileComponent implements Component {
     float range = 0;
     float distanceTravelled = 0;
     float dmg = 0;
+    boolean isEnemy;
 
     HitEvent onHit;
 
-    public ProjectileComponent(float damage, float range) {
+    public ProjectileComponent(float damage, float range, boolean b) {
         this.range = range;
         this.dmg = damage;
+        this.isEnemy = b;
         onHit = new HitEvent.StandardHitEvent();
     }
 
@@ -38,5 +40,13 @@ public class ProjectileComponent implements Component {
 
     public HitEvent getHitEvent() {
         return onHit;
+    }
+
+    public boolean isEnemy() {
+        return isEnemy;
+    }
+
+    public void setEnemy(boolean enemy) {
+        isEnemy = enemy;
     }
 }
