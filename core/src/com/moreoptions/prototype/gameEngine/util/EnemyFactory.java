@@ -292,6 +292,7 @@ public class EnemyFactory {
                 state = new ChasedMoveState();
                 stateMap.put("MOVE", state);
                 aiComponent = new AIComponent(state, stateMap);
+                stateMap.put("ATTACK", new StandardAttackState());
                 break;
 
             case 2:

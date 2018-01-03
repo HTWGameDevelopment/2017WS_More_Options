@@ -23,7 +23,7 @@ public class Statistics {
         this.maxHealth = 3;
         this.currentHealth = 3;
 
-        this.fireRate = 0.75f;
+        this.fireRate = 1.5f;
         this.projectileSpeed = 120;
         this.pushability = 5;
 

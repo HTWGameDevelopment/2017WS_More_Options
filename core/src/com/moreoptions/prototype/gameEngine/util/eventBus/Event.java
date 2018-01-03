@@ -24,7 +24,13 @@ public class Event {
         return identifier;
     }
 
-    public HashMap<String,Object> getDatas() {
+
+    public void setData(HashMap<String,Object> data) {
+        this.eventData = data;
+    }
+
+    public HashMap<String, Object> getDatas() {
+
         return eventData;
     }
 }

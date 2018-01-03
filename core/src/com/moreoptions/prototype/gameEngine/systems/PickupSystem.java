@@ -29,6 +29,7 @@ public class PickupSystem extends EntitySystem {
             for(Entity pickup : pickups) {
                 if(cmapper.get(p).getHitbox().overlaps(cmapper.get(pickup).getHitbox())) {
                     PickupComponent pickupComponent = pucMapper.get(pickup);
+                    System.out.println("COLLECT");
                     if(pickupComponent.trigger(p)) getEngine().removeEntity(pickup);
                 }
             }

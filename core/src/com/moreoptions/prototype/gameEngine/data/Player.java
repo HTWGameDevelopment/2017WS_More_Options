@@ -22,6 +22,8 @@ public class Player {
     public Player() {
         inputState = new InputState();
         stats = new Statistics();
+        stats.setFireRate(1);
+        stats.setSpeed(100);
     }
 
     public InputState getInputState() {
@@ -65,22 +67,22 @@ public class Player {
         switch (offset) {
             case TOP:
 
-                p = new PositionComponent(7*32, 3 * 32);
+                p = new PositionComponent(8*32 + 16, 50);
 
                 break;
             case DOWN:
 
-                p = new PositionComponent(7*32, 8 * 32);
+                p = new PositionComponent(8*32 + 16, 9 * 32 +16 );
 
                 break;
             case RIGHT:
-                p = new PositionComponent(3*32, 6 * 32);
+                p = new PositionComponent(32+16, 6 * 32 - 16);
                 break;
             case LEFT:
-                p = new PositionComponent(14*32, 6 * 32);
+                p = new PositionComponent(15*32 + 16, 6 * 32 - 16);
                 break;
             case NONE:
-                p = new PositionComponent(150,150);
+                p = new PositionComponent(Consts.GAME_WIDTH / 2,Consts.GAME_HEIGHT / 2);
                 break;
             default:
                 throw new NoOffsetException();

@@ -67,6 +67,7 @@ public class LevelManager {
         }
         //Add player entity
         addPlayerEntities(offset,targetRoom);
+        currentRoom.checkForClear();
         return true;
     }
 
