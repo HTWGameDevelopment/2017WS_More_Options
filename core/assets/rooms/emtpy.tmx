@@ -53,5 +53,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="EnemyLayer" visible="0"/>
+  <objectgroup name="EnemyLayer">
+ <object id="20" name="BulletMan1" x="207" y="240.5">
+   <properties>
+    <property name="enemyID" type="int" value="100"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  </objectgroup>
 </map>

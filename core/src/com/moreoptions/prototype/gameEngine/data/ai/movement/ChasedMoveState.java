@@ -24,7 +24,6 @@ public class ChasedMoveState implements AIState {
         try {
 
             PositionComponent playerPos = player.getComponent(PositionComponent.class);
-            VelocityComponent playerVel = player.getComponent(VelocityComponent.class);
 
             PositionComponent ownPos = self.getComponent(PositionComponent.class);
             VelocityComponent ownVel = self.getComponent(VelocityComponent.class);
@@ -32,7 +31,7 @@ public class ChasedMoveState implements AIState {
             playerVec.set(playerPos.getX(), playerPos.getY());
             ownVec.set(ownPos.getX(), ownPos.getY());
 
-             Vector2 dirVector = ownVec.sub(playerVec);
+            Vector2 dirVector = ownVec.sub(playerVec);
             dirVector.nor();
 
             ownVel.setVelX(dirVector.x * 25);

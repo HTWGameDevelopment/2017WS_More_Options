@@ -234,8 +234,8 @@ public class NavGraph {
         Random rand = new Random();
         while(n.isBlocked()) {
             removeNode(n);
-            n.setX(rand.nextInt(Consts.GAME_WIDTH - Consts.TILE_SIZE * 2) + Consts.TILE_SIZE );
-            n.setY(rand.nextInt(Consts.GAME_HEIGHT - Consts.TILE_SIZE * 2) + Consts.TILE_SIZE );
+            n.setX(rand.nextInt(Consts.GAME_WIDTH - Consts.TILE_SIZE * 4) + Consts.TILE_SIZE );
+            n.setY(rand.nextInt(Consts.GAME_HEIGHT - Consts.TILE_SIZE * 4) + Consts.TILE_SIZE );
             connectNode(n);
             updateBlockedNodes();
         }

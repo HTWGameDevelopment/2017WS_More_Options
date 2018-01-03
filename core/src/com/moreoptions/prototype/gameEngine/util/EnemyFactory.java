@@ -9,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.ai.attacking.BulletManAttackState;
 import com.moreoptions.prototype.gameEngine.data.ai.attacking.StandardAttackState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
+import com.moreoptions.prototype.gameEngine.data.ai.movement.BulletManMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
 import com.moreoptions.prototype.gameEngine.data.ai.movement.StandardMoveState;
 
@@ -68,6 +69,7 @@ public class EnemyFactory {
             case 100:
                 // BulletMan
                 colorComponent = new DebugColorComponent(Color.MAROON);
+                break;
 
             default:
                 colorComponent = new DebugColorComponent(Color.BLACK);
@@ -113,9 +115,8 @@ public class EnemyFactory {
                 break;
 
             case 100:
-                // BulletMan
-                // TODO: eigenen movestat
-                state = new ChasedMoveState();
+                // BulletManw
+                state = new BulletManMoveState();
                 stateMap.put("MOVE", state);
                 aiComponent = new AIComponent(state, stateMap);
                 stateMap.put("ATTACK", new BulletManAttackState());

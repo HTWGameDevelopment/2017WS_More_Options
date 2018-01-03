@@ -12,48 +12,100 @@ import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Andreas on 02.01.2018.
  */
 public class BulletManAttackState implements AIState{
     private ComponentMapper<AIComponent> aiMapper = ComponentMapper.getFor(AIComponent.class);
+    private Random random = new Random();
+    private Entity player;
+    private int attackType;
+
+    private float x;
+    private float y;
 
     @Override
     public void update(Room room, Entity self, float deltaTime) {
-        Entity player = getClosestPlayer(room.getPlayerList(), self);
-
         try {
-            // PositionComponent playerPos = player.getComponent(PositionComponent.class);
-            // PositionComponent ownPos = self.getComponent(PositionComponent.class);
+            attackType = getNextAttack();
 
-            Vector2 dirNorth = new Vector2(0, 1);
-            Vector2 dirSouth = new Vector2(0, -1);
-            Vector2 dirWest = new Vector2(-1, 0);
-            Vector2 dirEast = new Vector2(1, 0);
+            switch (attackType) {
+                case 0:
+                    shootInAllDirections(self);
+                    break;
 
-            Entity projectileNorth = ProjectileFactory.enemyProjectile(self, dirNorth);
-            Entity projectileSouth = ProjectileFactory.enemyProjectile(self, dirSouth);
-            Entity projectileWest = ProjectileFactory.enemyProjectile(self, dirWest);
-            Entity projectileEast = ProjectileFactory.enemyProjectile(self, dirEast);
-            GameWorld.getInstance().addEntity(projectileNorth);
-            GameWorld.getInstance().addEntity(projectileSouth);
-            GameWorld.getInstance().addEntity(projectileWest);
-            GameWorld.getInstance().addEntity(projectileEast);
+                case 1:
+                    barfAttack(room, self);
+                    break;
 
+                default:
+                    shootInAllDirections(self);
+            }
             aiMapper.get(self).setState("MOVE");
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    @Override
-    public void draw(ShapeRenderer renderer) {
+    private void barfAttack(Room room, Entity self) {
+        player = getClosestPlayer(room.getPlayerList(), self);
 
+        PositionComponent ppc = player.getComponent(PositionComponent.class);
+        PositionComponent opc = self.getComponent(PositionComponent.class);
+
+        try {
+            ArrayList<Vector2> projectiles = new ArrayList<Vector2>();
+            ArrayList<Vector2> directions = new ArrayList<Vector2>();
+            for (int i = 0; i <= 15; i++) {
+
+                x = ppc.getX();
+                y = ppc.getY();
+                Vector2 shot = new Vector2(x - opc.getX(), y - opc.getY());
+                projectiles.add(shot);
+            }
+
+            for(Vector2 projectile : projectiles) {
+                Vector2 dir = projectile.nor();
+                dir.rotate(random.nextInt(30));
+                directions.add(dir);
+            }
+
+            for (Vector2 dir : directions) {
+                Entity shot = ProjectileFactory.enemyProjectile(self, dir);
+                GameWorld.getInstance().addEntity(shot);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self) {
+    private void shootInAllDirections(Entity self) {
+        ArrayList<Vector2> projectiles = new ArrayList<Vector2>();
+        for (int i = 0; i <= 8; i++) {
+            Vector2 dir = new Vector2(1, 0);
+            projectiles.add(dir);
+        }
+
+        int count = 1;
+        for (Vector2 dir : projectiles) {
+            dir.rotate(45*count);
+            Entity projectile = ProjectileFactory.enemyProjectile(self, dir);
+            GameWorld.getInstance().addEntity(projectile);
+            count++;
+        }
+    }
+
+    @Override
+    public void draw(ShapeRenderer renderer) {
+    }
+
+    private int getNextAttack() {
+        return random.nextInt(2);
+    }
+
+    public Entity getClosestPlayer (ArrayList<Entity> playerList, Entity self){
         return playerList.get(0);
     }
 }
