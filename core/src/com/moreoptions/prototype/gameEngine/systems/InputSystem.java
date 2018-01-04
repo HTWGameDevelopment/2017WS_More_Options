@@ -89,24 +89,29 @@ public class InputSystem extends EntitySystem {
         Player p = pc.getPlayer();
         Statistics stats = statsMapper.get(e).getStats();
         InputState playerInput = p.getInputState();
-        if(stats.getCurrentShotCooldown() >= stats.getFireRate()) {
-            Event event = new Event(Consts.SHOOT_EVENT);
-            event.addData(Consts.ENTITY, e);
 
-            if (playerInput.isShootDown()) {
-                event.addData(Consts.DIRECTION, new Vector2(0, -1));
-                EventBus.getInstance().addEvent(event);
-            } else if (playerInput.isShootUp()) {
-                event.addData(Consts.DIRECTION, new Vector2(0, 1));
-                EventBus.getInstance().addEvent(event);
-            } else if (playerInput.isShootLeft()) {
-                event.addData(Consts.DIRECTION, new Vector2(-1, 0));
-                EventBus.getInstance().addEvent(event);
-            } else if (playerInput.isShootRight()) {
-                event.addData(Consts.DIRECTION, new Vector2(1, 0));
-                EventBus.getInstance().addEvent(event);
+        if (playerInput.isShootDown() || playerInput.isShootLeft() || playerInput.isShootRight() || playerInput.isShootUp()) {
+
+
+            if (stats.getCurrentShotCooldown() >= stats.getFireRate()) {
+                Event event = new Event(Consts.SHOOT_EVENT);
+                event.addData(Consts.ENTITY, e);
+
+                if (playerInput.isShootDown()) {
+                    event.addData(Consts.DIRECTION, new Vector2(0, -1));
+                    EventBus.getInstance().addEvent(event);
+                } else if (playerInput.isShootUp()) {
+                    event.addData(Consts.DIRECTION, new Vector2(0, 1));
+                    EventBus.getInstance().addEvent(event);
+                } else if (playerInput.isShootLeft()) {
+                    event.addData(Consts.DIRECTION, new Vector2(-1, 0));
+                    EventBus.getInstance().addEvent(event);
+                } else if (playerInput.isShootRight()) {
+                    event.addData(Consts.DIRECTION, new Vector2(1, 0));
+                    EventBus.getInstance().addEvent(event);
+                }
+                stats.setCurrentShotCooldown(0);
             }
-            stats.setCurrentShotCooldown(0);
         }
     }
 }
