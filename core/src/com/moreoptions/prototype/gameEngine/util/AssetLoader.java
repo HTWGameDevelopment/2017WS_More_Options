@@ -2,6 +2,7 @@ package com.moreoptions.prototype.gameEngine.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
@@ -18,6 +19,7 @@ import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.level.RoomDefinition;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -49,6 +51,10 @@ public class AssetLoader {
 
     private void loadSounds() {
 
+        FileHandle soundFolder = Gdx.files.internal("sound/");
+        for(FileHandle f : soundFolder.list()) {
+
+        }
         assetManager.load("sound/gameOver.mp3", Sound.class);
 
     }
@@ -81,7 +87,9 @@ public class AssetLoader {
             }
 
             System.out.println("TEST: "+ assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size);
+            for(Sound s : assetManager.getAll(Sound.class, new Array<Sound>())) {
 
+            }
             SoundDatabase.getInstance().registerSound(Consts.Sound.GAME_OVER_SOUND, assetManager.get("sound/gameOver.mp3", Sound.class));
             return true;
         } return false;

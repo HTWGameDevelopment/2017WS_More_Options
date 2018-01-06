@@ -29,7 +29,7 @@ public class SoundDatabase {
     public void playSound(String sound) {
         ArrayList<Sound> soundArrayList = soundMap.get(sound);
         if (!soundArrayList.isEmpty()) {
-            soundArrayList.get(random.nextInt(soundArrayList.size())).play(100);
+            soundArrayList.get(random.nextInt(soundArrayList.size())).play(5);
         }
     }
 
