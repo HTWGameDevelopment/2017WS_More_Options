@@ -14,6 +14,7 @@ public class GameState {
     private Profile gameProfile;
 
     private ArrayList<Player> playerList = new ArrayList<Player>();
+    private boolean debugMode = true;
 
     public static GameState getInstance() {
         return ourInstance;
@@ -40,5 +41,15 @@ public class GameState {
 
     public ArrayList<Player> getPlayerList() {
         return playerList;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void reset() {
+        for(Player p : playerList) {
+            p.reset();
+        }
     }
 }

@@ -32,15 +32,19 @@ public class EnemySystem extends EntitySystem{
     public EnemySystem() {
         enemySpawner.subscribe(Consts.SPAWN_ENEMY, new EventListener() {
             @Override
-            public void trigger(Event e) {
+            public boolean trigger(Event e) {
 
                 HashMap<String, Object> map = e.getDatas();
                 for(Object o : map.values()) {
                     getEngine().addEntity((Entity) o);
                 }
-
+                return true;
             }
         });
+
+
+
+
     }
 
     @Override

@@ -6,6 +6,8 @@ package com.moreoptions.prototype.gameEngine.data;
 
 public class Statistics {
 
+    private float immunityTimer;
+    private float timeSinceLastHit;
     private float deceleration;
     private float speed;
     private float damage;
@@ -26,6 +28,8 @@ public class Statistics {
         this.fireRate = 1.5f;
         this.projectileSpeed = 120;
         this.pushability = 5;
+        this.immunityTimer = 2;
+        this.timeSinceLastHit = 0;
 
         this.range = 100;
 
@@ -100,6 +104,26 @@ public class Statistics {
 
     public float getCurrentShotCooldown() {
         return currentShotCooldown;
+    }
+
+    public float getImmunityTimer() {
+        return immunityTimer;
+    }
+
+    public void setImmunityTimer(float immunityTimer) {
+        this.immunityTimer = immunityTimer;
+    }
+
+    public float getTimeSinceLastHit() {
+        return timeSinceLastHit;
+    }
+
+    public void setTimeSinceLastHit(float timeSinceLastHit) {
+        this.timeSinceLastHit = timeSinceLastHit;
+    }
+
+    public void setPushability(int pushability) {
+        this.pushability = pushability;
     }
 
     public void setCurrentShotCooldown(float currentShotCooldown) {

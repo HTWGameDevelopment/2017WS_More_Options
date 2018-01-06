@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 
 /**
  * Created by Dennis on 06.12.2017.
@@ -18,17 +19,8 @@ public interface HitEvent {
         public boolean onHit(Entity self, Entity hit) {
 
             if(statsMapper.has(hit)) {
-                float currentHealth = statsMapper.get(hit).getStats().getCurrentHealth();
-                float dmg = self.getComponent(ProjectileComponent.class).getDmg();
-                statsMapper.get(hit).getStats().setCurrentHealth(currentHealth - dmg);
-                System.out.println("hit");
+                EventFactory.projectileHit(self,hit);
 
-                //TODO: Make a function out of this
-                Entity dmgText = new Entity();
-                dmgText.add(new PositionComponent(hit.getComponent(PositionComponent.class).getX(), hit.getComponent(PositionComponent.class).getY() + 3));
-                dmgText.add(new CombatTextComponent("-" + dmg + "!!!"));
-                dmgText.add(new TimedComponent(0.5f));
-                GameWorld.getInstance().addEntity(dmgText);
             } else {
                 System.out.println("NEIN");
                 return false;

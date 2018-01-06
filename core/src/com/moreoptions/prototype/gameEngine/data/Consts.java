@@ -15,6 +15,15 @@ public class Consts {
     public static final String DOOR_STAT = "DOOR_STAT";
     public static final String ACHIEVEMENT_EVENT_ID = "Achievement_Event";
     public static final String INT = "Int";
+    public static final String DAMAGE_EVENT = "Damage_Event";
+    public static final String SELF = "SELF";
+    public static final String HIT = "HIT";
+    public static final String DAMAGE_EVENT_PROJECTILE ="Damage_Event_Projectile" ;
+    public static final String PROJECTILE = "PROJECTILE";
+    public static final String DAMAGE_COMBAT_TEXT_EVENT = "COMBAT_TEXT_EVENT";
+    public static final String DAMAGE_AMOUNT = "DAMAGE_AMOUNT";
+    public static final String GAME_OVER = "GAME_OVER";
+    public static final String CONTACT_DAMAGE_EVENT = "CONTACT_DAMAGE";
     public static String SHOOT_EVENT = "Shoot";
     public static String ENTITY = "Entity";
     public static String DIRECTION = "Direction";

@@ -8,12 +8,16 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.moreoptions.prototype.MoreOptions;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
+import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
 import com.moreoptions.prototype.level.LevelManager;
 
 /**
@@ -30,8 +34,21 @@ public class GameWorld extends Engine {
     private GameInputProcessor processor;
     BitmapFont font;
 
+    EventSubscriber subscriber = new EventSubscriber();
+
+
     private GameWorld() {
         demoSetup();
+
+
+        subscriber.subscribe(Consts.GAME_OVER, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                levelManager.generateNewLevel(10,10,10);
+                GameState.getInstance().reset();
+                return false;
+            }
+        });
     }
 
     public void demoSetup() {
@@ -57,6 +74,7 @@ public class GameWorld extends Engine {
         Player p = new Player();
         processor.addPlayer(p);
         GameState.getInstance().addPlayer(p);
+
 
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());

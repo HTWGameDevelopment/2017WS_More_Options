@@ -16,7 +16,7 @@ public class EventSubscriber {
         }
         eventListenerMap.put(identifier, eventListener);
         EventBus.getInstance().addSubscriber(identifier, eventListener);
-
+        System.out.println("Subscriber registered for:" + identifier);
     }
 
     private class EventSubscriberException extends Throwable {
