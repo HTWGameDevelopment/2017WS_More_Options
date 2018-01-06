@@ -27,4 +27,9 @@ public class Consts {
     public static String SHOOT_EVENT = "Shoot";
     public static String ENTITY = "Entity";
     public static String DIRECTION = "Direction";
+
+    public class Sound {
+
+        public static final String GAME_OVER_SOUND = "GAME_OVER";
+    }
 }

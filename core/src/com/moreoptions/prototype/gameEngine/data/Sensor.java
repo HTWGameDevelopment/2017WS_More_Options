@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.gameEngine.systems;
+package com.moreoptions.prototype.gameEngine.data;
 
 /**
  * Created by denwe on 24.12.2017.
