@@ -54,6 +54,8 @@ public class AssetLoader {
         FileHandle soundFolder = Gdx.files.internal("sound/");
         for(FileHandle f : soundFolder.list()) {
 
+            String s = f.name().split("/([^_]+)/g");
+
         }
         assetManager.load("sound/gameOver.mp3", Sound.class);
 

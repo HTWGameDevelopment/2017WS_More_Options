@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
-import com.sun.xml.internal.ws.dump.LoggingDumpTube;
 
 /**
  * Created by Andreas on 02.01.2018.
