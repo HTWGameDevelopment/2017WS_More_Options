@@ -36,7 +36,7 @@ public class PlayerSystem extends EntitySystem{
                 Entity hit = e.getData(Consts.SELF, Entity.class);
 
                 Statistics statistics = scMapper.get(hit).getStats();
-                if(statistics.getImmunityTimer() > statistics.getTimeSinceLastHit()) {
+                if(statistics.getImmunityTimer() >= statistics.getTimeSinceLastHit()) {
                     statistics.setCurrentHealth(statistics.getCurrentHealth() - 1);
                     System.out.println("DamageEvent");
 

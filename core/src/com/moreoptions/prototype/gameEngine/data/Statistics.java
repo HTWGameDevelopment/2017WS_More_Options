@@ -28,12 +28,12 @@ public class Statistics {
         this.fireRate = 1.5f;
         this.projectileSpeed = 120;
         this.pushability = 5;
-        this.immunityTimer = 2;
+        this.immunityTimer = 0;
         this.timeSinceLastHit = 2;
 
         this.range = 100;
 
-        this.damage = 1.5f;
+        this.damage = 1f;
         this.currentShotCooldown = fireRate;
 
     }

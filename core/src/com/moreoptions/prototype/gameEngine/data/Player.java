@@ -123,5 +123,7 @@ public class Player {
         stats.setFireRate(0.5f);
         stats.setSpeed(150);
         stats.setRange(200);
+        stats.setDamage(2f);
+        stats.setImmunityTimer(2f);
     }
 }

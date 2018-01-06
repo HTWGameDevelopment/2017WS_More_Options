@@ -64,7 +64,7 @@ public class ProjectileSystem extends EntitySystem {
 
                 ProjectileComponent pc = pcMapper.get(projectile);
                 Statistics statistics = scMapper.get(hit).getStats();
-                if(statistics.getImmunityTimer() < statistics.getTimeSinceLastHit()) {
+                if(statistics.getImmunityTimer() <= statistics.getTimeSinceLastHit()) {
                     statistics.setCurrentHealth(statistics.getCurrentHealth() - pc.getDmg());
                     System.out.println("DamageEvent");
 
