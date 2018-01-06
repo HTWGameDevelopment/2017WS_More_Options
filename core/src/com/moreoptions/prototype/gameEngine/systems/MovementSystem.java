@@ -169,7 +169,7 @@ public class MovementSystem extends EntitySystem {
             }
 
             if(playMapper.has(player)) {
-                EventFactory.takeDamage(player);
+                EventFactory.takeCollisionDamage(player, enemy);
             }
 
         }

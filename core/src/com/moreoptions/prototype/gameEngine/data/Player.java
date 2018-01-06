@@ -124,6 +124,6 @@ public class Player {
         stats.setSpeed(150);
         stats.setRange(200);
         stats.setDamage(2f);
-        stats.setImmunityTimer(2f);
+        stats.setImmunityTimer(1f);
     }
 }

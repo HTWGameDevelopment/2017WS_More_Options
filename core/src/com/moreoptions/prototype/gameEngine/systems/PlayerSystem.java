@@ -5,10 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.moreoptions.prototype.gameEngine.components.PlayerComponent;
-import com.moreoptions.prototype.gameEngine.components.PositionComponent;
-import com.moreoptions.prototype.gameEngine.components.ProjectileComponent;
-import com.moreoptions.prototype.gameEngine.components.StatsComponent;
+import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
@@ -30,19 +27,20 @@ public class PlayerSystem extends EntitySystem{
 
     public PlayerSystem() {
         subscriber = new EventSubscriber();
-        subscriber.subscribe(Consts.CONTACT_DAMAGE_EVENT, new EventListener() {
+        subscriber.subscribe(Consts.DAMAGE_EVENT, new EventListener() {
             @Override
             public boolean trigger(Event e) {
-                Entity hit = e.getData(Consts.SELF, Entity.class);
+                Entity hit = e.getData(Consts.HIT, Entity.class);
+                Entity hitter = e.getData(Consts.SELF, Entity.class);
 
                 Statistics statistics = scMapper.get(hit).getStats();
-                if(statistics.getImmunityTimer() >= statistics.getTimeSinceLastHit()) {
-                    statistics.setCurrentHealth(statistics.getCurrentHealth() - 1);
-                    System.out.println("DamageEvent");
+                Statistics enemystatistics = scMapper.get(hitter).getStats();
+                System.out.println("CollisionDamageEvent" + statistics.getTimeSinceLastHit());
+                if(statistics.getImmunityTimer() <= statistics.getTimeSinceLastHit()) {
+                    statistics.setCurrentHealth(statistics.getCurrentHealth() - enemystatistics.getDamage());
+                    System.out.println("RESETT" + statistics.getTimeSinceLastHit());
+                    EventFactory.createDamageText(hit, enemystatistics.getDamage());
 
-                    if (GameState.getInstance().isDebugMode()) {
-                        EventFactory.createDamageText(hit, 1);
-                    }
                     statistics.setTimeSinceLastHit(0);
                 }
 
@@ -63,6 +61,13 @@ public class PlayerSystem extends EntitySystem{
             float x =  scMapper.get(p).getStats().getCurrentShotCooldown();
             scMapper.get(p).getStats().setCurrentShotCooldown(x+deltaTime);
             scMapper.get(p).getStats().setTimeSinceLastHit(scMapper.get(p).getStats().getTimeSinceLastHit() + deltaTime);
+            Statistics s = scMapper.get(p).getStats();
+
+            if(s.getTimeSinceLastHit() < s.getImmunityTimer()) {
+                p.getComponent(DisplacableComponent.class).setImmune(true);
+            } else {
+                p.getComponent(DisplacableComponent.class).setImmune(false);
+            }
 
             if(isDead(scMapper.get(p))) {
 

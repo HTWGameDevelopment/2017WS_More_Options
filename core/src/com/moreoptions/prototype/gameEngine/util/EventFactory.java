@@ -18,11 +18,11 @@ public class EventFactory {
 
     }
 
-    public static void takeDamage(Entity hit, Entity self) {
+    public static void takeCollisionDamage(Entity player, Entity hitter) {
 
         Event e = new Event(Consts.DAMAGE_EVENT);
-        e.addData(Consts.SELF, self);
-        e.addData(Consts.HIT, hit);
+        e.addData(Consts.SELF, hitter);
+        e.addData(Consts.HIT, player);
         EventBus.getInstance().addEvent(e);
 
     }
