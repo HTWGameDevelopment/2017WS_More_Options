@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Array;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.level.RoomDefinition;
+import javafx.util.Pair;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class AssetLoader {
 
     private AssetManager assetManager;
     private ArrayList<RoomDefinition> definitions = new ArrayList();
+
+    private ArrayList<Pair<String,String>> sounds = new ArrayList<Pair<String, String>>();
 
     private AssetLoader() {
         assetManager = new AssetManager();
@@ -53,11 +56,11 @@ public class AssetLoader {
 
         FileHandle soundFolder = Gdx.files.internal("sound/");
         for(FileHandle f : soundFolder.list()) {
-
-            String[] s = f.name().split("/([^_]+)/g");
-
+            String[] s = f.name().split("_");
+            sounds.add(new Pair<String, String>(soundFolder.name() + "/" + f.name(),s[0]));
+            System.out.println("Tag" + s[0]);
+            assetManager.load(soundFolder.name() + "/" + f.name(), Sound.class);
         }
-        assetManager.load("sound/gameOver.mp3", Sound.class);
 
     }
 
@@ -89,10 +92,15 @@ public class AssetLoader {
             }
 
             System.out.println("TEST: "+ assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size);
-            for(Sound s : assetManager.getAll(Sound.class, new Array<Sound>())) {
+            for(Pair<String, String> p : sounds) {
+
+                String fileName = p.getKey();
+                String tag = p.getValue();
+
+                System.out.println(fileName);
+                SoundDatabase.getInstance().registerSound(tag, assetManager.get(fileName, Sound.class));
 
             }
-            SoundDatabase.getInstance().registerSound(Consts.Sound.GAME_OVER_SOUND, assetManager.get("sound/gameOver.mp3", Sound.class));
             return true;
         } return false;
     }

@@ -30,6 +30,6 @@ public class Consts {
 
     public class Sound {
 
-        public static final String GAME_OVER_SOUND = "GAME_OVER";
+        public static final String GAME_OVER_SOUND = "gameOver";
     }
 }
