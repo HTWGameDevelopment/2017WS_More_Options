@@ -62,6 +62,7 @@ public class PlayerSystem extends EntitySystem{
 
             float x =  scMapper.get(p).getStats().getCurrentShotCooldown();
             scMapper.get(p).getStats().setCurrentShotCooldown(x+deltaTime);
+            scMapper.get(p).getStats().setTimeSinceLastHit(scMapper.get(p).getStats().getTimeSinceLastHit() + deltaTime);
 
             if(isDead(scMapper.get(p))) {
 
@@ -70,6 +71,7 @@ public class PlayerSystem extends EntitySystem{
             };
 
         }
+
 
 
 

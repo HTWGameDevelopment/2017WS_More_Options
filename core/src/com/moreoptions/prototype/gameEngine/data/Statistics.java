@@ -29,7 +29,7 @@ public class Statistics {
         this.projectileSpeed = 120;
         this.pushability = 5;
         this.immunityTimer = 2;
-        this.timeSinceLastHit = 0;
+        this.timeSinceLastHit = 2;
 
         this.range = 100;
 
