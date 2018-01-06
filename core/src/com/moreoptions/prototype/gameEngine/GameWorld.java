@@ -32,6 +32,7 @@ public class GameWorld extends Engine {
     private FitViewport fv;
     private LevelManager levelManager;
     private GameInputProcessor processor;
+    private GameState gameState;
     BitmapFont font;
 
     EventSubscriber subscriber = new EventSubscriber();
@@ -39,13 +40,15 @@ public class GameWorld extends Engine {
 
     private GameWorld() {
         demoSetup();
+        gameState = GameState.getInstance();
 
 
         subscriber.subscribe(Consts.GAME_OVER, new EventListener() {
             @Override
             public boolean trigger(Event e) {
-                levelManager.generateNewLevel(10,10,10);
                 GameState.getInstance().reset();
+                levelManager.generateNewLevel(10,10,10);
+
                 return false;
             }
         });

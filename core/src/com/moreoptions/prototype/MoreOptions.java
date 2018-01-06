@@ -11,8 +11,7 @@ import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
 
 public class MoreOptions extends Game {
 
-	private GameWorld engine;
-	private FPSLogger logger;
+
 	private StartGameScreen screen;
 	private DungeonScreen dungeonScreen;
 
