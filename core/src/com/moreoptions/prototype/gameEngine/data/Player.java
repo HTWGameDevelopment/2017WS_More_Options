@@ -22,9 +22,7 @@ public class Player {
     public Player() {
         inputState = new InputState();
         stats = new Statistics();
-        stats.setFireRate(0.5f);
-        stats.setSpeed(150);
-        stats.setRange(200);
+        debugStatsSetup();
     }
 
     public InputState getInputState() {
@@ -113,5 +111,19 @@ public class Player {
 
     public Statistics getStats() {
         return stats;
+    }
+
+    public void reset() {
+        stats = new Statistics();
+        debugStatsSetup();
+        inputState.reset();
+    }
+
+    private void debugStatsSetup() {
+        stats.setFireRate(0.5f);
+        stats.setSpeed(150);
+        stats.setRange(200);
+        stats.setDamage(2f);
+        stats.setImmunityTimer(1f);
     }
 }

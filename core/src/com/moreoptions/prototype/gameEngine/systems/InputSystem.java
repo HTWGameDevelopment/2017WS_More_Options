@@ -89,10 +89,7 @@ public class InputSystem extends EntitySystem {
         Player p = pc.getPlayer();
         Statistics stats = statsMapper.get(e).getStats();
         InputState playerInput = p.getInputState();
-
         if (playerInput.isShootDown() || playerInput.isShootLeft() || playerInput.isShootRight() || playerInput.isShootUp()) {
-
-
             if (stats.getCurrentShotCooldown() >= stats.getFireRate()) {
                 Event event = new Event(Consts.SHOOT_EVENT);
                 event.addData(Consts.ENTITY, e);

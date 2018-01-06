@@ -17,4 +17,41 @@ public class EventFactory {
         EventBus.getInstance().addEvent(e);
 
     }
+
+    public static void takeCollisionDamage(Entity player, Entity hitter) {
+
+        Event e = new Event(Consts.DAMAGE_EVENT);
+        e.addData(Consts.SELF, hitter);
+        e.addData(Consts.HIT, player);
+        EventBus.getInstance().addEvent(e);
+
+    }
+
+    public static void projectileHit(Entity projectile, Entity self) {
+
+        Event e = new Event(Consts.DAMAGE_EVENT_PROJECTILE);
+        e.addData(Consts.PROJECTILE, projectile);
+        e.addData(Consts.HIT, self);
+        EventBus.getInstance().addEvent(e);
+
+
+    }
+
+    public static void createDamageText(Entity hit, float dmg) {
+        Event e = new Event(Consts.DAMAGE_COMBAT_TEXT_EVENT);
+        e.addData(Consts.DAMAGE_AMOUNT, dmg);
+        e.addData(Consts.HIT, hit);
+        EventBus.getInstance().addEvent(e);
+    }
+
+    public static void gameOver() {
+        Event e = new Event(Consts.GAME_OVER);
+        EventBus.getInstance().addEvent(e);
+    }
+
+    public static void takeDamage(Entity player) {
+        Event e = new Event(Consts.CONTACT_DAMAGE_EVENT);
+        e.addData(Consts.SELF, player);
+        EventBus.getInstance().addEvent(e);
+    }
 }

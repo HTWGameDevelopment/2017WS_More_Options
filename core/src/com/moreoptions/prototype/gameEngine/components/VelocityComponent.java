@@ -13,16 +13,9 @@ public class VelocityComponent implements Component{
     private float speed;
     private float deceleration;
 
-    /*
+    public VelocityComponent() {
 
-
-    TODO 3. Milestone:
-
-    velX, velY Vector!
-
-    Constructor speed und direction übergeben!
-
-     */
+    }
 
 
     public VelocityComponent(float speed, float deceleration) {

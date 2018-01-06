@@ -2,7 +2,9 @@ package com.moreoptions.prototype.gameEngine.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,8 +15,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
+import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.level.RoomDefinition;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -41,6 +46,19 @@ public class AssetLoader {
     public void loadAll() {
         loadRooms();
         loadFonts();
+        loadSounds();
+    }
+
+    private void loadSounds() {
+
+        FileHandle soundFolder = Gdx.files.internal("sound/");
+        for(FileHandle f : soundFolder.list()) {
+
+            String[] s = f.name().split("/([^_]+)/g");
+
+        }
+        assetManager.load("sound/gameOver.mp3", Sound.class);
+
     }
 
     private void loadFonts() {
@@ -71,6 +89,10 @@ public class AssetLoader {
             }
 
             System.out.println("TEST: "+ assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size);
+            for(Sound s : assetManager.getAll(Sound.class, new Array<Sound>())) {
+
+            }
+            SoundDatabase.getInstance().registerSound(Consts.Sound.GAME_OVER_SOUND, assetManager.get("sound/gameOver.mp3", Sound.class));
             return true;
         } return false;
     }

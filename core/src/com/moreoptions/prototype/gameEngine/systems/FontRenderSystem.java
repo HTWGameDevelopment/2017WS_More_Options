@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.moreoptions.prototype.gameEngine.components.CombatTextComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.components.TimedComponent;
+import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
 
 /**
  * Created by denwe on 09.11.2017.
@@ -22,9 +27,33 @@ public class FontRenderSystem extends EntitySystem {
     private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<CombatTextComponent> ctMapper = ComponentMapper.getFor(CombatTextComponent.class);
 
+    private EventSubscriber subscriber = new EventSubscriber();
+
     public FontRenderSystem(SpriteBatch batch) {
         this.batch = batch;
         this.font = new BitmapFont();
+
+        subscriber.subscribe(Consts.DAMAGE_COMBAT_TEXT_EVENT, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                float amount = e.getData(Consts.DAMAGE_AMOUNT, Float.class);
+                Entity hit = e.getData(Consts.HIT, Entity.class);
+
+
+
+
+                Entity combatTextEntity = new Entity();
+                combatTextEntity.add(new CombatTextComponent(""+amount));
+                combatTextEntity.add(new PositionComponent(posMapper.get(hit).getPosition().cpy()));
+                combatTextEntity.add(new TimedComponent(1f));
+                getEngine().addEntity(combatTextEntity);
+
+
+
+                return true;
+            }
+        });
+
     }
 
     @Override

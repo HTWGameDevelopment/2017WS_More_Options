@@ -52,7 +52,7 @@ public class EnemyFactory {
                 e.add(new CollisionComponent());
                 e.add(new CircleCollisionComponent(150f, 150f, 4));
                 e.add(new DebugCircleComponent(10));
-                e.add(new VelocityComponent(0f, 0f));
+                e.add(new VelocityComponent());
                 e.add(getColorFor(enemyId));            // Chaser - Forest, Chased - Gold, Blinker - Cyan
                 e.add(new DisplacableComponent(10));
                 e.add(getAIFor(enemyId));
@@ -70,7 +70,7 @@ public class EnemyFactory {
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 13));
         e.add(new DebugSquareComponent(12));
-        e.add(new VelocityComponent(0f, 0f));
+        e.add(new VelocityComponent());
         e.add(getColorFor(23));
         e.add(new DisplacableComponent(100));
         e.add(getAIFor(23));
@@ -88,7 +88,7 @@ public class EnemyFactory {
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 32));
         e.add(new DebugCircleComponent(30));
-        e.add(new VelocityComponent(0f, 0f));
+        e.add(new VelocityComponent());
         e.add(getColorFor(20));
         e.add(new DisplacableComponent(100));
         e.add(getAIFor(20));
@@ -120,7 +120,7 @@ public class EnemyFactory {
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 22));
         e.add(new DebugCircleComponent(20));
-        e.add(new VelocityComponent(0f, 0f));
+        e.add(new VelocityComponent());
         e.add(getColorFor(20));
         e.add(new DisplacableComponent(100));
         e.add(getAIFor(21));
@@ -153,7 +153,7 @@ public class EnemyFactory {
         e.add(new CollisionComponent());
         e.add(new CircleCollisionComponent(150f, 150f, 13));
         e.add(new DebugCircleComponent(11));
-        e.add(new VelocityComponent(0f, 0f));
+        e.add(new VelocityComponent());
         e.add(getColorFor(20));
         e.add(new DisplacableComponent(100));
         e.add(getAIFor(22));

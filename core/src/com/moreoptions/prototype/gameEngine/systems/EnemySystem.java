@@ -13,7 +13,6 @@ import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
-import com.sun.org.glassfish.external.statistics.Stats;
 
 import java.util.HashMap;
 
@@ -32,15 +31,19 @@ public class EnemySystem extends EntitySystem{
     public EnemySystem() {
         enemySpawner.subscribe(Consts.SPAWN_ENEMY, new EventListener() {
             @Override
-            public void trigger(Event e) {
+            public boolean trigger(Event e) {
 
                 HashMap<String, Object> map = e.getDatas();
                 for(Object o : map.values()) {
                     getEngine().addEntity((Entity) o);
                 }
-
+                return true;
             }
         });
+
+
+
+
     }
 
     @Override

@@ -8,6 +8,9 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.GameState;
+import com.moreoptions.prototype.gameEngine.data.Statistics;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
@@ -23,7 +26,7 @@ public class ProjectileSystem extends EntitySystem {
     private Family playerFamily = Family.all(PlayerComponent.class).get();
 
     private EventSubscriber subscriber;
-
+    private EventSubscriber subscriber2;
     private ComponentMapper<StatsComponent> scMapper = ComponentMapper.getFor(StatsComponent.class);
     private ComponentMapper<EnemyHitboxComponent> ehcMapper = ComponentMapper.getFor(EnemyHitboxComponent.class);
     private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
@@ -42,14 +45,35 @@ public class ProjectileSystem extends EntitySystem {
         subscriber = new EventSubscriber();
         subscriber.subscribe(Consts.SHOOT_EVENT, new EventListener() {
             @Override
-            public void trigger(Event e) {
+            public boolean trigger(Event e) {
 
                 Entity entity = e.getData(Consts.ENTITY, Entity.class);
                 Vector2 direction = e.getData(Consts.DIRECTION, Vector2.class);
-                    Entity projectile = ProjectileFactory.createProjectile(entity, direction);
-                    System.out.println(direction);
-                    getEngine().addEntity(projectile);
+                Entity projectile = ProjectileFactory.createProjectile(entity, direction);
+                getEngine().addEntity(projectile);
+                return true;
 
+            }
+        });
+        subscriber2 = new EventSubscriber();
+        subscriber2.subscribe(Consts.DAMAGE_EVENT_PROJECTILE, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                Entity projectile = e.getData(Consts.PROJECTILE, Entity.class);
+                Entity hit = e.getData(Consts.HIT, Entity.class);
+
+                ProjectileComponent pc = pcMapper.get(projectile);
+                Statistics statistics = scMapper.get(hit).getStats();
+                if(statistics.getImmunityTimer() <= statistics.getTimeSinceLastHit()) {
+                    statistics.setCurrentHealth(statistics.getCurrentHealth() - pc.getDmg());
+                    System.out.println("DamageEvent");
+
+                    EventFactory.createDamageText(hit, pc.getDmg());
+
+                    statistics.setTimeSinceLastHit(0);
+                }
+
+                return true;
             }
         });
     }

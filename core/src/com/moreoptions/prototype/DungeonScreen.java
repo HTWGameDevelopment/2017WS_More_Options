@@ -11,9 +11,11 @@ import com.moreoptions.prototype.gameEngine.GameWorld;
 public class DungeonScreen implements Screen {
 
     GameWorld engine;
+    MoreOptions moreOptions;
 
     public DungeonScreen(MoreOptions moreOptions) {
         engine = GameWorld.getInstance();
+        this.moreOptions = moreOptions;
     }
 
     @Override

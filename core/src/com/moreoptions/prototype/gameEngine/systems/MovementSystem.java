@@ -5,14 +5,13 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Sensor;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ public class MovementSystem extends EntitySystem {
     private ComponentMapper<SquareCollisionComponent> sqMapper = ComponentMapper.getFor(SquareCollisionComponent.class);
     private ComponentMapper<DisplacableComponent> dcMapper = ComponentMapper.getFor(DisplacableComponent.class);
     private ComponentMapper<StatsComponent> statsMapper = ComponentMapper.getFor(StatsComponent.class);
+    private ComponentMapper<PlayerComponent> playMapper = ComponentMapper.getFor(PlayerComponent.class);
 
     private Family posColl = Family.all(PositionComponent.class, CollisionComponent.class, VelocityComponent.class,
             CircleCollisionComponent.class).exclude(TileComponent.class).get();
@@ -166,8 +166,9 @@ public class MovementSystem extends EntitySystem {
                 applyKnockback(enemy, 0.5f, player);
             }
 
-            CollisionComponent cc = colMapper.get(player);
-            CollisionComponent cd = colMapper.get(enemy);
+            if(playMapper.has(player)) {
+                EventFactory.takeCollisionDamage(player, enemy);
+            }
 
         }
     }

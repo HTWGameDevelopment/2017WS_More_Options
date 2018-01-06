@@ -109,4 +109,20 @@ public class InputState {
     public void setUseItem(boolean useItem) {
         this.useItem = useItem;
     }
+
+    public void reset() {
+        moveRight = false;
+        moveLeft = false;
+        moveUp = false;
+        moveDown = false;
+
+        shootUp     = false;
+        shootDown   = false;
+        shootLeft   = false;
+        shootRight  = false;
+
+        usePickup = false;
+        useBomb = false;
+        useItem = false;
+    }
 }

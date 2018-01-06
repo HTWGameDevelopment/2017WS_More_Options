@@ -27,7 +27,7 @@ public class AchievementSystem extends EntitySystem{
         registerData();
         subscriber.subscribe(Consts.ACHIEVEMENT_EVENT_ID, new EventListener() {
             @Override
-            public void trigger(Event e) {
+            public boolean trigger(Event e) {
 
                 if(dataProcessors.containsKey(e.getData("id", String.class))) {
                     dataProcessors.get(e.getData("id", String.class)).handle(e);
@@ -39,7 +39,7 @@ public class AchievementSystem extends EntitySystem{
                         e1.printStackTrace();
                     }
                 }
-
+                return true;
             }
         });
     }
