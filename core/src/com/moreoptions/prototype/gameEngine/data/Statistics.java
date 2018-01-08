@@ -17,6 +17,7 @@ public class Statistics {
     private float projectileSpeed;
     private float range;
     private float currentShotCooldown;
+    private float money;
     private int pushability;
 
     public Statistics() {
@@ -32,6 +33,7 @@ public class Statistics {
         this.timeSinceLastHit = 2;
 
         this.range = 100;
+        this.money = 0;
 
         this.damage = 1f;
         this.currentShotCooldown = fireRate;
@@ -132,5 +134,13 @@ public class Statistics {
 
     public int getPushability() {
         return pushability;
+    }
+
+    public float getMoney() {
+        return money;
+    }
+
+    public void setMoney(float money) {
+        this.money = money;
     }
 }

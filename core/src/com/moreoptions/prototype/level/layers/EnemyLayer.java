@@ -2,10 +2,10 @@ package com.moreoptions.prototype.level.layers;
 
 import com.badlogic.ashley.core.Entity;
 import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
+import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.ItemDatabase;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.util.EnemyFactory;
-import com.moreoptions.prototype.gameEngine.util.ItemFactory;
-import com.moreoptions.prototype.level.layers.Layer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,8 +39,12 @@ public class EnemyLayer implements Layer {
         return aliveEnemies;
     }
 
-    public void addItem(int id, float x, float y, Room room, EnemyLayer enemyLayer) {
-        items.add(ItemFactory.getItem(x,y,id, enemyLayer));
+    public void addItem(int id, float x, float y, Room room) {
+        if(id == Consts.SPECIAL_ITEM) {
+            //TODO create special item
+        } else {
+            room.addItem(ItemDatabase.getInstance().generateItem(room, x, y));
+        }
 
     }
 

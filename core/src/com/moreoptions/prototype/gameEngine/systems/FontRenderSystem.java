@@ -11,6 +11,7 @@ import com.moreoptions.prototype.gameEngine.components.CombatTextComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.TimedComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
@@ -31,7 +32,7 @@ public class FontRenderSystem extends EntitySystem {
 
     public FontRenderSystem(SpriteBatch batch) {
         this.batch = batch;
-        this.font = new BitmapFont();
+        this.font = AssetLoader.getInstance().getAssetManager().get("fonts/RobotoSlab-Bold.ttf", BitmapFont.class);
 
         subscriber.subscribe(Consts.DAMAGE_COMBAT_TEXT_EVENT, new EventListener() {
             @Override
@@ -65,6 +66,7 @@ public class FontRenderSystem extends EntitySystem {
             CombatTextComponent c = ctMapper.get(e);
             PositionComponent p = posMapper.get(e);
             font.draw(batch,c.getText(),p.getX(),p.getY());
+
         }
         batch.end();
     }

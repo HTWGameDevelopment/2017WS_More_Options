@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.moreoptions.prototype.MoreOptions;
 import com.moreoptions.prototype.gameEngine.data.Consts;
@@ -33,13 +36,18 @@ public class GameWorld extends Engine {
     private LevelManager levelManager;
     private GameInputProcessor processor;
     private GameState gameState;
+    private Stage stage;
     BitmapFont font;
 
     EventSubscriber subscriber = new EventSubscriber();
 
+    ProgressBar healthBar;
+
 
     private GameWorld() {
+        uiSetup();
         demoSetup();
+
         gameState = GameState.getInstance();
 
 
@@ -52,6 +60,19 @@ public class GameWorld extends Engine {
                 return false;
             }
         });
+
+    }
+
+    private void uiSetup() {
+
+        stage = new Stage();
+        Skin skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
+        healthBar = new ProgressBar(0, 3, 1, false, skin);
+        healthBar.setValue(3);
+        stage.addActor(healthBar);
+        stage.setDebugAll(true);
+
+
     }
 
     public void demoSetup() {
@@ -89,7 +110,7 @@ public class GameWorld extends Engine {
         addSystem(new PickupSystem());
         addSystem(new ProjectileSystem());
         addSystem(new AISystem(renderer));
-        addSystem(new PlayerSystem());
+        addSystem(new PlayerSystem(healthBar));
         addSystem(new EnemySystem());
         addSystem(new AchievementSystem());
         addSystem(new SoundSystem());
@@ -101,7 +122,9 @@ public class GameWorld extends Engine {
     @Override
     public void update(float deltaTime) {
         levelManager.getCurrentRoom().getNavGraph().draw(renderer);
+
         super.update(deltaTime);
+        stage.draw();
     }
 
     public void updateInput() {

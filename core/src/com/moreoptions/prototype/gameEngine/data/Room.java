@@ -9,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.data.pathfinding.NavGraph;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
 import com.moreoptions.prototype.level.*;
 import com.moreoptions.prototype.level.layers.DestructibleLayer;
 import com.moreoptions.prototype.level.layers.EnemyLayer;
@@ -69,6 +70,7 @@ public class Room {
 
     ArrayList<Entity> playerList = new ArrayList<Entity>();
     ArrayList<Entity> doors = new ArrayList<Entity>();
+    ArrayList<Entity> pickups = new ArrayList<Entity>();
 
 
 
@@ -159,6 +161,7 @@ public class Room {
         entities.addAll(enemyLayer.getAliveEntities());
         entities.addAll(enemyLayer.getItems());
         entities.addAll(doors);
+        entities.addAll(pickups);
 
         return entities;
     }
@@ -261,4 +264,15 @@ public class Room {
             System.out.println("OPENING DOORS");
         }
     }
+
+    public void removePickup(Entity item) {
+        pickups.remove(item);
+    }
+
+    public void addItem(Entity item) {
+        pickups.add(item);
+
+    }
+
+
 }

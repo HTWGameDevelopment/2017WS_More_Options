@@ -6,6 +6,8 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
 
 /**
  * System that handles pickupcomponents
@@ -30,7 +32,10 @@ public class PickupSystem extends EntitySystem {
                 if(cmapper.get(p).getHitbox().overlaps(cmapper.get(pickup).getHitbox())) {
                     PickupComponent pickupComponent = pucMapper.get(pickup);
                     System.out.println("COLLECT");
-                    if(pickupComponent.trigger(p)) getEngine().removeEntity(pickup);
+                    if(pickupComponent.trigger(p)) {
+                        pickupComponent.getRoom().removePickup(pickup);
+                        getEngine().removeEntity(pickup);
+                    }
                 }
             }
         }

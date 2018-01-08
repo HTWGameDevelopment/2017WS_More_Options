@@ -212,7 +212,7 @@ public class RoomDefinition {
                     case Consts.ITEM: {
 
                         int id = t.getProperties().get("id", Integer.class);
-                        enemyLayer.addItem(id,t.getRectangle().getX(), t.getRectangle().y, room, enemyLayer);
+                        enemyLayer.addItem(id,t.getRectangle().getX(), t.getRectangle().y, room);
                     }
 
 

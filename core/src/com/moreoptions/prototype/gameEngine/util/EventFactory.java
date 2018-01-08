@@ -54,4 +54,5 @@ public class EventFactory {
         e.addData(Consts.SELF, player);
         EventBus.getInstance().addEvent(e);
     }
+
 }

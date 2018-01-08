@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.ItemDatabase;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.level.RoomDefinition;
 import javafx.util.Pair;
@@ -68,7 +69,11 @@ public class AssetLoader {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         params.fontFileName = "fonts/RobotoSlab-Bold.ttf";
-        params.fontParameters.size = 11;
+        params.fontParameters.size = 10;
+        params.fontParameters.borderWidth =1;
+        params.fontParameters.borderColor = Color.BLACK;
+        params.fontParameters.genMipMaps = true;
+
         assetManager.load("fonts/RobotoSlab-Bold.ttf", BitmapFont.class, params);
 
     }
@@ -83,8 +88,10 @@ public class AssetLoader {
 
     public boolean update() {
         if(assetManager.update()) {
-            System.out.println("Done loading");
+            System.out.println("Done pre - loading");
             System.out.println("Loaded "+assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size + " assets.");
+            System.out.println("Loading items");
+            ItemDatabase.getInstance();
             for(TiledMap t : assetManager.getAll(TiledMap.class, new Array<TiledMap>())) {
                 RoomDefinition r = new RoomDefinition(t);
                 definitions.add(r);

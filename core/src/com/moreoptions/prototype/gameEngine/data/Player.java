@@ -3,6 +3,7 @@ package com.moreoptions.prototype.gameEngine.data;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoOffsetException;
 import com.moreoptions.prototype.level.Offset;
@@ -18,6 +19,7 @@ public class Player {
     private Controller controller;
 
     private Statistics stats;
+
 
     public Player() {
         inputState = new InputState();

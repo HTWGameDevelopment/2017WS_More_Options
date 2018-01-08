@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
+import com.moreoptions.prototype.gameEngine.data.ItemDatabase;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
@@ -67,6 +68,7 @@ public class LevelManager {
         }
         //Add player entity
         addPlayerEntities(offset,targetRoom);
+        //add debug item
         currentRoom.checkForClear();
         return true;
     }

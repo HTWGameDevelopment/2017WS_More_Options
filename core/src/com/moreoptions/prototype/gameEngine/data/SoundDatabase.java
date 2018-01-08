@@ -1,5 +1,6 @@
 package com.moreoptions.prototype.gameEngine.data;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 import java.util.ArrayList;
@@ -16,20 +17,21 @@ public class SoundDatabase {
         return ourInstance;
     }
 
-    HashMap<String, ArrayList<Sound>> soundMap = new HashMap<String, ArrayList<Sound>>();
+    private HashMap<String, ArrayList<Sound>> soundMap = new HashMap<String, ArrayList<Sound>>();
     private Random random = new Random();
 
-
+    private String TAG = "SOUNDSYSTEM";
 
     private SoundDatabase() {
-
 
     }
 
     public void playSound(String sound) {
         ArrayList<Sound> soundArrayList = soundMap.get(sound);
         if (!soundArrayList.isEmpty()) {
-            soundArrayList.get(random.nextInt(soundArrayList.size())).play(5);
+            soundArrayList.get(random.nextInt(soundArrayList.size())).play(0.01f);
+        } else {
+            Gdx.app.log(TAG, "Missing soundfile for: "+ sound);
         }
     }
 

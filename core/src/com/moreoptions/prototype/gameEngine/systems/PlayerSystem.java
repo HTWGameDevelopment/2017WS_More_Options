@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
@@ -24,8 +25,10 @@ public class PlayerSystem extends EntitySystem{
     private ComponentMapper<StatsComponent> scMapper = ComponentMapper.getFor(StatsComponent.class);
 
     EventSubscriber subscriber;
+    ProgressBar healthbar;
 
-    public PlayerSystem() {
+    public PlayerSystem(ProgressBar healthBar) {
+        this.healthbar = healthBar;
         subscriber = new EventSubscriber();
         subscriber.subscribe(Consts.DAMAGE_EVENT, new EventListener() {
             @Override
@@ -74,6 +77,9 @@ public class PlayerSystem extends EntitySystem{
                 EventFactory.gameOver();
 
             };
+
+            healthbar.setValue(s.getCurrentHealth());
+            healthbar.setRange(0, s.getMaxHealth());
 
         }
 
