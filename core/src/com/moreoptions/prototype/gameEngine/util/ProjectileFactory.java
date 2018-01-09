@@ -71,15 +71,11 @@ public class ProjectileFactory {
 
 
         if((playerVelocity.x > 0 && v2.x >= 0) || (playerVelocity.x < 0 && v2.x <= 0) ) {
-            projVelocity.setVelX(playerVelocity.x + projVelocity.getVelX());
-            System.out.println("X ACCELERATION");
-        } else {
-            System.out.println("NOT X");
+            projVelocity.setVelX(playerVelocity.x + projVelocity.getVelX());;
         }
 
         if((playerVelocity.y > 0 && v2.y >= 0) || (playerVelocity.y < 0 && v2.y <= 0) ) {
             projVelocity.setVelY(playerVelocity.y + projVelocity.getVelY());
-            System.out.println("Y ACCELERATION");
         }
 
 

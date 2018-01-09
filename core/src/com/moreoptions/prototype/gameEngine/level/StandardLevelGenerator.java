@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.level;
+package com.moreoptions.prototype.gameEngine.level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -634,7 +634,7 @@ public class StandardLevelGenerator implements LevelGenerator {
         RoomBlueprint[][] rooms = makeRooms();
 
         LevelBlueprint level = new LevelBlueprint(rooms,width,height);
-
+        printMap();
         return level.generateLevel();
     }
 

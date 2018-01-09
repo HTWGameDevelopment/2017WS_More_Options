@@ -3,10 +3,9 @@ package com.moreoptions.prototype.gameEngine.data;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoOffsetException;
-import com.moreoptions.prototype.level.Offset;
+import com.moreoptions.prototype.gameEngine.level.Offset;
 
 /**
  * Player Data
@@ -125,7 +124,9 @@ public class Player {
         stats.setFireRate(0.5f);
         stats.setSpeed(150);
         stats.setRange(200);
-        stats.setDamage(2f);
-        stats.setImmunityTimer(1f);
+        stats.setDamage(20f);
+        stats.setImmunityTimer(200f);
+        stats.setCurrentHealth(100);
+        stats.setMaxHealth(100);
     }
 }

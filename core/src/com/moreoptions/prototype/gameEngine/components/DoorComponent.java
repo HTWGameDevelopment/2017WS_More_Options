@@ -1,7 +1,7 @@
 package com.moreoptions.prototype.gameEngine.components;
 
 import com.badlogic.ashley.core.Component;
-import com.moreoptions.prototype.level.Offset;
+import com.moreoptions.prototype.gameEngine.level.Offset;
 
 /**
  * Created by denwe on 26.11.2017.

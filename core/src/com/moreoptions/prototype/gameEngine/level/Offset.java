@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.level;
+package com.moreoptions.prototype.gameEngine.level;
 
 /**
  * Created by denwe on 15.11.2017.

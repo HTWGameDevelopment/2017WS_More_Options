@@ -40,7 +40,7 @@ public class ItemDatabase {
             public boolean onPickup(Entity e) {
 
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                if(stats.getMoney() + 1 < Consts.MAX_GOLD) stats.setCurrentHealth(stats.getCurrentHealth() + 1);
+                if(stats.getMoney() + 1 < Consts.MAX_GOLD) stats.setMoney(stats.getMoney() + 1);
                 else stats.setMoney(Consts.MAX_GOLD);
                 return true;
             }

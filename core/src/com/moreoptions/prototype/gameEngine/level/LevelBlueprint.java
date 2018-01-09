@@ -1,4 +1,4 @@
-package com.moreoptions.prototype.level;
+package com.moreoptions.prototype.gameEngine.level;
 
 import com.moreoptions.prototype.gameEngine.data.Room;
 

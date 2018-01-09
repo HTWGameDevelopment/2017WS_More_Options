@@ -1,7 +1,6 @@
-package com.moreoptions.prototype.level.layers;
+package com.moreoptions.prototype.gameEngine.level.layers;
 
 import com.badlogic.ashley.core.Entity;
-import com.moreoptions.prototype.level.layers.Layer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

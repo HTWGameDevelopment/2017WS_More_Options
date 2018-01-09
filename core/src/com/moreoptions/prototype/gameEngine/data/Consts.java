@@ -24,11 +24,12 @@ public class Consts {
     public static final String DAMAGE_AMOUNT = "DAMAGE_AMOUNT";
     public static final String GAME_OVER = "GAME_OVER";
     public static final String CONTACT_DAMAGE_EVENT = "CONTACT_DAMAGE";
-    public static final float MAX_GOLD = 99f;
+    public static final int MAX_GOLD = 99;
     public static final String REMOVE_ITEM = "Remove_ITEM" ;
     public static final int SPECIAL_ITEM = 1;
     public static final String HEALTH_CHANGE = "Health_Change";
     public static final String HEALTH_CHANGE_VALUE = "Health_Change_Value" ;
+    public static final String ADVANCE_LEVEL_EVENT = "Advance";
     public static String SHOOT_EVENT = "Shoot";
     public static String ENTITY = "Entity";
     public static String DIRECTION = "Direction";

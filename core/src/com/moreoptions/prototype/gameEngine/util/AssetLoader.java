@@ -2,26 +2,23 @@ package com.moreoptions.prototype.gameEngine.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.ItemDatabase;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
-import com.moreoptions.prototype.level.RoomDefinition;
+import com.moreoptions.prototype.gameEngine.level.RoomDefinition;
 import javafx.util.Pair;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -51,6 +48,7 @@ public class AssetLoader {
         loadRooms();
         loadFonts();
         loadSounds();
+        assetManager.load("comic/skin/comic-ui.json", Skin.class);
     }
 
     private void loadSounds() {
@@ -137,5 +135,9 @@ public class AssetLoader {
 
     public AssetManager getAssetManager() {
         return assetManager;
+    }
+
+    public Skin getSkin() {
+        return assetManager.get("comic/skin/comic-ui.json", Skin.class);
     }
 }

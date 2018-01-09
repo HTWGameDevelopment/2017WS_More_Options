@@ -56,31 +56,7 @@
  <objectgroup name="EnemyLayer">
   <object id="22" name="Chased3" x="271" y="168">
    <properties>
-    <property name="enemyID" type="int" value="20"/>
-    <property name="type" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="24" name="Chased3" x="71" y="71">
-   <properties>
-    <property name="enemyID" type="int" value="23"/>
-    <property name="type" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="25" name="Chased3" x="463" y="78">
-   <properties>
-    <property name="enemyID" type="int" value="23"/>
-    <property name="type" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="26" name="Chased3" x="73" y="278">
-   <properties>
-    <property name="enemyID" type="int" value="23"/>
-    <property name="type" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="27" name="Chased3" x="458" y="271">
-   <properties>
-    <property name="enemyID" type="int" value="23"/>
+    <property name="enemyID" type="int" value="0"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>

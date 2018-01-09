@@ -2,7 +2,6 @@ package com.moreoptions.prototype.gameEngine;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.moreoptions.prototype.MoreOptions;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
@@ -21,7 +19,8 @@ import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
-import com.moreoptions.prototype.level.LevelManager;
+import com.moreoptions.prototype.gameEngine.level.LevelManager;
+import com.moreoptions.prototype.userInterface.UserInterface;
 
 /**
  *
@@ -37,6 +36,7 @@ public class GameWorld extends Engine {
     private GameInputProcessor processor;
     private GameState gameState;
     private Stage stage;
+    private UserInterface userInterface;
     BitmapFont font;
 
     EventSubscriber subscriber = new EventSubscriber();
@@ -50,13 +50,20 @@ public class GameWorld extends Engine {
 
         gameState = GameState.getInstance();
 
-
         subscriber.subscribe(Consts.GAME_OVER, new EventListener() {
             @Override
             public boolean trigger(Event e) {
                 GameState.getInstance().reset();
                 levelManager.generateNewLevel(10,10,10);
 
+                return false;
+            }
+        });
+
+        subscriber.subscribe(Consts.ADVANCE_LEVEL_EVENT, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                levelManager.generateNewLevel(10, 10, 14);
                 return false;
             }
         });
@@ -97,6 +104,8 @@ public class GameWorld extends Engine {
 
         Player p = new Player();
         processor.addPlayer(p);
+
+        userInterface = new UserInterface(fv, batch, p);
         GameState.getInstance().addPlayer(p);
 
 
@@ -116,7 +125,6 @@ public class GameWorld extends Engine {
         addSystem(new SoundSystem());
         //addSystem(new QuadTreeDebug(batch, renderer));
         levelManager = new LevelManager(this);
-
     }
 
     @Override
@@ -124,7 +132,9 @@ public class GameWorld extends Engine {
         levelManager.getCurrentRoom().getNavGraph().draw(renderer);
 
         super.update(deltaTime);
-        stage.draw();
+        //stage.draw();
+        userInterface.update();
+        userInterface.draw();
     }
 
     public void updateInput() {

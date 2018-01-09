@@ -55,4 +55,9 @@ public class EventFactory {
         EventBus.getInstance().addEvent(e);
     }
 
+    public static void changeLevel() {
+        Event e = new Event(Consts.ADVANCE_LEVEL_EVENT);
+        EventBus.getInstance().addEvent(e);
+
+    }
 }

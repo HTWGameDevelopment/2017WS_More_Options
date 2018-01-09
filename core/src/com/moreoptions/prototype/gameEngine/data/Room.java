@@ -4,16 +4,18 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.NavGraph;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
-import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
-import com.moreoptions.prototype.level.*;
-import com.moreoptions.prototype.level.layers.DestructibleLayer;
-import com.moreoptions.prototype.level.layers.EnemyLayer;
-import com.moreoptions.prototype.level.layers.TileLayer;
+import com.moreoptions.prototype.gameEngine.level.*;
+import com.moreoptions.prototype.gameEngine.level.layers.DestructibleLayer;
+import com.moreoptions.prototype.gameEngine.level.layers.EnemyLayer;
+import com.moreoptions.prototype.gameEngine.level.layers.TileLayer;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -258,11 +260,33 @@ public class Room {
     }
 
     public void checkForClear() {
-        System.out.println("Checking! " + enemyLayer.getAliveEntities().size());
         if(enemyLayer.getAliveEntities().size() == 0) {
             openAllDoors();
-            System.out.println("OPENING DOORS");
+            if(blueprint.getKind() == 3) {
+                Entity e =generateNextLevelDoor(9, 6);
+                doors.add(e);
+                GameWorld.getInstance().addEntity(e);
+
+            }
         }
+    }
+
+    private Entity generateNextLevelDoor(int x, int y) {
+        Entity e = new Entity();
+
+        e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
+        e.add(new CollisionComponent(new CollisionEvent() {
+            @Override
+            public boolean onCollision(Entity us, Entity them) {
+                EventFactory.changeLevel();
+                return false;
+            }
+        }));
+        e.add(new DoorComponent(Offset.DOWN));
+        e.add(new BlockedTileComponent());
+        e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
+        e.add(new DebugColorComponent(Color.RED));
+        return e;
     }
 
     public void removePickup(Entity item) {

@@ -17,7 +17,7 @@ public class Statistics {
     private float projectileSpeed;
     private float range;
     private float currentShotCooldown;
-    private float money;
+    private int money;
     private int pushability;
 
     public Statistics() {
@@ -136,11 +136,11 @@ public class Statistics {
         return pushability;
     }
 
-    public float getMoney() {
+    public int getMoney() {
         return money;
     }
 
-    public void setMoney(float money) {
+    public void setMoney(int money) {
         this.money = money;
     }
 }

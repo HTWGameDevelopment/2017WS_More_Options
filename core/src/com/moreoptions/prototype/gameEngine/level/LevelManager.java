@@ -1,19 +1,13 @@
-package com.moreoptions.prototype.level;
+package com.moreoptions.prototype.gameEngine.level;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.GameState;
-import com.moreoptions.prototype.gameEngine.data.ItemDatabase;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
-import com.moreoptions.prototype.gameEngine.data.ai.AIState;
-import com.moreoptions.prototype.gameEngine.data.pathfinding.Node;
-import com.moreoptions.prototype.gameEngine.util.EnemyFactory;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 
 import java.util.ArrayList;

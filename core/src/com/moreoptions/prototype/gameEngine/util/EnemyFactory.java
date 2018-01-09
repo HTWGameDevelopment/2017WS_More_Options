@@ -183,7 +183,7 @@ public class EnemyFactory {
                 StatsComponent statsSplitter = new StatsComponent();
                 statsSplitter.getStats().setMaxHealth(15);
                 statsSplitter.getStats().setCurrentHealth(15);
-                statsSplitter.getStats().setDamage(2);
+                statsSplitter.getStats().setDamage(1);
                 statsSplitter.getStats().setSpeed(30);
                 statsSplitter.getStats().setProjectileSpeed(140);
                 statsSplitter.getStats().setRange(300);
@@ -193,7 +193,7 @@ public class EnemyFactory {
                 StatsComponent statsSplitterSub = new StatsComponent();
                 statsSplitterSub.getStats().setMaxHealth(8);
                 statsSplitterSub.getStats().setCurrentHealth(8);
-                statsSplitterSub.getStats().setDamage(2);
+                statsSplitterSub.getStats().setDamage(1);
                 statsSplitterSub.getStats().setSpeed(40);
                 statsSplitterSub.getStats().setProjectileSpeed(150);
                 statsSplitterSub.getStats().setRange(300);
@@ -203,7 +203,7 @@ public class EnemyFactory {
                 StatsComponent statsSplitterSubSub = new StatsComponent();
                 statsSplitterSubSub.getStats().setMaxHealth(4);
                 statsSplitterSubSub.getStats().setCurrentHealth(4);
-                statsSplitterSubSub.getStats().setDamage(2);
+                statsSplitterSubSub.getStats().setDamage(1);
                 statsSplitterSubSub.getStats().setSpeed(50);
                 statsSplitterSubSub.getStats().setProjectileSpeed(160);
                 statsSplitterSubSub.getStats().setRange(300);
