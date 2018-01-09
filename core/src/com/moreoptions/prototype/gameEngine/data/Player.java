@@ -88,7 +88,6 @@ public class Player {
                 throw new NoOffsetException();
         }
 
-        System.out.println("TEST11" + p.getX() +""+ p.getY());
 
         playerEntity.add(p);
     }

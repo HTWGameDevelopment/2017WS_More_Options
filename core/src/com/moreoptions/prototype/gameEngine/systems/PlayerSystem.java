@@ -38,10 +38,9 @@ public class PlayerSystem extends EntitySystem{
 
                 Statistics statistics = scMapper.get(hit).getStats();
                 Statistics enemystatistics = scMapper.get(hitter).getStats();
-                System.out.println("CollisionDamageEvent" + statistics.getTimeSinceLastHit());
                 if(statistics.getImmunityTimer() <= statistics.getTimeSinceLastHit()) {
                     statistics.setCurrentHealth(statistics.getCurrentHealth() - enemystatistics.getDamage());
-                    System.out.println("RESETT" + statistics.getTimeSinceLastHit());
+
                     EventFactory.createDamageText(hit, enemystatistics.getDamage());
 
                     statistics.setTimeSinceLastHit(0);

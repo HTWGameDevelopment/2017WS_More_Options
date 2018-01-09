@@ -321,7 +321,6 @@ public class EnemyFactory {
             case 20:
 
                 //Splitter Boss
-                System.out.println("BOSSTIME");
                 state = new SplitterMoveState();
                 stateMap.put("MOVE", state);
                 stateMap.put("ATTACK", new SplitterAttackState());
@@ -331,7 +330,6 @@ public class EnemyFactory {
             case 21:
 
                 //Splitter Sub Boss
-                System.out.println("BOSSTIME_ROUND2");
                 state = new SplitterMoveState();
                 stateMap.put("MOVE", state);
                 stateMap.put("ATTACK", new SplitterSubAttackState());
@@ -341,7 +339,6 @@ public class EnemyFactory {
             case 22:
 
                 //Splitter Sub Sub Boss
-                System.out.println("BOSSTIME_ROUND2");
                 state = new SplitterMoveState();
                 stateMap.put("MOVE", state);
                 stateMap.put("ATTACK", new SplitterSubSubAttackState());

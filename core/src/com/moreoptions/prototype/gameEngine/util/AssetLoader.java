@@ -57,7 +57,6 @@ public class AssetLoader {
         for(FileHandle f : soundFolder.list()) {
             String[] s = f.name().split("_");
             sounds.add(new Pair<String, String>(soundFolder.name() + "/" + f.name(),s[0]));
-            System.out.println("Tag" + s[0]);
             assetManager.load(soundFolder.name() + "/" + f.name(), Sound.class);
         }
 
@@ -96,13 +95,11 @@ public class AssetLoader {
                 System.out.println("Loaded Entity with: " + r.getRoomKind());
             }
 
-            System.out.println("TEST: "+ assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size);
             for(Pair<String, String> p : sounds) {
 
                 String fileName = p.getKey();
                 String tag = p.getValue();
 
-                System.out.println(fileName);
                 SoundDatabase.getInstance().registerSound(tag, assetManager.get(fileName, Sound.class));
 
             }

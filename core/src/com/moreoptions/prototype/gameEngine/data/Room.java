@@ -89,7 +89,7 @@ public class Room {
         ArrayList<RoomDefinition> roomlist = AssetLoader
                 .getInstance()
                 .definition(roomBlueprint.isTop(),roomBlueprint.isDown(),roomBlueprint.isLeft(),roomBlueprint.isRight(), roomBlueprint.getKind());
-        System.out.println(roomBlueprint.getKind());
+
         RoomDefinition rq = roomlist.get(r.nextInt(roomlist.size()));
 
         try {

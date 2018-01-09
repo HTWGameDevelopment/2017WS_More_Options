@@ -22,7 +22,6 @@ public interface HitEvent {
                 EventFactory.projectileHit(self,hit);
 
             } else {
-                System.out.println("NEIN");
                 return false;
             }
             return true;
