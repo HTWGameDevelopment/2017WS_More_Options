@@ -30,7 +30,6 @@ public class DoorComponent implements Component {
 
 
     public void setState(boolean state) {
-        System.out.println("Set state" + state);
         this.state = state;
     }
 
