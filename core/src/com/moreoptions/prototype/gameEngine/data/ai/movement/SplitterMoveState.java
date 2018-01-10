@@ -7,6 +7,7 @@ import com.moreoptions.prototype.gameEngine.components.AIComponent;
 import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.VelocityComponent;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoValidComponentException;
@@ -65,7 +66,7 @@ public class SplitterMoveState implements AIState {
             if (distance <= 80){
                 velC.setVelX(0);
                 velC.setVelY(0);
-                aiMapper.get(self).setState("ATTACK");
+                aiMapper.get(self).setState(Consts.Ai.ATTACK);
             }
         } catch (NoValidComponentException e) {
             e.printStackTrace();

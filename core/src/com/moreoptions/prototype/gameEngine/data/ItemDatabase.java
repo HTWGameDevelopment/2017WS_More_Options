@@ -17,6 +17,8 @@ import java.util.Random;
 public class ItemDatabase {
     private static ItemDatabase ourInstance = new ItemDatabase();
     private ArrayList<Pair<Float, Item>>itemMap = new ArrayList<Pair<Float, Item>>();
+    private ArrayList<Pair<Float, Item>>specialItemMap = new ArrayList<Pair<Float, Item>>();
+
 
     public static ItemDatabase getInstance() {
         return ourInstance;
@@ -57,6 +59,17 @@ public class ItemDatabase {
             }
         }), 80);
 
+        registerSpecialItem(new Item("Speed Up", Color.GREEN, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                stats.setSpeed(stats.getSpeed() + 1);
+
+                return true;
+            }
+        }), 100);
+
     }
 
     
@@ -65,6 +78,15 @@ public class ItemDatabase {
 
         Pair<Float, Item> p = new Pair(chance, e);
         itemMap.add(p);
+
+
+    }
+
+    public void registerSpecialItem(Item e, float chance) {
+
+
+        Pair<Float, Item> p = new Pair(chance, e);
+        specialItemMap.add(p);
 
 
     }
@@ -120,9 +142,23 @@ public class ItemDatabase {
     }
 
 
+    public Entity generateSpecialItem(float x, float y, Room room) {
+        Random r = new Random();
 
+        ArrayList<Item> itemList = new ArrayList<Item>();
+        int randomNumber = r.nextInt(100);
+        for(Pair<Float, Item> entry : specialItemMap) {
+            float f = entry.getKey();
+            Item i = entry.getValue();
 
+            if(randomNumber < f) {
+                itemList.add(i);
+            }
 
+        }
 
+        randomNumber = r.nextInt(itemList.size());
 
+        return getItemEntity(itemList.get(randomNumber),room, x,y);
+    }
 }

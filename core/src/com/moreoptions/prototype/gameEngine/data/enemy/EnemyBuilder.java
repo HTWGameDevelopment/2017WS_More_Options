@@ -5,8 +5,8 @@ import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.callback.GameEvent;
 
 public class EnemyBuilder {
-    private Color color = Color.BLACK;
-    private Color borderColor = Color.WHITE;
+    private Color color = Color.WHITE;
+    private Color borderColor = Color.BLACK;
     private int size = 4;
     private int displaySize = 10;
     private EnemyBehavior behavior;

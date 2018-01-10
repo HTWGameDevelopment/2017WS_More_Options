@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="24">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="25">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="true"/>
   <property name="doorSouth" type="bool" value="true"/>
   <property name="doorWest" type="bool" value="true"/>
-  <property name="roomType" type="int" value="6"/>
+  <property name="roomType" type="int" value="5"/>
  </properties>
  <tileset firstgid="1" source="testTileSet.tsx"/>
  <layer name="TileLayer" width="17" height="11">
@@ -53,5 +53,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="EnemyLayer"/>
+ <objectgroup name="EnemyLayer">
+  <object id="24" name="treasure" x="226" y="110" width="32" height="29">
+   <properties>
+    <property name="id" type="int" value="1"/>
+    <property name="type" type="int" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

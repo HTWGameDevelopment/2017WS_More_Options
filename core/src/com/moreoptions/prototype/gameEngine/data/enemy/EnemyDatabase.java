@@ -124,9 +124,11 @@ public class EnemyDatabase {
     }
 
     public Entity createEnemy(int enemyId, float x, float y, Room room) {
-        System.out.println("CREATED UNIQUE ENEMY");
-        if(!enemyMap.containsKey(enemyId)) return enemyMap.get(0).getEntity(x,y, room);
-        return enemyMap.get(0).getEntity(x,y, room);
+        if(!enemyMap.containsKey(enemyId)) {
+            System.out.println("[ENEMYDATABASE] EnemyID "+ enemyId +" was not assigned!");
+            return enemyMap.get(0).getEntity(x,y, room);
+        }
+        return enemyMap.get(enemyId).getEntity(x,y, room);
 
     }
 }

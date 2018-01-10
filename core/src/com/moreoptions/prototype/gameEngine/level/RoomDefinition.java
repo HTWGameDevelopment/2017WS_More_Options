@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.ItemDatabase;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.level.layers.DestructibleLayer;
@@ -210,7 +211,6 @@ public class RoomDefinition {
             if(t.getProperties().containsKey("type")) {
                 switch (t.getProperties().get("type", Integer.class)) {
                     case Consts.ITEM: {
-
                         int id = t.getProperties().get("id", Integer.class);
                         enemyLayer.addItem(id,t.getRectangle().getX(), t.getRectangle().y, room);
                     }

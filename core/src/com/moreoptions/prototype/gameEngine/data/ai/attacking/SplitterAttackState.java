@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.AIComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
@@ -33,7 +34,7 @@ public class SplitterAttackState implements AIState {
 
         try {
             if (distance > 100){
-                aiMapper.get(self).setState("MOVE");
+                aiMapper.get(self).setState(Consts.Ai.MOVE);
             }
 
             if( currentProgress >= COOLDOWN) {

@@ -24,32 +24,6 @@ public class Enemy {
     private GameEvent onCollisionEvent;
     private GameEvent onHitEvent;
 
-    /*e.add(getStatsFor(22));
-        e.add(new PositionComponent(x, y));
-        e.add(new CollisionComponent());
-        e.add(new CircleCollisionComponent(150f, 150f, 13));
-        e.add(new DebugCircleComponent(11));
-        e.add(new VelocityComponent());
-        e.add(getColorFor(20));
-        e.add(new DisplacableComponent(100));
-        e.add(getAIFor(22));
-        e.add(new EnemyHitboxComponent(20));
-        e.add(new EnemyComponent(x, y, room, 21));
-
-        enMapper.get(e).setOnDeath(new OnDeathEvent() {
-        @Override
-        public boolean onDeath(Entity us, Entity them) {
-            PositionComponent pos = posMapper.get(us);
-            EnemyComponent en = enMapper.get(us);
-            Entity one = EnemyFactory.createEnemy(0, pos.getX() + 5, pos.getY(), en.getRoom());
-            Entity two = EnemyFactory.createEnemy(0, pos.getX() - 5, pos.getY(), en.getRoom());
-            Event e = new Event(Consts.SPAWN_ENEMY);
-            e.addData("1", one);
-            e.addData("2", two);
-            EventBus.getInstance().addEvent(e);
-            return true;
-        }
-    });*/
 
     public Enemy(Color color, Color borderColor, int size, int displaySize, EnemyBehavior behavior, Statistics stats, GameEvent onDeathEvent, GameEvent onCollisionEvent, GameEvent onHitEvent) {
 
@@ -59,6 +33,7 @@ public class Enemy {
         this.size = displaySize;
         this.behavior = behavior;
         this.stats = stats;
+        this.onDeathEvent = onDeathEvent;
 
 
     }

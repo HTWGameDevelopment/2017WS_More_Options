@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.AIComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
 
@@ -42,7 +43,7 @@ public class BlinkerMoveState implements AIState {
 
             } else if (distance <= 70) {
                 if (!shot) {
-                    aiMapper.get(self).setState("ATTACK");
+                    aiMapper.get(self).setState(Consts.Ai.ATTACK);
                     shot = true;
                 } else if (currentProgress > COOLDOWN){
                     teleport(room, self, ownPos);

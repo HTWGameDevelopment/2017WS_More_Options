@@ -41,7 +41,7 @@ public class EnemyLayer implements Layer {
 
     public void addItem(int id, float x, float y, Room room) {
         if(id == Consts.SPECIAL_ITEM) {
-            //TODO create special item
+            room.addItem(ItemDatabase.getInstance().generateSpecialItem(x,y,room));
         } else {
             room.addItem(ItemDatabase.getInstance().generateItem(room, x, y));
         }

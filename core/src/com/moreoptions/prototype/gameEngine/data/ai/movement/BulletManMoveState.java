@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
@@ -38,7 +39,7 @@ public class BulletManMoveState implements AIState {
             // shoot
             if (stats.getCurrentShotCooldown() >= stats.getFireRate()) {
                 if (!shot) {
-                    aiMapper.get(self).setState("ATTACK");
+                    aiMapper.get(self).setState(Consts.Ai.ATTACK);
                     stats.setCurrentShotCooldown(0);
                     shot = true;
                 } else {
