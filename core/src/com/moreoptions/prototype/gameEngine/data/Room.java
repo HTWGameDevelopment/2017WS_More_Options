@@ -274,18 +274,20 @@ public class Room {
     private Entity generateNextLevelDoor(int x, int y) {
         Entity e = new Entity();
 
+        final DoorComponent c = new DoorComponent(Offset.DOWN);
         e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
         e.add(new CollisionComponent(new CollisionEvent() {
             @Override
             public boolean onCollision(Entity us, Entity them) {
-                EventFactory.changeLevel();
+                EventFactory.changeLevel(c);
                 return false;
             }
         }));
-        e.add(new DoorComponent(Offset.DOWN));
+        e.add(c);
         e.add(new BlockedTileComponent());
         e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
         e.add(new DebugColorComponent(Color.RED));
+        doors.add(e);
         return e;
     }
 

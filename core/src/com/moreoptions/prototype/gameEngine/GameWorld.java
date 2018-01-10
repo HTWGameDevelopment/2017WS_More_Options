@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.moreoptions.prototype.gameEngine.components.DoorComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
@@ -63,6 +64,7 @@ public class GameWorld extends Engine {
         subscriber.subscribe(Consts.ADVANCE_LEVEL_EVENT, new EventListener() {
             @Override
             public boolean trigger(Event e) {
+                e.getData("door", DoorComponent.class).setState(DoorComponent.DOOR_CLOSED);
                 levelManager.generateNewLevel(10, 10, 14);
                 return false;
             }
@@ -129,8 +131,6 @@ public class GameWorld extends Engine {
 
     @Override
     public void update(float deltaTime) {
-        levelManager.getCurrentRoom().getNavGraph().draw(renderer);
-
         super.update(deltaTime);
         //stage.draw();
         userInterface.update();

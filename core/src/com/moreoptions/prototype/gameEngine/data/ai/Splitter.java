@@ -21,8 +21,8 @@ public class Splitter {
         public boolean onTrigger(Entity us, Entity them) {
             PositionComponent pos = us.getComponent(PositionComponent.class);
             EnemyComponent en = us.getComponent(EnemyComponent.class);
-            Entity one = EnemyFactory.createEnemy(4, pos.getX() + 5, pos.getY(), en.getRoom());
-            Entity two = EnemyFactory.createEnemy(4, pos.getX() - 5, pos.getY(), en.getRoom());
+            Entity one = EnemyFactory.createEnemy(4, pos.getX() + 20, pos.getY(), en.getRoom());
+            Entity two = EnemyFactory.createEnemy(4, pos.getX() - 20, pos.getY(), en.getRoom());
             Event e = new Event(Consts.SPAWN_ENEMY);
             e.addData("1", one);
             e.addData("2", two);
@@ -37,8 +37,8 @@ public class Splitter {
         public boolean onTrigger(Entity us, Entity them) {
             PositionComponent pos = us.getComponent(PositionComponent.class);
             EnemyComponent en = us.getComponent(EnemyComponent.class);
-            Entity one = EnemyFactory.createEnemy(5, pos.getX() + 5, pos.getY(), en.getRoom());
-            Entity two = EnemyFactory.createEnemy(5, pos.getX() - 5, pos.getY(), en.getRoom());
+            Entity one = EnemyFactory.createEnemy(5, pos.getX() + 20, pos.getY(), en.getRoom());
+            Entity two = EnemyFactory.createEnemy(5, pos.getX() - 20, pos.getY(), en.getRoom());
             Event e = new Event(Consts.SPAWN_ENEMY);
             e.addData("1", one);
             e.addData("2", two);
