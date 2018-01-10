@@ -38,4 +38,14 @@ public class Consts {
 
         public static final String GAME_OVER_SOUND = "gameOver";
     }
+
+    public class Error {
+        public static final String BEHAVIOR_ALREADY_DEFINED = "Supplied Behavior was already defined";
+        public static final String STARTSTATE_NOT_FOUND = "StartState was not found" ;
+    }
+
+    public class Ai {
+        public static final String MOVE = "Move";
+        public static final String ATTACK = "Attack";
+    }
 }

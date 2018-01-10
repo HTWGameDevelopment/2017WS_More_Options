@@ -56,7 +56,7 @@ public class EnemySystem extends EntitySystem{
             EnemyComponent ec = ecMapper.get(e);
             if(stats.getCurrentHealth()<= 0) {
                 ec.setDead(true);
-                if(ec.getOnDeath() != null) ec.getOnDeath().onDeath(e, null);
+                if(ec.getOnDeath() != null) ec.getOnDeath().onTrigger(e, null);
 
                 ec.getRoom().checkForClear();
                 GameWorld.getInstance().removeEntity(e);

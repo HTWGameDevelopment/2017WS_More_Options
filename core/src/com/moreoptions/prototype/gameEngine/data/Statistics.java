@@ -39,6 +39,31 @@ public class Statistics {
         this.currentShotCooldown = fireRate;
 
     }
+    
+    public Statistics cpy() {
+        Statistics stats = new Statistics();
+        stats.speed = speed;
+
+        stats.deceleration = deceleration;
+        stats.maxHealth = maxHealth;
+        stats.currentHealth = currentHealth;
+
+        stats.fireRate = fireRate;
+        stats.projectileSpeed = projectileSpeed;
+        stats.pushability = pushability;
+        stats.immunityTimer = immunityTimer;
+        stats.timeSinceLastHit = timeSinceLastHit;
+
+        stats.range = range;
+        stats.money = money;
+
+        stats.damage = damage;
+        stats.currentShotCooldown = fireRate;
+
+        return stats;
+    }
+
+
 
     public float getDeceleration() {
         return deceleration;
