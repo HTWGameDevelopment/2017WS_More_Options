@@ -44,7 +44,7 @@ public class EnemyDatabase {
                         .build())
                 .setStats(new StatisticsBuilder()
                         .speed(100)
-                        .maxHealth(3)
+                        .maxHealth(5)
                         .build())
                 .createEnemy());
 
@@ -66,8 +66,8 @@ public class EnemyDatabase {
                         .setStartState(Consts.Ai.MOVE)
                         .build())
                 .setStats(new StatisticsBuilder()
-                        .speed(100)
-                        .maxHealth(3)
+                        .speed(200)
+                        .maxHealth(5)
                         .build())
                 .createEnemy());
 

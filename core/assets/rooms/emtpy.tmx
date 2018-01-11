@@ -56,7 +56,7 @@
  <objectgroup name="EnemyLayer">
   <object id="20" name="BulletMan1" x="207" y="240.5">
    <properties>
-    <property name="enemyID" type="int" value="3"/>
+    <property name="enemyID" type="int" value="1"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
