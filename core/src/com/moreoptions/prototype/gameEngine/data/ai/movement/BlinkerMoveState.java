@@ -29,7 +29,7 @@ public class BlinkerMoveState implements AIState {
     private boolean attacking = true;
 
     Color moveColor = new Color(0.5f,0.5f,0,1);
-    Color attackColor = new Color(0,0.5f,0,1);
+    Color attackColor = new Color(0,0,0,1);
 
     private boolean shot = false;
 
@@ -51,7 +51,8 @@ public class BlinkerMoveState implements AIState {
 
         } else if(attacking) {
             timeAfterAppearing += delta;
-            attackColor.set(timeAfterAppearing/COOLDOWN,0.5f,0,1);
+            attackColor.set(timeAfterAppearing/COOLDOWN,0,0,1);
+            self.getComponent(DebugColorComponent.class).setColor(attackColor);
         } else if(timeAfterAttacking > COOLDOWN) {
             teleport(room,self);
             timeAfterAttacking = 0;
