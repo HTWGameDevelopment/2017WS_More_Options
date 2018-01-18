@@ -3,6 +3,8 @@ package com.moreoptions.prototype.gameEngine.data.enemy;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Item;
+import com.moreoptions.prototype.gameEngine.data.ItemDatabase;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.callback.GameEvent;
@@ -59,6 +61,4 @@ public class Enemy {
 
         return e;
     }
-
-
 }
