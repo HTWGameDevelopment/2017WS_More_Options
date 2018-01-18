@@ -15,6 +15,7 @@ import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
 
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Dennis on 06.12.2017.
@@ -59,7 +60,7 @@ public class EnemySystem extends EntitySystem{
                 ec.setDead(true);
                 if(ec.getOnDeath() != null) {
                     ec.getOnDeath().onTrigger(e, null);
-                    GameWorld.getInstance().addEntity(itemDrop);
+                    if (itemDrop != null) GameWorld.getInstance().addEntity(itemDrop);
                 }
 
                 ec.getRoom().checkForClear();
@@ -71,12 +72,16 @@ public class EnemySystem extends EntitySystem{
     }
 
     private Entity generateItemOnDeath(Entity e, EnemyComponent ec, Room room) {
-        PositionComponent epc = e.getComponent(PositionComponent.class);
-        Entity item = ItemDatabase.getInstance().generateItem(room, epc.getX(), epc.getY());
+        Random random = new Random();
+        float percentage = random.nextFloat();
 
-        System.out.println("CALLED GENERATE ITEM ON DEATH\n");
-
-        return item;
+        if (percentage >= 0.75) {
+            System.out.println("DROPPED ITEM");
+            PositionComponent epc = e.getComponent(PositionComponent.class);
+            return ItemDatabase.getInstance().generateItem(room, epc.getX(), epc.getY());
+        }
+        System.out.println("NO ITEM DROPPED");
+        return null;
     }
 
 }
