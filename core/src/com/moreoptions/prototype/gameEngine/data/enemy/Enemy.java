@@ -57,8 +57,6 @@ public class Enemy {
         ec.setOnDeath(onDeathEvent);
         e.add(ec);
 
-
-
         return e;
     }
 }

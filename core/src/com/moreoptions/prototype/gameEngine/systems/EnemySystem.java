@@ -55,6 +55,7 @@ public class EnemySystem extends EntitySystem{
             StatsComponent sc = statMapper.get(e);
             Statistics stats = sc.getStats();
             EnemyComponent ec = ecMapper.get(e);
+
             if(stats.getCurrentHealth()<= 0) {
                 Entity itemDrop = generateItemOnDeath(e, ec.getRoom());
                 ec.setDead(true);

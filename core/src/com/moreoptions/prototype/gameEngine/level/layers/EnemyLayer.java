@@ -45,7 +45,10 @@ public class EnemyLayer implements Layer {
         } else {
             room.addItem(ItemDatabase.getInstance().generateItem(room, x, y));
         }
+    }
 
+    public void addSpawnedEnemy(Entity e) {
+        enemies.add(e);
     }
 
     public void removeItem(Entity e) {
