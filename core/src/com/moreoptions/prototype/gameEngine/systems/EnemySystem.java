@@ -56,7 +56,7 @@ public class EnemySystem extends EntitySystem{
             Statistics stats = sc.getStats();
             EnemyComponent ec = ecMapper.get(e);
             if(stats.getCurrentHealth()<= 0) {
-                Entity itemDrop = generateItemOnDeath(e, ec, ec.getRoom());
+                Entity itemDrop = generateItemOnDeath(e, ec.getRoom());
                 ec.setDead(true);
                 if(ec.getOnDeath() != null) {
                     ec.getOnDeath().onTrigger(e, null);
@@ -71,7 +71,7 @@ public class EnemySystem extends EntitySystem{
         }
     }
 
-    private Entity generateItemOnDeath(Entity e, EnemyComponent ec, Room room) {
+    private Entity generateItemOnDeath(Entity e, Room room) {
         Random random = new Random();
         float percentage = random.nextFloat();
 
