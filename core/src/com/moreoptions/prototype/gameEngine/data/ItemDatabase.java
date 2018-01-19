@@ -161,4 +161,13 @@ public class ItemDatabase {
 
         return getItemEntity(itemList.get(randomNumber),room, x,y);
     }
+
+    public Item getItemByName(String name) {
+        for (Pair<Float, Item> i : itemMap) {
+            if (i.getValue().getName().equals(name)) {
+                return i.getValue();
+            }
+        }
+        return null;
+    }
 }

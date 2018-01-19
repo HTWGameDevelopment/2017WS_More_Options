@@ -3,9 +3,12 @@ package com.moreoptions.prototype.gameEngine.data.enemy;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Item;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.callback.GameEvent;
+
+import java.util.ArrayList;
 
 /**
  * Created by denwe on 09.01.2018.
@@ -16,6 +19,8 @@ public class Enemy {
     private Color color,borderColor;                //Which Color is our Enemy?
     private EnemyBehavior behavior;     //State-Machine
     private Statistics stats;
+    private ArrayList<Item> lootList;
+    private Loot loot;
 
     private int id;
     private int size, collisionSize;
@@ -34,6 +39,7 @@ public class Enemy {
         this.behavior = behavior;
         this.stats = stats;
         this.onDeathEvent = onDeathEvent;
+        this.lootList = loot.getLootById(id);
 
 
     }
@@ -50,6 +56,7 @@ public class Enemy {
         e.add(behavior.getAIComponent());
         e.add(new EnemyHitboxComponent(size));
         e.add(new StatsComponent(stats.cpy()));
+        e.add(new LootComponent(lootList));
 
         EnemyComponent ec = new EnemyComponent(x, y, room, id);
         ec.setOnDeath(onDeathEvent);

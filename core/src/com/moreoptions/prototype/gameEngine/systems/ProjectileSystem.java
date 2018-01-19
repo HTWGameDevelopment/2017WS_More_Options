@@ -10,6 +10,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
+import com.moreoptions.prototype.gameEngine.util.DataTracker;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
@@ -33,6 +34,7 @@ public class ProjectileSystem extends EntitySystem {
     private ComponentMapper<CollisionComponent> ccMapper = ComponentMapper.getFor(CollisionComponent.class);
     private ComponentMapper<ProjectileComponent> pcMapper = ComponentMapper.getFor(ProjectileComponent.class);
     private ComponentMapper<CircleCollisionComponent> cccMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<PlayerComponent> plcMapper = ComponentMapper.getFor(PlayerComponent.class);
 
 
     public ProjectileSystem() {
@@ -66,7 +68,7 @@ public class ProjectileSystem extends EntitySystem {
                 Statistics statistics = scMapper.get(hit).getStats();
                 if(statistics.getImmunityTimer() <= statistics.getTimeSinceLastHit()) {
                     statistics.setCurrentHealth(statistics.getCurrentHealth() - pc.getDmg());
-
+                    if(plcMapper.has(hit)) DataTracker.trackIntData(Consts.Data.DAMAGE_TAKEN, (int)pc.getDmg());
                     EventFactory.createDamageText(hit, pc.getDmg());
 
                     statistics.setTimeSinceLastHit(0);

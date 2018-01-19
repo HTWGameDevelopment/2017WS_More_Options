@@ -125,6 +125,7 @@ public class GameWorld extends Engine {
         addSystem(new EnemySystem());
         addSystem(new AchievementSystem());
         addSystem(new SoundSystem());
+        addSystem(new LootSystem());
         //addSystem(new QuadTreeDebug(batch, renderer));
         levelManager = new LevelManager(this);
     }

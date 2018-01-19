@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class BlinkerMoveState implements AIState {
 
-    private static final float COOLDOWN = 3.0f;
+    private static final float COOLDOWN = 2f;
     private float shotCooldownProgress = 0;
 
     private float timeAfterAppearing = 0;

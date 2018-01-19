@@ -42,6 +42,7 @@ public class DoorCollisionSystem extends EntitySystem {
 
                     //Create Achivement door, add to EventBus
                     DataTracker.trackIntData(Consts.DOOR_STAT, 1);
+
                 }
             }
         }

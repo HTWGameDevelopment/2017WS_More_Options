@@ -2,6 +2,7 @@ package com.moreoptions.prototype.gameEngine.systems;
 
 import com.badlogic.ashley.core.EntitySystem;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
@@ -20,6 +21,10 @@ public class AchievementSystem extends EntitySystem{
 
     public void registerData() {
         dataProcessors.put(Consts.DOOR_STAT, new IntAchievementListener());
+        dataProcessors.put(Consts.Data.DAMAGE_TAKEN, new IntAchievementListener());
+
+
+
 
     }
 

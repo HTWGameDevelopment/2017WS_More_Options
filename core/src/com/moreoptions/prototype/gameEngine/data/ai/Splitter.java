@@ -47,4 +47,20 @@ public class Splitter {
         }
     }
 
+    public static class SubSubOnDeathEvent implements GameEvent {
+
+        @Override
+        public boolean onTrigger(Entity us, Entity them) {
+            PositionComponent pos = us.getComponent(PositionComponent.class);
+            EnemyComponent en = us.getComponent(EnemyComponent.class);
+            Entity one = EnemyFactory.createEnemy(0, pos.getX() + 20, pos.getY(), en.getRoom());
+            Entity two = EnemyFactory.createEnemy(0, pos.getX() - 20, pos.getY(), en.getRoom());
+            Event e = new Event(Consts.SPAWN_ENEMY);
+            e.addData("1", one);
+            e.addData("2", two);
+            EventBus.getInstance().addEvent(e);
+            return true;
+        }
+    }
+
 }

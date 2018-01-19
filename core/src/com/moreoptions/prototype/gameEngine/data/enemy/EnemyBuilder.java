@@ -11,6 +11,7 @@ public class EnemyBuilder {
     private int displaySize = 10;
     private EnemyBehavior behavior;
     private Statistics stats = new Statistics();
+    private Loot loot = new Loot();
     private GameEvent onDeathEvent = new GameEvent.NullEvent();
     private GameEvent onCollisionEvent = new GameEvent.NullEvent();
     private GameEvent onHitEvent = new GameEvent.NullEvent();
@@ -45,6 +46,11 @@ public class EnemyBuilder {
         return this;
     }
 
+    public EnemyBuilder setLoot(Loot loot){
+        this.loot = loot;
+        return this;
+    }
+
     public EnemyBuilder setOnDeathEvent(GameEvent onDeathEvent) {
         this.onDeathEvent = onDeathEvent;
         return this;
@@ -63,4 +69,6 @@ public class EnemyBuilder {
     public Enemy createEnemy() {
         return new Enemy(color, borderColor, size, displaySize, behavior, stats, onDeathEvent, onCollisionEvent, onHitEvent);
     }
+
+
 }

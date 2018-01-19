@@ -10,6 +10,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
+import com.moreoptions.prototype.gameEngine.util.DataTracker;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
@@ -40,7 +41,7 @@ public class PlayerSystem extends EntitySystem{
                 Statistics enemystatistics = scMapper.get(hitter).getStats();
                 if(statistics.getImmunityTimer() <= statistics.getTimeSinceLastHit()) {
                     statistics.setCurrentHealth(statistics.getCurrentHealth() - enemystatistics.getDamage());
-
+                    DataTracker.trackIntData(Consts.Data.DAMAGE_TAKEN, (int)enemystatistics.getDamage());
                     EventFactory.createDamageText(hit, enemystatistics.getDamage());
 
                     statistics.setTimeSinceLastHit(0);

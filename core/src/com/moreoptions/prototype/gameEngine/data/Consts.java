@@ -12,6 +12,7 @@ public class Consts {
     public static final String SPAWN_ENEMY = "SPAWN_ENEMY";
     public static final int ENEMY = 0;
     public static final int ITEM = 1;
+    public static final String SPAWN_LOOT = "Spawn_Loot";
     public static final String DOOR_STAT = "DOOR_STAT";
     public static final String ACHIEVEMENT_EVENT_ID = "Achievement_Event";
     public static final String INT = "Int";
@@ -47,5 +48,10 @@ public class Consts {
     public class Ai {
         public static final String MOVE = "Move";
         public static final String ATTACK = "Attack";
+    }
+
+    public class Data {
+
+        public static final String DAMAGE_TAKEN = "Damage taken";
     }
 }

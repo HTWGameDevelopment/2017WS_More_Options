@@ -20,6 +20,8 @@ public class DataTracker {
         e.addData(Consts.INT, data);
         EventBus.getInstance().addEvent(e);
 
+        System.out.println("Tracking data, creating event");
+
     }
 
     public static void trackData(HashMap<String, Object> data) {

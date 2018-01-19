@@ -12,6 +12,15 @@ public class Item {
     private String name;
     private Color color;
     private PickupEvent pickupEvent;
+    private int chance;
+
+
+    public Item(String name, Color color, PickupEvent pickupEvent,int chance) {
+        this.name = name;
+        this.color = color;
+        this.pickupEvent = pickupEvent;
+        this.chance = chance;
+    }
 
     public Item(String name, Color color, PickupEvent pickupEvent) {
         this.name = name;
@@ -30,6 +39,13 @@ public class Item {
     public String getName() {
         return name;
     }
+
+    public int getChance() { return chance;}
+
+    public void setChance(int chance) {
+        this.chance = chance;
+    }
+
 
     /*
     public class ItemBuilder {

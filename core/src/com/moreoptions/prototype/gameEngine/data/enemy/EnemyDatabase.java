@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine.data.enemy;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
@@ -33,14 +34,14 @@ public class EnemyDatabase {
         return ourInstance;
     }
 
-    HashMap<Integer, Enemy> enemyMap = new HashMap<Integer, Enemy>();
+    private HashMap<Integer, Enemy> enemyMap = new HashMap<Integer, Enemy>();
 
     private EnemyDatabase() {
 
         registerEnemy(0, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.MOVE, new StandardMoveState())
-                        .setStartState("Move")
+                        .setStartState(Consts.Ai.MOVE)
                         .build())
                 .setStats(new StatisticsBuilder()
                         .speed(100)
@@ -65,6 +66,7 @@ public class EnemyDatabase {
                         .addState(Consts.Ai.MOVE, new ChasedMoveState())
                         .setStartState(Consts.Ai.MOVE)
                         .build())
+                .setLoot(Loot.getLootById(2))
                 .setStats(new StatisticsBuilder()
                         .speed(200)
                         .maxHealth(5)
@@ -81,6 +83,9 @@ public class EnemyDatabase {
                         .speed(100)
                         .maxHealth(10)
                         .build())
+                        .setSize(30)
+                        .setDisplaySize(30)
+                        .setColor(Color.BLUE)
                 .setOnDeathEvent(new Splitter.OnDeathEvent())
                 .createEnemy());
 
@@ -94,6 +99,9 @@ public class EnemyDatabase {
                         .speed(100)
                         .maxHealth(3)
                         .build())
+                        .setSize(20)
+                        .setDisplaySize(20)
+                        .setColor(Color.PURPLE)
                 .setOnDeathEvent(new Splitter.SubOnDeathEvent())
                 .createEnemy());
 
@@ -107,6 +115,10 @@ public class EnemyDatabase {
                         .speed(100)
                         .maxHealth(1)
                         .build())
+                        .setSize(15)
+                        .setDisplaySize(15)
+                        .setColor(Color.ROYAL)
+                .setOnDeathEvent(new Splitter.SubSubOnDeathEvent())
                 .createEnemy());
 
 
@@ -114,10 +126,10 @@ public class EnemyDatabase {
 
     }
 
-    private void registerEnemy(int i, Enemy enemy) {
-        if(!enemyMap.containsKey(i)) enemyMap.put(i, enemy);
+    private void registerEnemy(int id, Enemy enemy) {
+        if(!enemyMap.containsKey(id)) enemyMap.put(id, enemy);
         else try {
-            throw new Exception("Already contains ID "+ i);
+            throw new Exception("Already contains ID: "+ id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,5 +142,9 @@ public class EnemyDatabase {
         }
         return enemyMap.get(enemyId).getEntity(x,y, room);
 
+    }
+
+    public Enemy getEnemyById(int enemyId){
+        return enemyMap.get(enemyId);
     }
 }
