@@ -8,14 +8,8 @@ import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.StatisticsBuilder;
 import com.moreoptions.prototype.gameEngine.data.ai.Splitter;
-import com.moreoptions.prototype.gameEngine.data.ai.attacking.SplitterAttackState;
-import com.moreoptions.prototype.gameEngine.data.ai.attacking.SplitterSubAttackState;
-import com.moreoptions.prototype.gameEngine.data.ai.attacking.SplitterSubSubAttackState;
-import com.moreoptions.prototype.gameEngine.data.ai.attacking.StandardAttackState;
-import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
-import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
-import com.moreoptions.prototype.gameEngine.data.ai.movement.SplitterMoveState;
-import com.moreoptions.prototype.gameEngine.data.ai.movement.StandardMoveState;
+import com.moreoptions.prototype.gameEngine.data.ai.attacking.*;
+import com.moreoptions.prototype.gameEngine.data.ai.movement.*;
 import com.moreoptions.prototype.gameEngine.data.callback.GameEvent;
 import com.moreoptions.prototype.gameEngine.util.EnemyFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
@@ -109,9 +103,20 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
-
-
-
+        // BulletMan
+        registerEnemy(6, new EnemyBuilder()
+                .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
+                        .addState(Consts.Ai.ATTACK, new BulletManAttackState())
+                        .addState(Consts.Ai.MOVE, new BulletManMoveState())
+                        .setStartState(Consts.Ai.MOVE)
+                        .build())
+                .setStats(new StatisticsBuilder()
+                        .speed(120)
+                        .maxHealth(20)
+                        .firerate(0.8f)
+                        .range(300)
+                        .build())
+                .createEnemy());
     }
 
     private void registerEnemy(int i, Enemy enemy) {
