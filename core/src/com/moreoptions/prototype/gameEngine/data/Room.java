@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
+import com.moreoptions.prototype.gameEngine.data.callback.GameEvent;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.NavGraph;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
@@ -74,8 +75,6 @@ public class Room {
     ArrayList<Entity> doors = new ArrayList<Entity>();
     ArrayList<Entity> pickups = new ArrayList<Entity>();
 
-
-
     public Room(RoomBlueprint roomBlueprint) {
 
         this.blueprint = roomBlueprint;
@@ -103,10 +102,6 @@ public class Room {
         for(Entity e : destLayer.getEntities()) {
             navGraph.addEntity(e);
         }
-
-
-
-
     }
 
     public void generateBarriers() {

@@ -63,4 +63,10 @@ public class EventFactory {
         EventBus.getInstance().addEvent(e);
 
     }
+
+    public static void saveGame() {
+        System.out.println("Saving game!");
+        Event e = new Event(Consts.SAVE_GAME);
+        EventBus.getInstance().addEvent(e);
+    }
 }

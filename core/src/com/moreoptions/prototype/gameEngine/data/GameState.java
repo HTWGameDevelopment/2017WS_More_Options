@@ -2,6 +2,7 @@ package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -21,14 +22,24 @@ public class GameState {
     }
 
     private GameState() {
-
         Preferences pref = Gdx.app.getPreferences(Strings.PREFERENCES);
         if(!pref.contains(Strings.PREFERENCES_PROFILE)) {
-            gameProfile = new Profile();
-        } else {
-            gameProfile = new Profile(pref.getString(Strings.PREFERENCES_PROFILE));
-        }
+            System.out.println("No profile found! Creating new one!");
+            gameProfile = new Profile("Test");
 
+        } else {
+            Gson gson = new Gson();
+            Profile profile = gson.fromJson(pref.getString(Strings.PREFERENCES_PROFILE), Profile.class);
+            gameProfile = profile;
+            //
+            System.out.println("load profile from memory" + gameProfile.toString());
+            gameProfile.getAchievements().bosskiller = true;
+            gameProfile.save();
+        }
+    }
+
+    private GameState(Profile p) {
+        this.gameProfile = p;
     }
 
     public Profile getGameProfile() {

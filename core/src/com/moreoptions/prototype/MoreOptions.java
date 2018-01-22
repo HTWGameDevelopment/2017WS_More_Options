@@ -41,7 +41,7 @@ public class MoreOptions extends Game {
 		}
 		screen = new StartGameScreen(this);
 		dungeonScreen = new DungeonScreen(this);
-		setScreen(dungeonScreen);
+		setScreen(screen);
 	}
 
 	public void showDungeon() {

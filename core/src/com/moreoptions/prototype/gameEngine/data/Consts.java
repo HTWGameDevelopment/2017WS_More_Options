@@ -30,6 +30,7 @@ public class Consts {
     public static final String HEALTH_CHANGE = "Health_Change";
     public static final String HEALTH_CHANGE_VALUE = "Health_Change_Value" ;
     public static final String ADVANCE_LEVEL_EVENT = "Advance";
+    public static final String SAVE_GAME = "Save_Game";
     public static String SHOOT_EVENT = "Shoot";
     public static String ENTITY = "Entity";
     public static String DIRECTION = "Direction";
@@ -47,5 +48,11 @@ public class Consts {
     public class Ai {
         public static final String MOVE = "Move";
         public static final String ATTACK = "Attack";
+    }
+
+    public class Network {
+        public static final String SALT = "ENTER_CUSTOM_SALT";
+        public static final String SERVER_ADRESS = "http://localhost:8080";
+        public static final int SUCCESS = 200;
     }
 }

@@ -36,6 +36,7 @@ public class EnemySystem extends EntitySystem{
                 HashMap<String, Object> map = e.getDatas();
                 for(Object o : map.values()) {
                     getEngine().addEntity((Entity) o);
+
                 }
                 return true;
             }

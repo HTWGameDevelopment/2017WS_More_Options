@@ -9,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
 import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,8 @@ public class LevelManager {
     }
 
     public boolean changeRoom(Room targetRoom, Offset offset) {
+
+        EventFactory.saveGame();
 
         System.out.println(targetRoom);
 
