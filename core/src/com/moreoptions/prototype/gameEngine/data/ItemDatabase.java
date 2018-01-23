@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.callback.HitEvent;
 import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
+import com.moreoptions.prototype.gameEngine.data.itemEffects.BlinkShot;
+import com.moreoptions.prototype.gameEngine.data.itemEffects.KnockBack;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 import javafx.util.Pair;
@@ -22,8 +24,6 @@ import java.util.Random;
  */
 public class ItemDatabase {
 
-    private ComponentMapper<StatsComponent> statsMapper = ComponentMapper.getFor(StatsComponent.class);
-    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
 
 
     private static ItemDatabase ourInstance = new ItemDatabase();
@@ -48,7 +48,7 @@ public class ItemDatabase {
             }
         }), 50);
 
-        registerItem(new Item("Poison Heart", Color.OLIVE, new PickupEvent() {
+        registerSpecialItem(new Item("Poison Heart", Color.OLIVE, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
 
@@ -62,7 +62,7 @@ public class ItemDatabase {
             }
         }), 10);
 
-        registerItem(new Item("Firerate up", Color.BLUE, new PickupEvent() {
+        registerSpecialItem(new Item("Firerate up", Color.BLUE, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
 
@@ -73,77 +73,22 @@ public class ItemDatabase {
             }
         }), 10);
 
-        registerItem(new Item("Knockback", Color.GRAY, new PickupEvent() {
+        registerSpecialItem(new Item("Knockback", Color.GRAY, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
 
                 Statistics statistics = e.getComponent(StatsComponent.class).getStats();
-
-                statistics.setProjectileOnHit(new HitEvent() {
-                    @Override
-                    public boolean onHit(Entity self, Entity hit) {
-
-                        Entity p = self.getComponent(ProjectileComponent.class).getOwner();
-
-                        PositionComponent temp1 = posMapper.get(p);
-                        PositionComponent temp2 = posMapper.get(hit);
-                        float xEnm = temp2.getX();
-                        float yEnm = temp2.getY();
-                        float xPla = temp1.getX();
-                        float yPla = temp1.getY();
-                        Vector2 v2 = new Vector2(xEnm-xPla,yEnm-yPla);
-                        v2 = v2.nor();
-
-                        hit.getComponent(DisplacableComponent.class).applyForce(v2, 6);
-
-
-                        EventFactory.projectileHit(self,hit);
-
-                        return true;
-                    }
-                });
-
+                statistics.setProjectileOnHit(new KnockBack());
                 return true;
             }
         }), 100);
 
-        registerItem(new Item("Multi Shot", Color.WHITE, new PickupEvent() {
+        registerSpecialItem(new Item("Blink Shot", Color.WHITE, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
 
                 Statistics statistics = e.getComponent(StatsComponent.class).getStats();
-
-                statistics.setProjectileOnHit(new HitEvent() {
-                    @Override
-                    public boolean onHit(Entity self, Entity hit) {
-
-                        if(statsMapper.has(hit)) {
-
-                            Entity p = self.getComponent(ProjectileComponent.class).getOwner();
-
-
-
-                            PositionComponent temp1 = posMapper.get(p);
-                            PositionComponent temp2 = posMapper.get(hit);
-                            Vector2 v1 = temp1.getPosition().cpy();
-                            Vector2 v2 = temp2.getPosition().cpy();
-
-                            EventFactory.projectileHit(self,hit);
-                            if(hit.getComponent(StatsComponent.class).getStats().getCurrentHealth() < 1) {
-
-                                temp1.setPosition(v2);
-                                temp2.setPosition(v1);
-                            }
-                        } else {
-
-
-                            return false;
-                        }
-                        return true;
-                    }
-                });
-
-
+                statistics.setProjectileOnHit(new BlinkShot());
                 return true;
             }
         }), 10);
