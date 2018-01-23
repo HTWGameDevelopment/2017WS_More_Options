@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="21">
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="21">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="false"/>
@@ -7,7 +7,7 @@
   <property name="doorWest" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="testTileSet.tsx"/>
- <layer name="TileLayer" width="17" height="11">
+ <layer name="TileLayer" width="17" height="11" visible="0">
   <data encoding="csv">
 178,176,176,176,176,176,176,177,176,175,176,176,176,176,176,176,179,
 210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,210,
@@ -43,9 +43,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,209,0,209,209,209,0,209,0,0,0,0,0,
+0,0,0,0,0,337,0,337,337,337,0,337,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,209,0,209,209,209,0,209,0,0,0,0,0,
+0,0,0,0,0,403,0,403,403,403,0,403,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

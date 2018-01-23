@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="33">
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="49">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="true"/>
@@ -44,48 +44,60 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,174,0,0,0,0,174,0,0,0,0,174,0,0,0,
-0,0,0,210,0,0,0,0,210,0,0,0,0,210,0,0,0,
-0,0,0,180,176,176,176,176,209,176,176,176,176,213,0,0,0,
-0,0,0,210,0,0,0,0,210,0,0,0,0,210,0,0,0,
-0,0,0,207,0,0,0,0,207,0,0,0,0,207,0,0,0,
+0,0,0,370,0,0,0,0,370,0,0,0,0,370,0,0,0,
+0,0,0,370,0,0,0,0,370,0,0,0,0,370,0,0,0,
+0,0,0,370,370,370,370,370,370,370,370,370,370,370,0,0,0,
+0,0,0,370,0,0,0,0,370,0,0,0,0,370,0,0,0,
+0,0,0,370,0,0,0,0,370,0,0,0,0,370,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup name="EnemyLayer">
-  <object id="27" name="Chaser1" x="193" y="145.333">
+  <object id="41" name="Chased3" x="49.8637" y="47.1666">
+   <properties>
+    <property name="enemyID" type="int" value="2"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="42" name="Chaser1" x="175.106" y="141.348">
    <properties>
     <property name="enemyID" type="int" value="0"/>
     <property name="type" type="int" value="2"/>
    </properties>
   </object>
-  <object id="28" name="Chased2" x="192.667" y="212">
+  <object id="43" name="Chaser3" x="206.955" y="141.712">
    <properties>
-    <property name="enemyID" type="int" value="1"/>
-    <property name="type" type="int" value="0"/>
+    <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="2"/>
    </properties>
   </object>
-  <object id="29" name="Chased1" x="354.333" y="145.667">
+  <object id="44" name="Chaser4" x="335.197" y="207.833">
+   <properties>
+    <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="45" name="Chased4" x="491.864" y="299.833">
    <properties>
     <property name="enemyID" type="int" value="2"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="30" name="Chaser2" x="353.667" y="209.667">
+  <object id="46" name="Chaser2" x="366.864" y="206.833">
    <properties>
     <property name="enemyID" type="int" value="0"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="31" name="Chased3" x="50.6667" y="49.3333">
+  <object id="47" name="Chased1" x="350.985" y="143.318">
    <properties>
     <property name="enemyID" type="int" value="2"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="32" name="Chased4" x="492.667" y="302">
+  <object id="48" name="Chased2" x="191.5" y="205.833">
    <properties>
     <property name="enemyID" type="int" value="2"/>
     <property name="type" type="int" value="0"/>

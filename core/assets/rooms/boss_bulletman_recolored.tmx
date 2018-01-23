@@ -9,7 +9,7 @@
   <property name="roomType" type="int" value="3"/>
  </properties>
  <tileset firstgid="1" source="testTileSet.tsx"/>
- <layer name="TileLayer" width="17" height="11" visible="0">
+ <layer name="TileLayer" width="17" height="11">
   <data encoding="csv">
 13,11,11,11,11,11,11,12,0,10,11,11,11,11,11,11,14,
 45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
