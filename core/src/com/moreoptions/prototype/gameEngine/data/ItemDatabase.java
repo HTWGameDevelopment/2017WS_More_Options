@@ -6,6 +6,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
 import javafx.util.Pair;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,8 +124,7 @@ public class ItemDatabase {
         DebugColorComponent dcc = new DebugColorComponent(itemBlueprint.getColor());
         CircleCollisionComponent ccc = new CircleCollisionComponent(x,y ,5f);
         CollisionComponent cc = new CollisionComponent();
-        PickupComponent pc = new PickupComponent(itemBlueprint.getPickupEvent(), room);
-
+        PickupComponent pc = new PickupComponent(itemBlueprint.getName(),itemBlueprint.getPickupEvent(), room);
         itemEntity.add(p).add(dc).add(dcc).add(pc).add(ccc).add(cc);
 
         return itemEntity;
