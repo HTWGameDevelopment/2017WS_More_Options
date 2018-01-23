@@ -46,7 +46,30 @@ public class ItemDatabase {
                 else stats.setCurrentHealth(stats.getMaxHealth());
                 return true;
             }
-        }), 50);
+        }), 20);
+
+
+        registerItem(new Item("Gold Coin", Color.YELLOW, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                if(stats.getMoney() + 1 < Consts.MAX_GOLD) stats.setMoney(stats.getMoney() + 1);
+                else stats.setMoney(Consts.MAX_GOLD);
+                return true;
+            }
+        }), 100);
+
+        registerItem(new Item("Half Heart", Color.RED, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                if(stats.getCurrentHealth() + 0.5f < stats.getMaxHealth()) stats.setCurrentHealth(stats.getCurrentHealth() + 0.5f);
+                else stats.setCurrentHealth(stats.getMaxHealth());
+                return true;
+            }
+        }), 80);
 
         registerSpecialItem(new Item("Poison Heart", Color.OLIVE, new PickupEvent() {
             @Override
@@ -93,27 +116,6 @@ public class ItemDatabase {
             }
         }), 10);
 
-        registerItem(new Item("Gold Coin", Color.YELLOW, new PickupEvent() {
-            @Override
-            public boolean onPickup(Entity e) {
-
-                Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                if(stats.getMoney() + 1 < Consts.MAX_GOLD) stats.setMoney(stats.getMoney() + 1);
-                else stats.setMoney(Consts.MAX_GOLD);
-                return true;
-            }
-        }), 10);
-
-        registerItem(new Item("Half Heart", Color.RED, new PickupEvent() {
-            @Override
-            public boolean onPickup(Entity e) {
-
-                Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                if(stats.getCurrentHealth() + 0.5f < stats.getMaxHealth()) stats.setCurrentHealth(stats.getCurrentHealth() + 0.5f);
-                else stats.setCurrentHealth(stats.getMaxHealth());
-                return true;
-            }
-        }), 80);
 
         registerSpecialItem(new Item("Speed Up", Color.GREEN, new PickupEvent() {
             @Override

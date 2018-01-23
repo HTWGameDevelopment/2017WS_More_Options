@@ -78,11 +78,9 @@ public class EnemySystem extends EntitySystem{
         float percentage = random.nextFloat();
 
         if (percentage >= 0.75) {
-            System.out.println("DROPPED ITEM");
             PositionComponent epc = e.getComponent(PositionComponent.class);
             return ItemDatabase.getInstance().generateItem(room, epc.getX(), epc.getY());
         }
-        System.out.println("NO ITEM DROPPED");
         return null;
     }
 

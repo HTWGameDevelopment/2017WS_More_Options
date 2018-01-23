@@ -164,7 +164,6 @@ public class StandardNavGraph implements NavGraph {
         nodes.remove(n);
 
 
-        System.out.println("Disconnecting nodes");
 
     }
 
@@ -220,7 +219,6 @@ public class StandardNavGraph implements NavGraph {
 
         batch.end();
 
-        System.out.println(obstacles.size());
 
     }
 

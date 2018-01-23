@@ -20,7 +20,6 @@ public class ChangeRoomEvent implements CollisionEvent {
     @Override
     public boolean onCollision(Entity us, Entity them) {
         Offset offset = them.getComponent(DoorComponent.class).getOffset();
-        System.out.println(room.getEntities().size());
         GameWorld.getInstance().getRoomManager().changeRoom(room, offset);
 
         return false;
