@@ -1,5 +1,7 @@
 package com.moreoptions.prototype.gameEngine.data;
 
+import java.util.ArrayList;
+
 /**
  *
  */
@@ -19,6 +21,7 @@ public class Statistics {
     private float currentShotCooldown;
     private int money;
     private int pushability;
+
 
     public Statistics() {
         this.speed = 150;
@@ -168,4 +171,5 @@ public class Statistics {
     public void setMoney(int money) {
         this.money = money;
     }
+
 }

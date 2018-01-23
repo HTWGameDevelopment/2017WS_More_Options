@@ -47,9 +47,14 @@ public class ProjectileFactory {
     }
 
     public static Entity playerProjectile (Entity entity, Vector2 v2){
+
+
+
         Entity proj = new Entity();
 
         Statistics pStats = entity.getComponent(StatsComponent.class).getStats();
+
+
         VelocityComponent vc = entity.getComponent(VelocityComponent.class);
         PositionComponent pc = entity.getComponent(PositionComponent.class);
 
@@ -61,6 +66,8 @@ public class ProjectileFactory {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.SKY));
+
+
         proj.add(new ProjectileComponent(pStats.getDamage(),pStats.getRange(), false));
 
         proj.getComponent(VelocityComponent.class).setVelX(v2.x*(pStats.getProjectileSpeed()));

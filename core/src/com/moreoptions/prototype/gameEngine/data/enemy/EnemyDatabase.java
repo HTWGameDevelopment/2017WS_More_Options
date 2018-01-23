@@ -133,7 +133,7 @@ public class EnemyDatabase {
                         .maxHealth(15)
                         .firerate(2f)
                         .range(1000)
-                        .projectileSpeed(30f)
+                        .projectileSpeed(150f)
                         .build())
                 .createEnemy());
     }

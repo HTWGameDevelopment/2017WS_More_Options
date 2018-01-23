@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="27">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="29">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="true"/>
@@ -54,6 +54,11 @@
 </data>
  </layer>
  <objectgroup name="EnemyLayer">
-  <object id="26" x="316" y="-46"/>
+  <object id="28" x="223" y="174" width="38" height="50">
+   <properties>
+    <property name="enemyID" type="int" value="7"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

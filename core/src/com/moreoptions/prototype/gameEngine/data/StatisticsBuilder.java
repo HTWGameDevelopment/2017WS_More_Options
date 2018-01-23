@@ -71,6 +71,7 @@ public class StatisticsBuilder {
         s.setCurrentHealth(currentHealth);
         s.setFireRate(fireRate);
         s.setProjectileSpeed(projectileSpeed);
+        s.setRange(range);
         return s;
     }
 }
