@@ -61,25 +61,25 @@
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="26" name="Sentry2" x="49" y="41.5" width="38" height="20">
+  <object id="26" name="Sentry2" x="62" y="56.5" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="7"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="27" name="Sentry1" x="46" y="293.5" width="38" height="20">
+  <object id="27" name="Sentry1" x="62" y="272.5" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="7"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="28" name="Sentry4" x="466" y="292.5" width="38" height="20">
+  <object id="28" name="Sentry4" x="441" y="274.5" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="7"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="29" name="Sentry3" x="463" y="43.5" width="38" height="20">
+  <object id="29" name="Sentry3" x="443" y="55.5" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="7"/>
     <property name="type" type="int" value="0"/>

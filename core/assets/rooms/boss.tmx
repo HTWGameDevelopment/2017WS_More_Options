@@ -54,25 +54,25 @@
 </data>
  </layer>
  <objectgroup name="EnemyLayer">
-  <object id="24" name="Sentry4" x="467" y="293" width="38" height="20">
+  <object id="24" name="Sentry4" x="441" y="275" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="7"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="26" name="Sentry3" x="467" y="38" width="38" height="20">
+  <object id="26" name="Sentry3" x="440" y="54" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="7"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="27" name="Sentry2" x="41" y="40" width="38" height="20">
+  <object id="27" name="Sentry2" x="64" y="56" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="7"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="28" name="Sentry1" x="39" y="292" width="38" height="20">
+  <object id="28" name="Sentry1" x="65" y="276" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="7"/>
     <property name="type" type="int" value="0"/>
