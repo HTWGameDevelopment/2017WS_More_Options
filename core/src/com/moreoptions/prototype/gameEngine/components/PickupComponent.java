@@ -13,6 +13,8 @@ public class PickupComponent implements Component {
     private PickupEvent event;
     private Room room;
     private String name;
+    private boolean shopItem;
+    private int price;
 
     public PickupComponent(String name, PickupEvent event, Room room) {
         this.event = event;
@@ -31,5 +33,21 @@ public class PickupComponent implements Component {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isShopItem() {
+        return shopItem;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setShopItem(boolean shopItem) {
+        this.shopItem = shopItem;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

@@ -35,8 +35,6 @@ public class LoginScreen implements Screen {
         setupLoginDialog(stage);
         this.moreOptions = moreOptions;
 
-
-
     }
 
 
@@ -96,6 +94,15 @@ public class LoginScreen implements Screen {
         pw.setMessageText("Password");
         pw.setPasswordMode(true);
 
+        TextButton backButton = new TextButton("Back", skin);
+
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                moreOptions.showStartScreen();
+                super.clicked(event, x, y);
+            }
+        });
 
         TextButton registerButton = new TextButton("Register",skin);
         registerButton.setName("Register");
@@ -125,9 +132,11 @@ public class LoginScreen implements Screen {
         loginFrame.add(loginButton);
         loginFrame.add(registerButton);
 
+
         errorMessage = new Label("TEST",skin);
         errorMessage.getStyle().fontColor = Color.WHITE;
         loginFrame.row();
+        loginFrame.add(backButton);
         loginFrame.add(errorMessage).padTop(50).align(Align.center);
         stage.addActor(loginFrame);
     }

@@ -125,7 +125,12 @@ public class ItemDatabase {
         CircleCollisionComponent ccc = new CircleCollisionComponent(x,y ,5f);
         CollisionComponent cc = new CollisionComponent();
         PickupComponent pc = new PickupComponent(itemBlueprint.getName(),itemBlueprint.getPickupEvent(), room);
+
+
+        pc.setPrice(itemBlueprint.getPrice());
+
         itemEntity.add(p).add(dc).add(dcc).add(pc).add(ccc).add(cc);
+
 
         return itemEntity;
 
@@ -160,5 +165,28 @@ public class ItemDatabase {
         randomNumber = r.nextInt(itemList.size());
 
         return getItemEntity(itemList.get(randomNumber),room, x,y);
+    }
+
+    public Entity generateShopItem(float x, float y, Room room) {
+        Random r = new Random();
+
+        ArrayList<Item> itemList = new ArrayList<Item>();
+        int randomNumber = r.nextInt(100);
+        for(Pair<Float, Item> entry : specialItemMap) {
+            float f = entry.getKey();
+            Item i = entry.getValue();
+
+            if(randomNumber < f) {
+                itemList.add(i);
+            }
+
+        }
+
+        randomNumber = r.nextInt(itemList.size());
+
+        Entity item = getItemEntity(itemList.get(randomNumber),room, x,y);
+        PickupComponent p = item.getComponent(PickupComponent.class);
+        p.setShopItem(true);
+        return item;
     }
 }

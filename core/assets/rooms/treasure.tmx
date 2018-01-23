@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="25">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="26">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="true"/>
@@ -44,17 +44,17 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,641,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,92,0,92,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,92,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,92,0,92,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup name="EnemyLayer">
-  <object id="24" name="treasure" x="226" y="110" width="32" height="29">
+  <object id="24" name="treasure" x="257" y="157" width="32" height="29">
    <properties>
     <property name="id" type="int" value="1"/>
     <property name="type" type="int" value="1"/>
