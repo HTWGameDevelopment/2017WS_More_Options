@@ -5,8 +5,10 @@ import com.moreoptions.prototype.gameEngine.components.AIComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.ai.AIState;
+import com.moreoptions.prototype.gameEngine.data.ai.attacking.StandardAttackState;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Enemybehavior is defined as a state machine. A set of states is supplied, as well as a starting state.
@@ -27,7 +29,22 @@ public class EnemyBehavior {
 
     public AIComponent getAIComponent() {
 
-        AIComponent ai = new AIComponent(startState, stateMap);
+        HashMap<String, AIState> tstateMap = new HashMap<String, AIState>();
+        AIState tstartState = new StandardAttackState();
+        for(Map.Entry<String, AIState> entries : stateMap.entrySet()) {
+            try {
+                AIState instate = entries.getValue().getClass().newInstance();
+                tstateMap.put(entries.getKey(), instate);
+
+                tstartState = startState.getClass().newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        AIComponent ai = new AIComponent(tstartState, tstateMap);
         return ai;
     }
 

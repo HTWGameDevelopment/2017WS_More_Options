@@ -212,6 +212,9 @@ public class RoomDefinition {
                 switch (t.getProperties().get("type", Integer.class)) {
                     case Consts.ITEM: {
                         int id = t.getProperties().get("id", Integer.class);
+                        if(kind == SHOP_ROOM) {
+                            enemyLayer.addShopItem(id, t.getRectangle().getX(), t.getRectangle().getY(), room);
+                        } else
                         enemyLayer.addItem(id,t.getRectangle().getX(), t.getRectangle().y, room);
                     }
 

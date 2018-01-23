@@ -12,6 +12,7 @@ public class Item {
     private String name;
     private Color color;
     private PickupEvent pickupEvent;
+    private int price = 5;
 
     public Item(String name, Color color, PickupEvent pickupEvent) {
         this.name = name;
@@ -29,6 +30,10 @@ public class Item {
 
     public String getName() {
         return name;
+    }
+
+    public int getPrice() {
+        return price;
     }
 
     /*
