@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -36,6 +37,8 @@ public class StartGameScreen implements Screen {
 
     private Table loginFrame;
 
+    Image loginIndicatorRed;
+    Image loginIndicatorGreen;
 
     Skin skin;
     Gson gson = new Gson();
@@ -49,21 +52,7 @@ public class StartGameScreen implements Screen {
     public StartGameScreen(final MoreOptions moreOptions) {
 
         this.moreOptions = moreOptions;
-        batch = new SpriteBatch();
-
-
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-
-        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
-
-        stage = new Stage(viewport, batch);
-
         skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
-
-
         stage = new Stage();
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
@@ -81,19 +70,25 @@ public class StartGameScreen implements Screen {
                                   }
         );
 
-        TextButton continueButton = new TextButton("More Options", skin);
         TextButton exitGameButton = new TextButton("Exit", skin);
 
+        exitGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+                super.clicked(event, x, y);
+            }
+        });
+
         table.add(newGameButton);
-        table.row();
-        table.add(continueButton);
         table.row();
         table.add(exitGameButton);
         stage.addActor(table);
 
         errorMessage = new Label("",skin);
-        setupLoginDialog();
+        //setupLoginDialog();
         setupGreenFrame();
+
         setupOnlineFeatures(table);
     }
 
@@ -149,7 +144,31 @@ public class StartGameScreen implements Screen {
         moreOptions.showDungeon();
     }
 
-    public void setupOnlineFeatures(final Table stage) {
+    public void setupOnlineFeatures(final Table table) {
+
+        loginIndicatorRed = new Image(new Texture(Gdx.files.internal("images/RoundCircle.png")));
+        loginIndicatorRed.setSize(15,15);
+        loginIndicatorRed.setAlign(Align.bottomRight);
+        loginIndicatorRed.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                moreOptions.showLoginScreen();
+                super.clicked(event, x, y);
+            }
+        });
+
+        loginIndicatorGreen = new Image(new Texture(Gdx.files.internal("images/RoundCircleGreen.png")));
+        loginIndicatorGreen.setSize(15,15);
+        loginIndicatorGreen.setAlign(Align.bottomRight);
+        loginIndicatorGreen.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                moreOptions.showLoginScreen();
+                super.clicked(event, x, y);
+            }
+        });
+
+        stage.addActor(loginIndicatorRed);
 
         //First, we check if user has existing account data
 
@@ -160,7 +179,7 @@ public class StartGameScreen implements Screen {
             String pwHash = prefs.getString(Strings.USER_PASSWORD_HASH);
 
             disableUserInput();
-            showLoadingText(stage);
+            showLoadingText(table);
             System.out.println("ALLES DRIN");
             //we dont want player to do something else while verifying
 
@@ -171,28 +190,26 @@ public class StartGameScreen implements Screen {
                         verifyLocalSavegame();
                         showGreenLight();
                         enableUserInput();
-                        System.out.println("ALLES DRIN??");
+                        System.out.println("-------");
                     } else {
-                        showLoginDialog(stage);
+
                     }
                 }
 
                 @Override
                 public void failed(Throwable t) {
-                    showLoginDialog(stage);
                     enableUserInput();
 
                 }
 
                 @Override
                 public void cancelled() {
-                    showLoginDialog(stage);
                     enableUserInput();
                 }
             });
 
         } else {
-            showLoginDialog(stage);
+            showLoginDialog(table);
         }
     }
 
@@ -205,10 +222,8 @@ public class StartGameScreen implements Screen {
     }
 
     private void showGreenLight() {
-        table.removeActor(loginFrame);
-        table.add(greenFrame);
-        System.out.println("Showing Greenframe");
-        //TODO impl
+        loginIndicatorRed.remove();
+        stage.addActor(loginIndicatorGreen);
     }
 
     private void verifyLocalSavegame() {

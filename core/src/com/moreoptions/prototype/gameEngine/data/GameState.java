@@ -63,4 +63,10 @@ public class GameState {
             p.reset();
         }
     }
+
+    public void clearInput() {
+        for(Player p : playerList) {
+            p.getInputState().reset();
+        }
+    }
 }

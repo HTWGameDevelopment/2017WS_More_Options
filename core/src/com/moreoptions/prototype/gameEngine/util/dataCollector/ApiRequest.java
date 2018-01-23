@@ -48,11 +48,7 @@ public class ApiRequest {
 
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("username", name);
-
-        String salt = Consts.Network.SALT + name;
-        String q = encoder.encode( (salt + password).getBytes());
-
-        data.put("password", q);
+        data.put("password", password);
 
         final Net.HttpRequest request = b.newRequest().method(Net.HttpMethods.POST).url(serverAdress + "/login/").header("Content-Type","application/json").build();
         request.setContent(gson.toJson(data));

@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.moreoptions.prototype.DungeonScreen;
 import com.moreoptions.prototype.gameEngine.components.DoorComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
@@ -18,6 +20,7 @@ import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
 import com.moreoptions.prototype.gameEngine.level.LevelManager;
@@ -43,6 +46,7 @@ public class GameWorld extends Engine {
     EventSubscriber subscriber = new EventSubscriber();
 
     ProgressBar healthBar;
+    private DungeonScreen parentScreen;
 
 
     private GameWorld() {
@@ -55,6 +59,7 @@ public class GameWorld extends Engine {
             @Override
             public boolean trigger(Event e) {
                 GameState.getInstance().reset();
+                removeAllEntities();
                 levelManager.generateNewLevel(10,10,10);
 
                 return false;
@@ -140,6 +145,7 @@ public class GameWorld extends Engine {
 
     public void updateInput() {
         Gdx.input.setInputProcessor(processor);
+        GameState.getInstance().clearInput();
     }
 
     public LevelManager getRoomManager() {
@@ -151,5 +157,9 @@ public class GameWorld extends Engine {
         return gameEngine;
     }
 
+
+    public void setParentScreen(DungeonScreen parentScreen) {
+        this.parentScreen = parentScreen;
+    }
 
 }

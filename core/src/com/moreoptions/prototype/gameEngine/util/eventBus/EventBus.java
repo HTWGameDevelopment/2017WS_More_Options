@@ -39,4 +39,8 @@ public class EventBus {
             subscriberMap.put(identifier, eventListeners);
         }
     }
+
+    public void clear() {
+        subscriberMap.clear();
+    }
 }
