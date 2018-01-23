@@ -1,5 +1,7 @@
 package com.moreoptions.prototype.gameEngine.data;
 
+import com.moreoptions.prototype.gameEngine.data.callback.HitEvent;
+
 /**
  *
  */
@@ -19,6 +21,7 @@ public class Statistics {
     private float currentShotCooldown;
     private int money;
     private int pushability;
+    private HitEvent projectileOnHit;
 
     public Statistics() {
         this.speed = 150;
@@ -167,5 +170,13 @@ public class Statistics {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public HitEvent getProjectileOnHit() {
+        return projectileOnHit;
+    }
+
+    public void setProjectileOnHit(HitEvent projectileOnHit)  {
+        this.projectileOnHit = projectileOnHit;
     }
 }

@@ -36,7 +36,7 @@ public class ProjectileFactory {
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.SKY));
 
-        proj.add(new ProjectileComponent(estats.getDamage(),estats.getRange(), true));
+        proj.add(new ProjectileComponent(entity,estats.getDamage(),estats.getRange(), true));
         //TODO change this to stats for enemy
         VelocityComponent projVelocity = velMapper.get(proj);
 
@@ -61,7 +61,12 @@ public class ProjectileFactory {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.SKY));
-        proj.add(new ProjectileComponent(pStats.getDamage(),pStats.getRange(), false));
+        ProjectileComponent projectileComponent = new ProjectileComponent(entity,pStats.getDamage(),pStats.getRange(), false);
+
+        if(pStats.getProjectileOnHit() != null) {
+            projectileComponent.setHitEvent(pStats.getProjectileOnHit());
+        }
+        proj.add(projectileComponent);
 
         proj.getComponent(VelocityComponent.class).setVelX(v2.x*(pStats.getProjectileSpeed()));
         proj.getComponent(VelocityComponent.class).setVelY(v2.y*(pStats.getProjectileSpeed()));

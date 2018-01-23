@@ -23,7 +23,7 @@ public class Player {
     public Player() {
         inputState = new InputState();
         stats = new Statistics();
-        debugStatsSetup();
+        //debugStatsSetup();
     }
 
     public InputState getInputState() {

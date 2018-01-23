@@ -38,7 +38,7 @@ public class EnemyDatabase {
                         .build())
                 .setStats(new StatisticsBuilder()
                         .speed(100)
-                        .maxHealth(5)
+                        .maxHealth(3)
                         .build())
                 .createEnemy());
 

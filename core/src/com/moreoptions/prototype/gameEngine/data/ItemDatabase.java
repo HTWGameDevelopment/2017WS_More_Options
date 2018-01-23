@@ -1,9 +1,14 @@
 package com.moreoptions.prototype.gameEngine.data;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.callback.HitEvent;
 import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
+import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -15,6 +20,11 @@ import java.util.Random;
  * Created by denwe on 07.01.2018.
  */
 public class ItemDatabase {
+
+    private ComponentMapper<StatsComponent> statsMapper = ComponentMapper.getFor(StatsComponent.class);
+    private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
+
+
     private static ItemDatabase ourInstance = new ItemDatabase();
     private ArrayList<Pair<Float, Item>>itemMap = new ArrayList<Pair<Float, Item>>();
     private ArrayList<Pair<Float, Item>>specialItemMap = new ArrayList<Pair<Float, Item>>();
@@ -37,6 +47,106 @@ public class ItemDatabase {
             }
         }), 50);
 
+        registerItem(new Item("Poison Heart", Color.OLIVE, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                stats.setMaxHealth(1);
+                stats.setCurrentHealth(1);
+                stats.setFireRate(stats.getFireRate() - stats.getFireRate()/5);
+                stats.setSpeed(stats.getSpeed()+50);
+                stats.setDamage(stats.getDamage()+3);
+                return true;
+            }
+        }), 10);
+
+        registerItem(new Item("Firerate up", Color.BLUE, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                if(stats.getFireRate() < 0.15f)
+                stats.setFireRate(stats.getFireRate() - stats.getFireRate()/10);
+                return true;
+            }
+        }), 10);
+
+        registerItem(new Item("Knockback", Color.GRAY, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+
+                Statistics statistics = e.getComponent(StatsComponent.class).getStats();
+
+                statistics.setProjectileOnHit(new HitEvent() {
+                    @Override
+                    public boolean onHit(Entity self, Entity hit) {
+
+                        Entity p = self.getComponent(ProjectileComponent.class).getOwner();
+
+                        PositionComponent temp1 = posMapper.get(p);
+                        PositionComponent temp2 = posMapper.get(hit);
+                        float xEnm = temp2.getX();
+                        float yEnm = temp2.getY();
+                        float xPla = temp1.getX();
+                        float yPla = temp1.getY();
+                        Vector2 v2 = new Vector2(xEnm-xPla,yEnm-yPla);
+                        v2 = v2.nor();
+
+                        hit.getComponent(DisplacableComponent.class).applyForce(v2, 6);
+
+
+                        EventFactory.projectileHit(self,hit);
+
+                        return true;
+                    }
+                });
+
+                return true;
+            }
+        }), 100);
+
+        registerItem(new Item("Multi Shot", Color.WHITE, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+
+                Statistics statistics = e.getComponent(StatsComponent.class).getStats();
+
+                statistics.setProjectileOnHit(new HitEvent() {
+                    @Override
+                    public boolean onHit(Entity self, Entity hit) {
+
+                        if(statsMapper.has(hit)) {
+
+                            Entity p = self.getComponent(ProjectileComponent.class).getOwner();
+
+
+
+                            PositionComponent temp1 = posMapper.get(p);
+                            PositionComponent temp2 = posMapper.get(hit);
+                            Vector2 v1 = temp1.getPosition().cpy();
+                            Vector2 v2 = temp2.getPosition().cpy();
+
+                            EventFactory.projectileHit(self,hit);
+                            if(hit.getComponent(StatsComponent.class).getStats().getCurrentHealth() < 1) {
+
+                                temp1.setPosition(v2);
+                                temp2.setPosition(v1);
+                            }
+                        } else {
+
+
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+
+
+                return true;
+            }
+        }), 10);
+
         registerItem(new Item("Gold Coin", Color.YELLOW, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
@@ -46,7 +156,7 @@ public class ItemDatabase {
                 else stats.setMoney(Consts.MAX_GOLD);
                 return true;
             }
-        }), 100);
+        }), 10);
 
         registerItem(new Item("Half Heart", Color.RED, new PickupEvent() {
             @Override

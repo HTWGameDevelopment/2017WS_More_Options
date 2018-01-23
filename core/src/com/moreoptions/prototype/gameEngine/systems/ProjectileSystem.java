@@ -40,6 +40,8 @@ public class ProjectileSystem extends EntitySystem {
         initListeners();
     }
 
+    int test = 0;
+
     private void initListeners() {
 
         subscriber = new EventSubscriber();
@@ -51,6 +53,7 @@ public class ProjectileSystem extends EntitySystem {
                 Vector2 direction = e.getData(Consts.DIRECTION, Vector2.class);
                 Entity projectile = ProjectileFactory.createProjectile(entity, direction);
                 getEngine().addEntity(projectile);
+                System.out.println("TEST" + test++);
                 return true;
 
             }
