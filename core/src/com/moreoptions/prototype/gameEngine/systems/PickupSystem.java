@@ -34,6 +34,14 @@ public class PickupSystem extends EntitySystem {
                     if(pickupComponent.trigger(p)) {
                         pickupComponent.getRoom().removePickup(pickup);
                         getEngine().removeEntity(pickup);
+                        CombatTextComponent cp = new CombatTextComponent(pickupComponent.getName() + " was picked up!");
+                        TimedComponent timedComponent = new TimedComponent(2);
+                        Entity itemText = new Entity();
+                        itemText.add(cp);
+                        itemText.add(timedComponent);
+
+                        itemText.add(new PositionComponent(pickup.getComponent(PositionComponent.class).getPosition().cpy()));
+                        getEngine().addEntity(itemText);
                     }
                 }
             }

@@ -1,9 +1,6 @@
 package com.moreoptions.prototype;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -36,6 +33,7 @@ public class LoginScreen implements Screen {
         skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
         stage = new Stage();
         setupLoginDialog(stage);
+        this.moreOptions = moreOptions;
 
 
 
@@ -53,6 +51,11 @@ public class LoginScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            moreOptions.showStartScreen();
+        }
+
     }
 
     @Override

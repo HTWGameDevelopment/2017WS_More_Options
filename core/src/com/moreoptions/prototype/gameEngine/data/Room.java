@@ -270,6 +270,7 @@ public class Room {
         Entity e = new Entity();
 
         final DoorComponent c = new DoorComponent(Offset.DOWN);
+        c.setState(DoorComponent.DOOR_OPEN);
         e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
         e.add(new CollisionComponent(new CollisionEvent() {
             @Override
@@ -279,7 +280,9 @@ public class Room {
             }
         }));
         e.add(c);
-        e.add(new BlockedTileComponent());
+        BlockedTileComponent blockedTileComponent = new BlockedTileComponent();
+        blockedTileComponent.setBlocked(false);
+        e.add(blockedTileComponent);
         e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
         e.add(new DebugColorComponent(Color.RED));
         doors.add(e);
