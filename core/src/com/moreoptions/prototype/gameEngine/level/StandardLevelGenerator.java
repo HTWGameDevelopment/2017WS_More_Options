@@ -635,6 +635,12 @@ public class StandardLevelGenerator implements LevelGenerator {
 
         LevelBlueprint level = new LevelBlueprint(rooms,width,height);
         printMap();
+
+        containsBossRoom = false;
+        containsItemRoom = false;
+        containsVendorRoom = false;
+        containsSecretRoom = false;
+
         return level.generateLevel();
     }
 
