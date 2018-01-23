@@ -40,6 +40,9 @@
 </data>
  </layer>
  <layer name="DestructibleLayer" width="17" height="11">
+  <properties>
+   <property name="inner" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

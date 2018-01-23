@@ -30,7 +30,7 @@ public class EnemyDatabase {
     HashMap<Integer, Enemy> enemyMap = new HashMap<Integer, Enemy>();
 
     private EnemyDatabase() {
-
+        // Chaser 0
         registerEnemy(0, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.MOVE, new StandardMoveState())
@@ -42,6 +42,7 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
+        // Blinker 1
         registerEnemy(1, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.MOVE, new BlinkerMoveState())
@@ -54,6 +55,7 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
+        // Chased 2
         registerEnemy(2, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.MOVE, new ChasedMoveState())
@@ -65,6 +67,7 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
+        // Splitter 3
         registerEnemy(3, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.ATTACK, new SplitterAttackState())
@@ -78,6 +81,7 @@ public class EnemyDatabase {
                 .setOnDeathEvent(new Splitter.OnDeathEvent())
                 .createEnemy());
 
+        // SplitterSub 4
         registerEnemy(4, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.ATTACK, new SplitterSubAttackState())
@@ -91,6 +95,7 @@ public class EnemyDatabase {
                 .setOnDeathEvent(new Splitter.SubOnDeathEvent())
                 .createEnemy());
 
+        // SplitterSubSub 5
         registerEnemy(5, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.ATTACK, new SplitterSubSubAttackState())
@@ -103,7 +108,7 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
-        // BulletMan
+        // BulletMan 6
         registerEnemy(6, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.ATTACK, new BulletManAttackState())
@@ -115,6 +120,20 @@ public class EnemyDatabase {
                         .maxHealth(20)
                         .firerate(0.8f)
                         .range(300)
+                        .build())
+                .createEnemy());
+
+        // Sentry 7
+        registerEnemy(7, new EnemyBuilder()
+                .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
+                        .addState(Consts.Ai.ATTACK, new SentryAttackState())
+                        .setStartState(Consts.Ai.ATTACK)
+                        .build())
+                .setStats(new StatisticsBuilder()
+                        .maxHealth(15)
+                        .firerate(2f)
+                        .range(700)
+                        .projectileSpeed(30f)
                         .build())
                 .createEnemy());
     }
