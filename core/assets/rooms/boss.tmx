@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" nextobjectid="26">
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="30">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="true"/>
@@ -23,7 +23,7 @@
 211,176,176,176,176,176,176,177,0,175,176,176,176,176,176,176,212
 </data>
  </layer>
- <layer name="EntityLayer" width="17" height="11" visible="0">
+ <layer name="EntityLayer" width="17" height="11">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -54,7 +54,31 @@
 </data>
  </layer>
  <objectgroup name="EnemyLayer">
-  <object id="24" name="boss" x="251" y="173" width="38" height="20">
+  <object id="24" name="Sentry4" x="467" y="293" width="38" height="20">
+   <properties>
+    <property name="enemyID" type="int" value="7"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="26" name="Sentry3" x="467" y="38" width="38" height="20">
+   <properties>
+    <property name="enemyID" type="int" value="7"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="27" name="Sentry2" x="41" y="40" width="38" height="20">
+   <properties>
+    <property name="enemyID" type="int" value="7"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="28" name="Sentry1" x="39" y="292" width="38" height="20">
+   <properties>
+    <property name="enemyID" type="int" value="7"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="29" name="boss" x="254" y="169" width="38" height="20">
    <properties>
     <property name="enemyID" type="int" value="3"/>
     <property name="type" type="int" value="0"/>

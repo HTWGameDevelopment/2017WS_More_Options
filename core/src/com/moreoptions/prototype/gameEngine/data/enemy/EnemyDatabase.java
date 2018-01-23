@@ -119,7 +119,7 @@ public class EnemyDatabase {
                         .speed(120)
                         .maxHealth(20)
                         .firerate(0.8f)
-                        .range(300)
+                        .range(600)
                         .build())
                 .createEnemy());
 
@@ -132,7 +132,7 @@ public class EnemyDatabase {
                 .setStats(new StatisticsBuilder()
                         .maxHealth(15)
                         .firerate(2f)
-                        .range(700)
+                        .range(1000)
                         .projectileSpeed(30f)
                         .build())
                 .createEnemy());
