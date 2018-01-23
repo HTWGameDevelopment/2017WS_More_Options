@@ -20,6 +20,8 @@ public class Player {
     private Statistics stats;
 
 
+
+
     public Player() {
         inputState = new InputState();
         stats = new Statistics();

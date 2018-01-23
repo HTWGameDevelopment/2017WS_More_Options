@@ -19,8 +19,8 @@ public class SentryAttackState implements AIState {
 
     private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
 
-    private static final float COOLDOWN = 10.0f;
-    private float currentProgress = 3.5f;
+    private static final float COOLDOWN = 2.0f;
+    private float currentProgress = 0f;
 
 
     @Override

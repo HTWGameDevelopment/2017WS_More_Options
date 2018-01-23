@@ -74,6 +74,7 @@ public class Room {
     ArrayList<Entity> playerList = new ArrayList<Entity>();
     ArrayList<Entity> doors = new ArrayList<Entity>();
     ArrayList<Entity> pickups = new ArrayList<Entity>();
+    private boolean alreadyCleared = false;
 
     public Room(RoomBlueprint roomBlueprint) {
 
@@ -259,9 +260,13 @@ public class Room {
         if(enemyLayer.getAliveEntities().size() == 0) {
             openAllDoors();
             if(blueprint.getKind() == 3) {
-                Entity e =generateNextLevelDoor(9, 6);
-                doors.add(e);
-                GameWorld.getInstance().addEntity(e);
+                if(!alreadyCleared) {
+                    Entity e =generateNextLevelDoor(9, 6);
+                    alreadyCleared = true;
+                    doors.add(e);
+                    //Add immediately
+                    GameWorld.getInstance().addEntity(e);
+                }
             }
         }
     }
@@ -270,6 +275,7 @@ public class Room {
         Entity e = new Entity();
 
         final DoorComponent c = new DoorComponent(Offset.DOWN);
+        c.setState(DoorComponent.DOOR_OPEN);
         e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
         e.add(new CollisionComponent(new CollisionEvent() {
             @Override
@@ -279,10 +285,11 @@ public class Room {
             }
         }));
         e.add(c);
-        e.add(new BlockedTileComponent());
+        BlockedTileComponent blockedTileComponent = new BlockedTileComponent();
+        blockedTileComponent.setBlocked(false);
+        e.add(blockedTileComponent);
         e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
         e.add(new DebugColorComponent(Color.RED));
-        doors.add(e);
         return e;
     }
 

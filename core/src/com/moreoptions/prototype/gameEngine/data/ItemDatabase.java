@@ -11,6 +11,7 @@ import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.ProjectileFactory;
 import javafx.util.Pair;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -174,12 +175,38 @@ public class ItemDatabase {
             public boolean onPickup(Entity e) {
 
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                stats.setSpeed(stats.getSpeed() + 1);
+                stats.setSpeed(stats.getSpeed() + 10);
 
                 return true;
             }
         }), 100);
 
+        registerSpecialItem(new Item("Damage Up", Color.SLATE, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                stats.setDamage(stats.getDamage() + 1);
+                return true;
+            }
+        }), 100);
+
+        registerSpecialItem(new Item("Range Up", Color.MAROON, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                stats.setRange(stats.getRange() + 40);
+                return true;
+            }
+        }), 100);
+
+        registerSpecialItem(new Item("Shoot Faster", Color.CYAN, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                stats.setFireRate(stats.getFireRate() - 0.1f);
+                return true;
+            }
+        }), 100);
     }
 
     
@@ -233,9 +260,13 @@ public class ItemDatabase {
         DebugColorComponent dcc = new DebugColorComponent(itemBlueprint.getColor());
         CircleCollisionComponent ccc = new CircleCollisionComponent(x,y ,5f);
         CollisionComponent cc = new CollisionComponent();
-        PickupComponent pc = new PickupComponent(itemBlueprint.getPickupEvent(), room);
+        PickupComponent pc = new PickupComponent(itemBlueprint.getName(),itemBlueprint.getPickupEvent(), room);
+
+
+        pc.setPrice(itemBlueprint.getPrice());
 
         itemEntity.add(p).add(dc).add(dcc).add(pc).add(ccc).add(cc);
+
 
         return itemEntity;
 
@@ -270,5 +301,28 @@ public class ItemDatabase {
         randomNumber = r.nextInt(itemList.size());
 
         return getItemEntity(itemList.get(randomNumber),room, x,y);
+    }
+
+    public Entity generateShopItem(float x, float y, Room room) {
+        Random r = new Random();
+
+        ArrayList<Item> itemList = new ArrayList<Item>();
+        int randomNumber = r.nextInt(100);
+        for(Pair<Float, Item> entry : specialItemMap) {
+            float f = entry.getKey();
+            Item i = entry.getValue();
+
+            if(randomNumber < f) {
+                itemList.add(i);
+            }
+
+        }
+
+        randomNumber = r.nextInt(itemList.size());
+
+        Entity item = getItemEntity(itemList.get(randomNumber),room, x,y);
+        PickupComponent p = item.getComponent(PickupComponent.class);
+        p.setShopItem(true);
+        return item;
     }
 }

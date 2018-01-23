@@ -1,9 +1,6 @@
 package com.moreoptions.prototype;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -36,8 +33,7 @@ public class LoginScreen implements Screen {
         skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
         stage = new Stage();
         setupLoginDialog(stage);
-
-
+        this.moreOptions = moreOptions;
 
     }
 
@@ -53,6 +49,11 @@ public class LoginScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            moreOptions.showStartScreen();
+        }
+
     }
 
     @Override
@@ -93,6 +94,15 @@ public class LoginScreen implements Screen {
         pw.setMessageText("Password");
         pw.setPasswordMode(true);
 
+        TextButton backButton = new TextButton("Back", skin);
+
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                moreOptions.showStartScreen();
+                super.clicked(event, x, y);
+            }
+        });
 
         TextButton registerButton = new TextButton("Register",skin);
         registerButton.setName("Register");
@@ -122,9 +132,11 @@ public class LoginScreen implements Screen {
         loginFrame.add(loginButton);
         loginFrame.add(registerButton);
 
+
         errorMessage = new Label("TEST",skin);
         errorMessage.getStyle().fontColor = Color.WHITE;
         loginFrame.row();
+        loginFrame.add(backButton);
         loginFrame.add(errorMessage).padTop(50).align(Align.center);
         stage.addActor(loginFrame);
     }

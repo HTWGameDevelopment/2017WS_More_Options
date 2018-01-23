@@ -47,9 +47,14 @@ public class ProjectileFactory {
     }
 
     public static Entity playerProjectile (Entity entity, Vector2 v2){
+
+
+
         Entity proj = new Entity();
 
         Statistics pStats = entity.getComponent(StatsComponent.class).getStats();
+
+
         VelocityComponent vc = entity.getComponent(VelocityComponent.class);
         PositionComponent pc = entity.getComponent(PositionComponent.class);
 
