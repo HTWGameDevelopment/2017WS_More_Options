@@ -75,7 +75,7 @@ public class ItemDatabase {
             @Override
             public boolean onPickup(Entity e) {
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                stats.setDamage(stats.getSpeed() + 1);
+                stats.setDamage(stats.getDamage() + 1);
                 return true;
             }
         }), 100);
@@ -89,7 +89,7 @@ public class ItemDatabase {
             }
         }), 100);
 
-        registerSpecialItem(new Item("Shotcooldown Down", Color.CYAN, new PickupEvent() {
+        registerSpecialItem(new Item("Shoot Faster", Color.CYAN, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
