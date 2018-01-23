@@ -66,7 +66,6 @@ public class EnemyDatabase {
                         .addState(Consts.Ai.MOVE, new ChasedMoveState())
                         .setStartState(Consts.Ai.MOVE)
                         .build())
-                .setLoot(Loot.getLootById(2))
                 .setStats(new StatisticsBuilder()
                         .speed(200)
                         .maxHealth(5)
