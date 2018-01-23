@@ -116,9 +116,9 @@ public class EnemyDatabase {
                         .setStartState(Consts.Ai.MOVE)
                         .build())
                 .setStats(new StatisticsBuilder()
-                        .speed(120)
+                        .speed(110)
                         .maxHealth(20)
-                        .firerate(0.8f)
+                        .firerate(1f)
                         .range(600)
                         .build())
                 .createEnemy());
@@ -131,9 +131,9 @@ public class EnemyDatabase {
                         .build())
                 .setStats(new StatisticsBuilder()
                         .maxHealth(15)
-                        .firerate(2f)
+                        .firerate(0f)
                         .range(1000)
-                        .projectileSpeed(150f)
+                        .projectileSpeed(30f)
                         .build())
                 .createEnemy());
     }
