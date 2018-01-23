@@ -65,12 +65,38 @@ public class ItemDatabase {
             public boolean onPickup(Entity e) {
 
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                stats.setSpeed(stats.getSpeed() + 1);
+                stats.setSpeed(stats.getSpeed() + 10);
 
                 return true;
             }
         }), 100);
 
+        registerSpecialItem(new Item("Damage Up", Color.SLATE, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                stats.setDamage(stats.getSpeed() + 1);
+                return true;
+            }
+        }), 100);
+
+        registerSpecialItem(new Item("Range Up", Color.MAROON, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                stats.setRange(stats.getRange() + 40);
+                return true;
+            }
+        }), 100);
+
+        registerSpecialItem(new Item("Shotcooldown Down", Color.CYAN, new PickupEvent() {
+            @Override
+            public boolean onPickup(Entity e) {
+                Statistics stats = e.getComponent(StatsComponent.class).getStats();
+                stats.setFireRate(stats.getFireRate() - 0.1f);
+                return true;
+            }
+        }), 100);
     }
 
     
