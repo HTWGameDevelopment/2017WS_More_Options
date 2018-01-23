@@ -58,6 +58,11 @@ public class StatisticsBuilder {
         return this;
     }
 
+    public StatisticsBuilder projectileSpeed(float f) {
+        projectileSpeed = f;
+        return this;
+    }
+
     public Statistics build() {
         Statistics s = new Statistics();
         s.setSpeed(speed);
@@ -65,6 +70,7 @@ public class StatisticsBuilder {
         s.setMaxHealth(maxHealth);
         s.setCurrentHealth(currentHealth);
         s.setFireRate(fireRate);
+        s.setProjectileSpeed(projectileSpeed);
         return s;
     }
 }

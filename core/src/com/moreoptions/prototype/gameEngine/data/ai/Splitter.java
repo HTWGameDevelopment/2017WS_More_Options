@@ -23,6 +23,8 @@ public class Splitter {
             EnemyComponent en = us.getComponent(EnemyComponent.class);
             Entity one = EnemyFactory.createEnemy(4, pos.getX() + 20, pos.getY(), en.getRoom());
             Entity two = EnemyFactory.createEnemy(4, pos.getX() - 20, pos.getY(), en.getRoom());
+            en.getRoom().addToEnemyLayer(one);
+            en.getRoom().addToEnemyLayer(two);
             Event e = new Event(Consts.SPAWN_ENEMY);
             e.addData("1", one);
             e.addData("2", two);
@@ -39,6 +41,8 @@ public class Splitter {
             EnemyComponent en = us.getComponent(EnemyComponent.class);
             Entity one = EnemyFactory.createEnemy(5, pos.getX() + 20, pos.getY(), en.getRoom());
             Entity two = EnemyFactory.createEnemy(5, pos.getX() - 20, pos.getY(), en.getRoom());
+            en.getRoom().addToEnemyLayer(one);
+            en.getRoom().addToEnemyLayer(two);
             Event e = new Event(Consts.SPAWN_ENEMY);
             e.addData("1", one);
             e.addData("2", two);

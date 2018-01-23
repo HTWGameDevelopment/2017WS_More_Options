@@ -7,14 +7,15 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
+import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.StatsComponent;
-import com.moreoptions.prototype.gameEngine.data.Consts;
-import com.moreoptions.prototype.gameEngine.data.Statistics;
+import com.moreoptions.prototype.gameEngine.data.*;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
 
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Dennis on 06.12.2017.
@@ -55,9 +56,14 @@ public class EnemySystem extends EntitySystem{
             StatsComponent sc = statMapper.get(e);
             Statistics stats = sc.getStats();
             EnemyComponent ec = ecMapper.get(e);
+
             if(stats.getCurrentHealth()<= 0) {
+                Entity itemDrop = generateItemOnDeath(e, ec.getRoom());
                 ec.setDead(true);
-                if(ec.getOnDeath() != null) ec.getOnDeath().onTrigger(e, null);
+                if(ec.getOnDeath() != null) {
+                    ec.getOnDeath().onTrigger(e, null);
+                    if (itemDrop != null) GameWorld.getInstance().addEntity(itemDrop);
+                }
 
                 ec.getRoom().checkForClear();
                 GameWorld.getInstance().removeEntity(e);
@@ -65,6 +71,19 @@ public class EnemySystem extends EntitySystem{
                 stats.setCurrentShotCooldown(stats.getCurrentShotCooldown() + deltaTime);
             }
         }
+    }
+
+    private Entity generateItemOnDeath(Entity e, Room room) {
+        Random random = new Random();
+        float percentage = random.nextFloat();
+
+        if (percentage >= 0.75) {
+            System.out.println("DROPPED ITEM");
+            PositionComponent epc = e.getComponent(PositionComponent.class);
+            return ItemDatabase.getInstance().generateItem(room, epc.getX(), epc.getY());
+        }
+        System.out.println("NO ITEM DROPPED");
+        return null;
     }
 
 }

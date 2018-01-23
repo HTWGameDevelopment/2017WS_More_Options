@@ -8,14 +8,8 @@ import com.moreoptions.prototype.gameEngine.data.Room;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.data.StatisticsBuilder;
 import com.moreoptions.prototype.gameEngine.data.ai.Splitter;
-import com.moreoptions.prototype.gameEngine.data.ai.attacking.SplitterAttackState;
-import com.moreoptions.prototype.gameEngine.data.ai.attacking.SplitterSubAttackState;
-import com.moreoptions.prototype.gameEngine.data.ai.attacking.SplitterSubSubAttackState;
-import com.moreoptions.prototype.gameEngine.data.ai.attacking.StandardAttackState;
-import com.moreoptions.prototype.gameEngine.data.ai.movement.BlinkerMoveState;
-import com.moreoptions.prototype.gameEngine.data.ai.movement.ChasedMoveState;
-import com.moreoptions.prototype.gameEngine.data.ai.movement.SplitterMoveState;
-import com.moreoptions.prototype.gameEngine.data.ai.movement.StandardMoveState;
+import com.moreoptions.prototype.gameEngine.data.ai.attacking.*;
+import com.moreoptions.prototype.gameEngine.data.ai.movement.*;
 import com.moreoptions.prototype.gameEngine.data.callback.GameEvent;
 import com.moreoptions.prototype.gameEngine.util.EnemyFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
@@ -36,7 +30,7 @@ public class EnemyDatabase {
     HashMap<Integer, Enemy> enemyMap = new HashMap<Integer, Enemy>();
 
     private EnemyDatabase() {
-
+        // Chaser 0
         registerEnemy(0, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.MOVE, new StandardMoveState())
@@ -48,6 +42,7 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
+        // Blinker 1
         registerEnemy(1, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.MOVE, new BlinkerMoveState())
@@ -60,6 +55,7 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
+        // Chased 2
         registerEnemy(2, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.MOVE, new ChasedMoveState())
@@ -71,6 +67,7 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
+        // Splitter 3
         registerEnemy(3, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.ATTACK, new SplitterAttackState())
@@ -84,6 +81,7 @@ public class EnemyDatabase {
                 .setOnDeathEvent(new Splitter.OnDeathEvent())
                 .createEnemy());
 
+        // SplitterSub 4
         registerEnemy(4, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.ATTACK, new SplitterSubAttackState())
@@ -97,6 +95,7 @@ public class EnemyDatabase {
                 .setOnDeathEvent(new Splitter.SubOnDeathEvent())
                 .createEnemy());
 
+        // SplitterSubSub 5
         registerEnemy(5, new EnemyBuilder()
                 .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
                         .addState(Consts.Ai.ATTACK, new SplitterSubSubAttackState())
@@ -109,9 +108,34 @@ public class EnemyDatabase {
                         .build())
                 .createEnemy());
 
+        // BulletMan 6
+        registerEnemy(6, new EnemyBuilder()
+                .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
+                        .addState(Consts.Ai.ATTACK, new BulletManAttackState())
+                        .addState(Consts.Ai.MOVE, new BulletManMoveState())
+                        .setStartState(Consts.Ai.MOVE)
+                        .build())
+                .setStats(new StatisticsBuilder()
+                        .speed(120)
+                        .maxHealth(20)
+                        .firerate(0.8f)
+                        .range(600)
+                        .build())
+                .createEnemy());
 
-
-
+        // Sentry 7
+        registerEnemy(7, new EnemyBuilder()
+                .setBehavior(new EnemyBehavior.EnemyBehaviorBuilder()
+                        .addState(Consts.Ai.ATTACK, new SentryAttackState())
+                        .setStartState(Consts.Ai.ATTACK)
+                        .build())
+                .setStats(new StatisticsBuilder()
+                        .maxHealth(15)
+                        .firerate(2f)
+                        .range(1000)
+                        .projectileSpeed(30f)
+                        .build())
+                .createEnemy());
     }
 
     private void registerEnemy(int i, Enemy enemy) {

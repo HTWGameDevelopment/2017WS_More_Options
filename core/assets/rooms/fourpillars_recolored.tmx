@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="30">
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="31">
  <properties>
   <property name="doorEast" type="bool" value="true"/>
   <property name="doorNorth" type="bool" value="true"/>
   <property name="doorSouth" type="bool" value="true"/>
   <property name="doorWest" type="bool" value="true"/>
-  <property name="roomType" type="int" value="3"/>
+  <property name="level" type="int" value="1"/>
+  <property name="type" type="int" value="2"/>
  </properties>
  <tileset firstgid="1" source="testTileSet.tsx"/>
  <layer name="TileLayer" width="17" height="11">
   <data encoding="csv">
-178,176,176,176,176,176,176,177,0,175,176,176,176,176,176,176,179,
-210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,210,
-210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,210,
-210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,210,
-207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,207,
+13,11,11,11,11,11,11,12,0,10,11,11,11,11,11,11,14,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-174,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,174,
-210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,210,
-210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,210,
-210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,210,
-211,176,176,176,176,176,176,177,0,175,176,176,176,176,176,176,212
+9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+46,11,11,11,11,11,11,12,0,10,11,11,11,11,11,11,47
 </data>
  </layer>
  <layer name="EntityLayer" width="17" height="11">
@@ -43,44 +44,38 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,43,0,0,0,0,9,0,0,0,0,43,0,0,0,
+0,0,0,0,0,0,0,0,45,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,45,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,45,0,0,0,0,0,0,0,0,
+0,0,0,43,0,0,0,0,42,0,0,0,0,43,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup name="EnemyLayer">
-  <object id="24" name="Sentry4" x="441" y="275" width="38" height="20">
+  <object id="27" name="Blinker2" x="231.667" y="178.667">
    <properties>
-    <property name="enemyID" type="int" value="7"/>
+    <property name="enemyID" type="int" value="1"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="26" name="Sentry3" x="440" y="54" width="38" height="20">
+  <object id="28" name="Blinker1" x="304.667" y="177.333">
    <properties>
-    <property name="enemyID" type="int" value="7"/>
+    <property name="enemyID" type="int" value="1"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="27" name="Sentry2" x="64" y="56" width="38" height="20">
+  <object id="29" name="Chased2" x="431.667" y="178.333">
    <properties>
-    <property name="enemyID" type="int" value="7"/>
+    <property name="enemyID" type="int" value="2"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="28" name="Sentry1" x="65" y="276" width="38" height="20">
+  <object id="30" name="Chased1" x="112.333" y="176.333">
    <properties>
-    <property name="enemyID" type="int" value="7"/>
-    <property name="type" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="29" name="boss" x="254" y="169" width="38" height="20">
-   <properties>
-    <property name="enemyID" type="int" value="3"/>
+    <property name="enemyID" type="int" value="2"/>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>

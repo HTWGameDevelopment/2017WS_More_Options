@@ -255,13 +255,13 @@ public class Room {
     }
 
     public void checkForClear() {
+        System.out.println("Enemies alive: " + enemyLayer.getAliveEntities().size());
         if(enemyLayer.getAliveEntities().size() == 0) {
             openAllDoors();
             if(blueprint.getKind() == 3) {
                 Entity e =generateNextLevelDoor(9, 6);
                 doors.add(e);
                 GameWorld.getInstance().addEntity(e);
-
             }
         }
     }
@@ -295,5 +295,8 @@ public class Room {
 
     }
 
+    public void addToEnemyLayer(Entity enemy) {
+        enemyLayer.addSpawnedEnemy(enemy);
+    }
 
 }
