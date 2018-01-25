@@ -24,7 +24,7 @@ public class Player {
 
     public Player() {
         inputState = new InputState();
-        stats = new Statistics();
+        stats = new Statistics(0);
         //debugStatsSetup();
     }
 

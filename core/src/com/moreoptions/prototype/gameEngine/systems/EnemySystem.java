@@ -80,8 +80,9 @@ public class EnemySystem extends EntitySystem{
         if (percentage >= 0.75) {
             PositionComponent epc = e.getComponent(PositionComponent.class);
             return ItemDatabase.getInstance().generateItem(room, epc.getX(), epc.getY());
+        } else {
+            PositionComponent epc = e.getComponent(PositionComponent.class);
+            return ItemDatabase.getInstance().generateGold(room, epc.getX(), epc.getY());
         }
-        return null;
     }
-
 }

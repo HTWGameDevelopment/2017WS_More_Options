@@ -29,7 +29,7 @@ public class StatisticsBuilder {
         pushability = 5;
         immunityTimer = 0;
         timeSinceLastHit = 2;
-        range = 100;
+        range = 180;
         money = 0;
         damage = 1f;
         currentShotCooldown = fireRate;
