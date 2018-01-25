@@ -58,9 +58,10 @@ public class GameWorld extends Engine {
         subscriber.subscribe(Consts.GAME_OVER, new EventListener() {
             @Override
             public boolean trigger(Event e) {
-                GameState.getInstance().reset();
+
                 removeAllEntities();
-                levelManager.generateNewLevel(10,10,10);
+                GameState.getInstance().reset();
+
 
                 return false;
             }
@@ -76,6 +77,9 @@ public class GameWorld extends Engine {
         });
 
     }
+
+
+
 
     private void uiSetup() {
 
@@ -157,6 +161,15 @@ public class GameWorld extends Engine {
         return gameEngine;
     }
 
+    @Override
+    public void removeAllEntities() {
+
+        super.removeAllEntities();
+    }
+
+    public void generateNewLevel() {
+        levelManager.generateNewLevel(10,10,10);
+    }
 
     public void setParentScreen(DungeonScreen parentScreen) {
         this.parentScreen = parentScreen;

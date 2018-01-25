@@ -75,10 +75,12 @@ public class PlayerSystem extends EntitySystem{
 
                 EventFactory.gameOver();
 
-            };
+            }else {
 
-            healthbar.setValue(s.getCurrentHealth());
-            healthbar.setRange(0, s.getMaxHealth());
+                healthbar.setValue(s.getCurrentHealth());
+                healthbar.setRange(0, s.getMaxHealth());
+            }
+
 
         }
 

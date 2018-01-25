@@ -80,6 +80,9 @@ public class DungeonScreen implements Screen {
     @Override
     public void show() {
         engine.updateInput();
+
+        engine.generateNewLevel();
+
         SoundDatabase.getInstance().playMusic("exploration");
     }
 

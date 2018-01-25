@@ -116,8 +116,7 @@ public class Player {
     }
 
     public void reset() {
-        stats = new Statistics();
-        debugStatsSetup();
+        stats = new Statistics(0);
         inputState.reset();
     }
 

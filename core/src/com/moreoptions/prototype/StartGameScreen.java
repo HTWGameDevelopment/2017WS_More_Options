@@ -108,6 +108,7 @@ public class StartGameScreen implements Screen {
     @Override
     public void show() {
         SoundDatabase.getInstance().playMusic("intro");
+
         Gdx.input.setInputProcessor(stage);
     }
 

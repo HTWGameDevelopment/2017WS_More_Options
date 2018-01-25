@@ -32,7 +32,7 @@ public class LevelManager {
         this.levelGenerator = new StandardLevelGenerator();
         this.world = world;
 
-        generateNewLevel(10,10,10);
+        //generateNewLevel(10,10,10);
     }
 
     public boolean changeRoom(Room targetRoom, Offset offset) {
