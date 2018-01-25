@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.google.gson.Gson;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -13,26 +14,31 @@ import java.util.HashMap;
 public class Profile {
 
     private HashMap<Integer, Hotkey.GameHotkey> gameHotkeys = new HashMap<Integer, Hotkey.GameHotkey>();
-    private String test;
+    private Achievements achievements;
+    private String name;
+    private Date date;
 
     Profile(String name) {
-        if(Gdx.app.getPreferences(name).contains(Strings.PREFERENCES_PROFILE)) {
-            loadProfile(name);
-        } else {
-            createNewProfile(name);
-        }
+        createNewProfile(name);
     }
 
-    Profile() {
-        initDefaultHotkeys();
-        saveProfile();
+    public Profile() {
+
+    }
+
+    @Override
+    public String toString() {
+        return achievements.toString();
     }
 
     private void createNewProfile(String name) {
 
-        Preferences pref = Gdx.app.getPreferences(name);
+        this.name = name;
 
         initDefaultHotkeys();
+        achievements = new Achievements();
+
+        saveProfile();
 
     }
 
@@ -58,22 +64,28 @@ public class Profile {
 
     private void saveProfile() {
         Gson gson = new Gson();
-
-        Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES);
-        prefs.putString(Strings.PREFERENCES_PROFILE, gson.toJson(this));
-    }
-
-    private void loadProfile(String name) {
-        Preferences prefs = Gdx.app.getPreferences(name);
-        System.out.println(prefs.getString(Strings.PREFERENCES_PROFILE));
+        this.date = new Date();         //Sign with current date
+        Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES_PROFILE);
+        prefs.putString(name, gson.toJson(this));
+        System.out.println("Creating profile");
+        prefs.flush();
     }
 
 
-    public void setName(String test) {
-        this.test = test;
-    }
 
     public HashMap<Integer, Hotkey.GameHotkey> getGameHotkeys() {
         return gameHotkeys;
+    }
+
+    public Achievements getAchievements() {
+        return achievements;
+    }
+
+    public void save() {
+        saveProfile();
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

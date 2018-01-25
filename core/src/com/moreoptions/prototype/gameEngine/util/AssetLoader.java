@@ -2,32 +2,35 @@ package com.moreoptions.prototype.gameEngine.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.ItemDatabase;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
-import com.moreoptions.prototype.level.RoomDefinition;
+import com.moreoptions.prototype.gameEngine.level.RoomDefinition;
 import javafx.util.Pair;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by denwe on 17.11.2017.
  */
 public class AssetLoader {
     private static AssetLoader ourInstance = new AssetLoader();
+    private HashMap<String, String> musics = new HashMap<String, String>()
+            ;
 
     public static AssetLoader getInstance() {
         return ourInstance;
@@ -50,25 +53,41 @@ public class AssetLoader {
         loadRooms();
         loadFonts();
         loadSounds();
+        loadMusic();
+        assetManager.load("comic/skin/comic-ui.json", Skin.class);
     }
 
     private void loadSounds() {
 
         FileHandle soundFolder = Gdx.files.internal("sound/");
         for(FileHandle f : soundFolder.list()) {
+            if(f.name().contains("Thumbs")) continue;
             String[] s = f.name().split("_");
             sounds.add(new Pair<String, String>(soundFolder.name() + "/" + f.name(),s[0]));
-            System.out.println("Tag" + s[0]);
             assetManager.load(soundFolder.name() + "/" + f.name(), Sound.class);
         }
 
+    }
+
+    private void loadMusic() {
+        FileHandle musicFolder = Gdx.files.internal("music/");
+        for(FileHandle f : musicFolder.list()) {
+            String[] s = f.name().split("_");
+
+            musics.put(musicFolder.name() + "/" + f.name(),s[0]);
+            assetManager.load(musicFolder.name() + "/" + f.name(), Music.class);
+        }
     }
 
     private void loadFonts() {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         params.fontFileName = "fonts/RobotoSlab-Bold.ttf";
-        params.fontParameters.size = 11;
+        params.fontParameters.size = 10;
+        params.fontParameters.borderWidth =1;
+        params.fontParameters.borderColor = Color.BLACK;
+        params.fontParameters.genMipMaps = true;
+
         assetManager.load("fonts/RobotoSlab-Bold.ttf", BitmapFont.class, params);
 
     }
@@ -83,22 +102,32 @@ public class AssetLoader {
 
     public boolean update() {
         if(assetManager.update()) {
-            System.out.println("Done loading");
+            System.out.println("Done pre - loading");
             System.out.println("Loaded "+assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size + " assets.");
+            System.out.println("Loading items");
+            ItemDatabase.getInstance();
             for(TiledMap t : assetManager.getAll(TiledMap.class, new Array<TiledMap>())) {
                 RoomDefinition r = new RoomDefinition(t);
                 definitions.add(r);
                 System.out.println("Loaded Entity with: " + r.getRoomKind());
             }
 
-            System.out.println("TEST: "+ assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size);
             for(Pair<String, String> p : sounds) {
 
                 String fileName = p.getKey();
                 String tag = p.getValue();
 
-                System.out.println(fileName);
                 SoundDatabase.getInstance().registerSound(tag, assetManager.get(fileName, Sound.class));
+
+            }
+
+
+            for(Map.Entry<String, String> p : musics.entrySet()) {
+
+                String fileName = p.getKey();
+                String tag = p.getValue();
+
+                SoundDatabase.getInstance().registerMusic(tag, assetManager.get(fileName, Music.class));
 
             }
             return true;
@@ -130,5 +159,9 @@ public class AssetLoader {
 
     public AssetManager getAssetManager() {
         return assetManager;
+    }
+
+    public Skin getSkin() {
+        return assetManager.get("comic/skin/comic-ui.json", Skin.class);
     }
 }

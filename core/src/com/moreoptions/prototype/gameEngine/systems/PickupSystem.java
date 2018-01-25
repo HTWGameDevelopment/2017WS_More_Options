@@ -6,6 +6,10 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.Statistics;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
 
 /**
  * System that handles pickupcomponents
@@ -29,8 +33,39 @@ public class PickupSystem extends EntitySystem {
             for(Entity pickup : pickups) {
                 if(cmapper.get(p).getHitbox().overlaps(cmapper.get(pickup).getHitbox())) {
                     PickupComponent pickupComponent = pucMapper.get(pickup);
-                    System.out.println("COLLECT");
-                    if(pickupComponent.trigger(p)) getEngine().removeEntity(pickup);
+                    if(pickupComponent.isShopItem()) {
+                        Statistics pStats = p.getComponent(StatsComponent.class).getStats();
+
+                        if(pStats.getMoney() >= pickupComponent.getPrice()) {
+                            pStats.setMoney( pStats.getMoney() - pickupComponent.getPrice());
+                            if(pickupComponent.trigger(p)) {
+                                pickupComponent.getRoom().removePickup(pickup);
+                                getEngine().removeEntity(pickup);
+                                CombatTextComponent cp = new CombatTextComponent(pickupComponent.getName() + " was picked up!");
+                                TimedComponent timedComponent = new TimedComponent(2);
+                                Entity itemText = new Entity();
+                                itemText.add(cp);
+                                itemText.add(timedComponent);
+
+                                itemText.add(new PositionComponent(pickup.getComponent(PositionComponent.class).getPosition().cpy()));
+                                getEngine().addEntity(itemText);
+                                EventFactory.playSound(Consts.Sound.PURCHASE_ITEM);
+                            }
+                        }
+
+                    } else
+                    if(pickupComponent.trigger(p)) {
+                        pickupComponent.getRoom().removePickup(pickup);
+                        getEngine().removeEntity(pickup);
+                        CombatTextComponent cp = new CombatTextComponent(pickupComponent.getName() + " was picked up!");
+                        TimedComponent timedComponent = new TimedComponent(2);
+                        Entity itemText = new Entity();
+                        itemText.add(cp);
+                        itemText.add(timedComponent);
+
+                        itemText.add(new PositionComponent(pickup.getComponent(PositionComponent.class).getPosition().cpy()));
+                        getEngine().addEntity(itemText);
+                    }
                 }
             }
         }

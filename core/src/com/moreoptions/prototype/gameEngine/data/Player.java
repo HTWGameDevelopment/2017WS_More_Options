@@ -5,7 +5,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.exceptions.NoOffsetException;
-import com.moreoptions.prototype.level.Offset;
+import com.moreoptions.prototype.gameEngine.level.Offset;
 
 /**
  * Player Data
@@ -19,10 +19,13 @@ public class Player {
 
     private Statistics stats;
 
+
+
+
     public Player() {
         inputState = new InputState();
-        stats = new Statistics();
-        debugStatsSetup();
+        stats = new Statistics(0);
+        //debugStatsSetup();
     }
 
     public InputState getInputState() {
@@ -87,7 +90,6 @@ public class Player {
                 throw new NoOffsetException();
         }
 
-        System.out.println("TEST11" + p.getX() +""+ p.getY());
 
         playerEntity.add(p);
     }
@@ -114,8 +116,7 @@ public class Player {
     }
 
     public void reset() {
-        stats = new Statistics();
-        debugStatsSetup();
+        stats = new Statistics(0);
         inputState.reset();
     }
 
@@ -123,7 +124,9 @@ public class Player {
         stats.setFireRate(0.5f);
         stats.setSpeed(150);
         stats.setRange(200);
-        stats.setDamage(2f);
-        stats.setImmunityTimer(1f);
+        stats.setDamage(20f);
+        stats.setImmunityTimer(200f);
+        stats.setCurrentHealth(100);
+        stats.setMaxHealth(100);
     }
 }

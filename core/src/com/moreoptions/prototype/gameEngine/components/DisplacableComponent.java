@@ -31,21 +31,6 @@ public class DisplacableComponent implements Component {
         return mass;
     }
 
-    public void setMass(float mass) {
-        this.mass = mass;
-    }
-
-    public void applyForce(Entity e) {
-        Vector2 norm = e.getComponent(VelocityComponent.class).getVelocity().cpy().nor();
-
-        dir = norm.cpy();
-
-        strength = e.getComponent(DisplacableComponent.class).getMass();
-
-        System.out.println(dir);
-        System.out.println(strength);
-
-    }
 
     public boolean isImmune() {
         return immune;

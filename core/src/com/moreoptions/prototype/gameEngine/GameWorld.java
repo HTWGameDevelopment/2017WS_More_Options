@@ -1,24 +1,31 @@
 package com.moreoptions.prototype.gameEngine;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.moreoptions.prototype.MoreOptions;
+import com.moreoptions.prototype.DungeonScreen;
+import com.moreoptions.prototype.gameEngine.components.DoorComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
+import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
-import com.moreoptions.prototype.level.LevelManager;
+import com.moreoptions.prototype.gameEngine.level.LevelManager;
+import com.moreoptions.prototype.userInterface.UserInterface;
 
 /**
  *
@@ -33,25 +40,59 @@ public class GameWorld extends Engine {
     private LevelManager levelManager;
     private GameInputProcessor processor;
     private GameState gameState;
+    private Stage stage;
+    private UserInterface userInterface;
     BitmapFont font;
 
     EventSubscriber subscriber = new EventSubscriber();
 
+    ProgressBar healthBar;
+    private DungeonScreen parentScreen;
+
 
     private GameWorld() {
+        uiSetup();
         demoSetup();
-        gameState = GameState.getInstance();
 
+        gameState = GameState.getInstance();
 
         subscriber.subscribe(Consts.GAME_OVER, new EventListener() {
             @Override
             public boolean trigger(Event e) {
+
+                removeAllEntities();
                 GameState.getInstance().reset();
-                levelManager.generateNewLevel(10,10,10);
+
 
                 return false;
             }
         });
+
+        subscriber.subscribe(Consts.ADVANCE_LEVEL_EVENT, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                SoundDatabase.getInstance().playSound("completetask");
+                e.getData("door", DoorComponent.class).setState(DoorComponent.DOOR_CLOSED);
+                levelManager.generateNewLevel(10, 10, 14);
+                return false;
+            }
+        });
+
+    }
+
+
+
+
+    private void uiSetup() {
+
+        stage = new Stage();
+        Skin skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
+        healthBar = new ProgressBar(0, 3, 1, false, skin);
+        healthBar.setValue(3);
+        stage.addActor(healthBar);
+        stage.setDebugAll(true);
+
+
     }
 
     public void demoSetup() {
@@ -76,6 +117,8 @@ public class GameWorld extends Engine {
 
         Player p = new Player();
         processor.addPlayer(p);
+
+        userInterface = new UserInterface(fv, batch, p);
         GameState.getInstance().addPlayer(p);
 
 
@@ -89,23 +132,26 @@ public class GameWorld extends Engine {
         addSystem(new PickupSystem());
         addSystem(new ProjectileSystem());
         addSystem(new AISystem(renderer));
-        addSystem(new PlayerSystem());
+        addSystem(new PlayerSystem(healthBar));
         addSystem(new EnemySystem());
         addSystem(new AchievementSystem());
         addSystem(new SoundSystem());
+        //addSystem(new BlendTestSystem(renderer, camera));
         //addSystem(new QuadTreeDebug(batch, renderer));
         levelManager = new LevelManager(this);
-
     }
 
     @Override
     public void update(float deltaTime) {
-        levelManager.getCurrentRoom().getNavGraph().draw(renderer);
         super.update(deltaTime);
+        //stage.draw();
+        userInterface.update();
+        userInterface.draw();
     }
 
     public void updateInput() {
         Gdx.input.setInputProcessor(processor);
+        GameState.getInstance().clearInput();
     }
 
     public LevelManager getRoomManager() {
@@ -117,5 +163,18 @@ public class GameWorld extends Engine {
         return gameEngine;
     }
 
+    @Override
+    public void removeAllEntities() {
+
+        super.removeAllEntities();
+    }
+
+    public void generateNewLevel() {
+        levelManager.generateNewLevel(10,10,10);
+    }
+
+    public void setParentScreen(DungeonScreen parentScreen) {
+        this.parentScreen = parentScreen;
+    }
 
 }

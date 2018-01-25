@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="17" height="11" tilewidth="32" tileheight="32" infinite="0" nextobjectid="33">
+ <properties>
+  <property name="doorEast" type="bool" value="true"/>
+  <property name="doorNorth" type="bool" value="true"/>
+  <property name="doorSouth" type="bool" value="true"/>
+  <property name="doorWest" type="bool" value="true"/>
+  <property name="level" type="int" value="1"/>
+  <property name="type" type="int" value="2"/>
+ </properties>
+ <tileset firstgid="1" source="testTileSet.tsx"/>
+ <layer name="TileLayer" width="17" height="11" visible="0">
+  <data encoding="csv">
+13,11,49,11,11,11,11,12,0,10,11,11,11,11,49,11,14,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+46,11,16,11,11,11,11,12,0,10,11,11,11,11,16,11,47
+</data>
+ </layer>
+ <layer name="EntityLayer" width="17" height="11">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer name="DestructibleLayer" width="17" height="11">
+  <properties>
+   <property name="inner" type="bool" value="true"/>
+  </properties>
+  <data encoding="csv">
+13,11,49,11,11,11,11,12,0,10,11,11,11,11,49,11,14,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+45,0,365,365,365,365,365,0,0,0,365,365,365,365,365,0,45,
+45,0,365,0,0,0,0,0,0,0,0,0,0,0,365,0,45,
+42,0,398,0,0,0,0,0,0,0,0,0,0,0,398,0,42,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+9,0,332,0,0,0,0,0,0,0,0,0,0,0,332,0,9,
+45,0,365,0,0,0,0,0,0,0,0,0,0,0,365,0,45,
+45,0,365,365,365,365,365,0,0,0,365,365,365,365,365,0,45,
+45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,
+46,11,16,11,11,11,11,12,0,10,11,11,11,11,16,11,47
+</data>
+ </layer>
+ <objectgroup name="EnemyLayer">
+  <object id="27" name="Chaser4" x="39" y="42.8333" width="22" height="16.3333">
+   <properties>
+    <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="28" name="Chaser3" x="36.3333" y="297.833" width="22" height="16.3333">
+   <properties>
+    <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="29" name="Chaser2" x="485" y="295.833" width="22" height="16.3333">
+   <properties>
+    <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="30" name="Chaser1" x="485" y="41.8333" width="22" height="16.3333">
+   <properties>
+    <property name="enemyID" type="int" value="0"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="31" name="Blinker2" x="133" y="204.833" width="22" height="16.3333">
+   <properties>
+    <property name="enemyID" type="int" value="1"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="32" name="Blinker1" x="389" y="137.833" width="22" height="16.3333">
+   <properties>
+    <property name="enemyID" type="int" value="1"/>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

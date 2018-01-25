@@ -1,8 +1,7 @@
 package com.moreoptions.prototype.gameEngine.data;
 
-/**
- *
- */
+import com.moreoptions.prototype.gameEngine.data.callback.HitEvent;
+
 
 public class Statistics {
 
@@ -17,7 +16,10 @@ public class Statistics {
     private float projectileSpeed;
     private float range;
     private float currentShotCooldown;
+    private int money;
     private int pushability;
+    private HitEvent projectileOnHit;
+
 
     public Statistics() {
         this.speed = 150;
@@ -31,12 +33,79 @@ public class Statistics {
         this.immunityTimer = 0;
         this.timeSinceLastHit = 2;
 
-        this.range = 100;
+        this.range = 180;
+        this.money = 0;
 
         this.damage = 1f;
         this.currentShotCooldown = fireRate;
-
     }
+
+    public Statistics(int i) {
+        if (i == 0) {
+            givePlayerStats();
+        } else {
+            this.speed = 150;
+            this.deceleration = 0.75f;
+            this.maxHealth = 3;
+            this.currentHealth = 3;
+
+            this.fireRate = 1.5f;
+            this.projectileSpeed = 120;
+            this.pushability = 5;
+            this.immunityTimer = 0;
+            this.timeSinceLastHit = 2;
+
+            this.range = 180;
+            this.money = 0;
+
+            this.damage = 1f;
+            this.currentShotCooldown = fireRate;
+        }
+    }
+    
+    public Statistics cpy() {
+        Statistics stats = new Statistics();
+        stats.speed = speed;
+
+        stats.deceleration = deceleration;
+        stats.maxHealth = maxHealth;
+        stats.currentHealth = currentHealth;
+
+        stats.fireRate = fireRate;
+        stats.projectileSpeed = projectileSpeed;
+        stats.pushability = pushability;
+        stats.immunityTimer = immunityTimer;
+        stats.timeSinceLastHit = timeSinceLastHit;
+
+        stats.range = range;
+        stats.money = money;
+
+        stats.damage = damage;
+        stats.currentShotCooldown = fireRate;
+
+        return stats;
+    }
+
+    public void givePlayerStats() {
+        this.speed = 150;
+        this.deceleration = 0.75f;
+        this.maxHealth = 3;
+        this.currentHealth = 3;
+
+        this.fireRate = 1.0f;
+        this.projectileSpeed = 120;
+        this.pushability = 5;
+        this.immunityTimer = 0.5f;
+        this.timeSinceLastHit = 2;
+
+        this.range = 200;
+        this.money = 0;
+
+        this.damage = 1.5f;
+        this.currentShotCooldown = fireRate;
+    }
+
+
 
     public float getDeceleration() {
         return deceleration;
@@ -83,6 +152,9 @@ public class Statistics {
     }
 
     public void setFireRate(float fireRate) {
+        if (fireRate < 0.1f) {
+            this.fireRate = getFireRate();
+        }
         this.fireRate = fireRate;
     }
 
@@ -133,4 +205,21 @@ public class Statistics {
     public int getPushability() {
         return pushability;
     }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public HitEvent getProjectileOnHit() {
+        return projectileOnHit;
+    }
+
+    public void setProjectileOnHit(HitEvent projectileOnHit)  {
+        this.projectileOnHit = projectileOnHit;
+    }
+
 }

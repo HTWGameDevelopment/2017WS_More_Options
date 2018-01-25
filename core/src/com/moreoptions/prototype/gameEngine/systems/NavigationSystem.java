@@ -55,7 +55,6 @@ public class NavigationSystem extends EntitySystem {
             @Override
             public void entityRemoved(Entity entity) {
                 navGraph.removeEntity(entity);
-                System.out.println("Entity + QWEWQEQWEEW");
             }
         });
 

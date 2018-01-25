@@ -8,9 +8,11 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.moreoptions.prototype.gameEngine.components.CombatTextComponent;
+import com.moreoptions.prototype.gameEngine.components.PickupComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.TimedComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
@@ -24,14 +26,18 @@ public class FontRenderSystem extends EntitySystem {
     private BitmapFont font;
     private Family f = Family.all(CombatTextComponent.class).get();
 
+    private Family shopItems = Family.all(PickupComponent.class).get();
+
     private ComponentMapper<PositionComponent> posMapper = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<CombatTextComponent> ctMapper = ComponentMapper.getFor(CombatTextComponent.class);
+
+    private ComponentMapper<PickupComponent> pkMapper = ComponentMapper.getFor(PickupComponent.class);
 
     private EventSubscriber subscriber = new EventSubscriber();
 
     public FontRenderSystem(SpriteBatch batch) {
         this.batch = batch;
-        this.font = new BitmapFont();
+        this.font = AssetLoader.getInstance().getAssetManager().get("fonts/RobotoSlab-Bold.ttf", BitmapFont.class);
 
         subscriber.subscribe(Consts.DAMAGE_COMBAT_TEXT_EVENT, new EventListener() {
             @Override
@@ -60,12 +66,24 @@ public class FontRenderSystem extends EntitySystem {
     public void update(float deltaTime) {
         super.update(deltaTime);
         ImmutableArray<Entity> entites = getEngine().getEntitiesFor(f);
+        ImmutableArray<Entity> sh = getEngine().getEntitiesFor(shopItems);
         batch.begin();
         for(Entity e : entites) {
             CombatTextComponent c = ctMapper.get(e);
             PositionComponent p = posMapper.get(e);
             font.draw(batch,c.getText(),p.getX(),p.getY());
+
         }
+
+        for(Entity e : sh) {
+            if(e.getComponent(PickupComponent.class).isShopItem()) {
+                PickupComponent p = pkMapper.get(e);
+                PositionComponent po = posMapper.get(e);
+                font.draw(batch, ""+p.getPrice(), po.getX(), po.getY());
+
+            }
+        }
+
         batch.end();
     }
 

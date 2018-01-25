@@ -36,7 +36,7 @@ public class ProjectileFactory {
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.SKY));
 
-        proj.add(new ProjectileComponent(estats.getDamage(),estats.getRange(), true));
+        proj.add(new ProjectileComponent(entity,estats.getDamage(),estats.getRange(), true));
         //TODO change this to stats for enemy
         VelocityComponent projVelocity = velMapper.get(proj);
 
@@ -47,9 +47,14 @@ public class ProjectileFactory {
     }
 
     public static Entity playerProjectile (Entity entity, Vector2 v2){
+
+
+
         Entity proj = new Entity();
 
         Statistics pStats = entity.getComponent(StatsComponent.class).getStats();
+
+
         VelocityComponent vc = entity.getComponent(VelocityComponent.class);
         PositionComponent pc = entity.getComponent(PositionComponent.class);
 
@@ -61,7 +66,12 @@ public class ProjectileFactory {
         proj.add(new CollisionComponent(new CollisionEvent.DefaultProjectileCollisionEvent()));
         proj.add(new CircleCollisionComponent((proj.getComponent(PositionComponent.class).getX()), (proj.getComponent(PositionComponent.class).getY()), 2));
         proj.add(new DebugColorComponent(Color.SKY));
-        proj.add(new ProjectileComponent(pStats.getDamage(),pStats.getRange(), false));
+        ProjectileComponent projectileComponent = new ProjectileComponent(entity,pStats.getDamage(),pStats.getRange(), false);
+
+        if(pStats.getProjectileOnHit() != null) {
+            projectileComponent.setHitEvent(pStats.getProjectileOnHit());
+        }
+        proj.add(projectileComponent);
 
         proj.getComponent(VelocityComponent.class).setVelX(v2.x*(pStats.getProjectileSpeed()));
         proj.getComponent(VelocityComponent.class).setVelY(v2.y*(pStats.getProjectileSpeed()));
@@ -71,15 +81,11 @@ public class ProjectileFactory {
 
 
         if((playerVelocity.x > 0 && v2.x >= 0) || (playerVelocity.x < 0 && v2.x <= 0) ) {
-            projVelocity.setVelX(playerVelocity.x + projVelocity.getVelX());
-            System.out.println("X ACCELERATION");
-        } else {
-            System.out.println("NOT X");
+            projVelocity.setVelX(playerVelocity.x + projVelocity.getVelX());;
         }
 
         if((playerVelocity.y > 0 && v2.y >= 0) || (playerVelocity.y < 0 && v2.y <= 0) ) {
             projVelocity.setVelY(playerVelocity.y + projVelocity.getVelY());
-            System.out.println("Y ACCELERATION");
         }
 
 

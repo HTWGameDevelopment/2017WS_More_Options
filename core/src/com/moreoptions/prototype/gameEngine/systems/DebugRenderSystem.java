@@ -4,7 +4,9 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
@@ -38,7 +40,7 @@ public class DebugRenderSystem extends EntitySystem{
     private ComponentMapper<DebugColorComponent> dcolorMapper = ComponentMapper.getFor(DebugColorComponent.class);
     private ComponentMapper<DebugCircleComponent> dccMapper = ComponentMapper.getFor(DebugCircleComponent.class);
     private ComponentMapper<DebugSquareComponent> dscMapper = ComponentMapper.getFor(DebugSquareComponent.class);
-
+    private ComponentMapper<ProgressComponent> progMapper = ComponentMapper.getFor(ProgressComponent.class);
 
     public DebugRenderSystem(ShapeRenderer renderer) {
         this.renderer = renderer;
@@ -101,9 +103,14 @@ public class DebugRenderSystem extends EntitySystem{
             DebugCircleComponent dlc = dccMapper.get(e);
             DebugSquareComponent dsc = dscMapper.get(e);
             PositionComponent pc = posMapper.get(e);
-            renderer.setColor(dcc.getColor());
-            if (dccMapper.has(e)) renderer.circle(pc.getX(),pc.getY(),dlc.getRadius());
-            if (dscMapper.has(e)) renderer.rect(pc.getX(),pc.getY(),dsc.getSize(),dsc.getSize());
+            if(progMapper.has(e)) {
+
+
+            } else {
+                renderer.setColor(dcc.getColor());
+                if (dccMapper.has(e)) renderer.circle(pc.getX(), pc.getY(), dlc.getRadius());
+                if (dscMapper.has(e)) renderer.rect(pc.getX(), pc.getY(), dsc.getSize(), dsc.getSize());
+            }
         }
         renderer.end();
     }

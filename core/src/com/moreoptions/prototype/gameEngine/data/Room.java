@@ -4,15 +4,19 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.callback.CollisionEvent;
+import com.moreoptions.prototype.gameEngine.data.callback.GameEvent;
 import com.moreoptions.prototype.gameEngine.data.pathfinding.NavGraph;
 import com.moreoptions.prototype.gameEngine.data.callback.ChangeRoomEvent;
 import com.moreoptions.prototype.gameEngine.data.exceptions.MissdefinedTileException;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
-import com.moreoptions.prototype.level.*;
-import com.moreoptions.prototype.level.layers.DestructibleLayer;
-import com.moreoptions.prototype.level.layers.EnemyLayer;
-import com.moreoptions.prototype.level.layers.TileLayer;
+import com.moreoptions.prototype.gameEngine.level.*;
+import com.moreoptions.prototype.gameEngine.level.layers.DestructibleLayer;
+import com.moreoptions.prototype.gameEngine.level.layers.EnemyLayer;
+import com.moreoptions.prototype.gameEngine.level.layers.TileLayer;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -69,8 +73,8 @@ public class Room {
 
     ArrayList<Entity> playerList = new ArrayList<Entity>();
     ArrayList<Entity> doors = new ArrayList<Entity>();
-
-
+    ArrayList<Entity> pickups = new ArrayList<Entity>();
+    private boolean alreadyCleared = false;
 
     public Room(RoomBlueprint roomBlueprint) {
 
@@ -85,7 +89,7 @@ public class Room {
         ArrayList<RoomDefinition> roomlist = AssetLoader
                 .getInstance()
                 .definition(roomBlueprint.isTop(),roomBlueprint.isDown(),roomBlueprint.isLeft(),roomBlueprint.isRight(), roomBlueprint.getKind());
-        System.out.println(roomBlueprint.getKind());
+
         RoomDefinition rq = roomlist.get(r.nextInt(roomlist.size()));
 
         try {
@@ -99,10 +103,6 @@ public class Room {
         for(Entity e : destLayer.getEntities()) {
             navGraph.addEntity(e);
         }
-
-
-
-
     }
 
     public void generateBarriers() {
@@ -159,6 +159,7 @@ public class Room {
         entities.addAll(enemyLayer.getAliveEntities());
         entities.addAll(enemyLayer.getItems());
         entities.addAll(doors);
+        entities.addAll(pickups);
 
         return entities;
     }
@@ -255,10 +256,54 @@ public class Room {
     }
 
     public void checkForClear() {
-        System.out.println("Checking! " + enemyLayer.getAliveEntities().size());
+        System.out.println("Enemies alive: " + enemyLayer.getAliveEntities().size());
         if(enemyLayer.getAliveEntities().size() == 0) {
             openAllDoors();
-            System.out.println("OPENING DOORS");
+            if(blueprint.getKind() == 3) {
+                if(!alreadyCleared) {
+                    Entity e =generateNextLevelDoor(9, 6);
+                    alreadyCleared = true;
+                    doors.add(e);
+                    //Add immediately
+                    GameWorld.getInstance().addEntity(e);
+                }
+            }
         }
     }
+
+    private Entity generateNextLevelDoor(int x, int y) {
+        Entity e = new Entity();
+
+        final DoorComponent c = new DoorComponent(Offset.DOWN);
+        c.setState(DoorComponent.DOOR_OPEN);
+        e.add(new PositionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE));
+        e.add(new CollisionComponent(new CollisionEvent() {
+            @Override
+            public boolean onCollision(Entity us, Entity them) {
+                EventFactory.changeLevel(c);
+                return false;
+            }
+        }));
+        e.add(c);
+        BlockedTileComponent blockedTileComponent = new BlockedTileComponent();
+        blockedTileComponent.setBlocked(false);
+        e.add(blockedTileComponent);
+        e.add(new SquareCollisionComponent(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE, Consts.TILE_SIZE));
+        e.add(new DebugColorComponent(Color.RED));
+        return e;
+    }
+
+    public void removePickup(Entity item) {
+        pickups.remove(item);
+    }
+
+    public void addItem(Entity item) {
+        pickups.add(item);
+
+    }
+
+    public void addToEnemyLayer(Entity enemy) {
+        enemyLayer.addSpawnedEnemy(enemy);
+    }
+
 }

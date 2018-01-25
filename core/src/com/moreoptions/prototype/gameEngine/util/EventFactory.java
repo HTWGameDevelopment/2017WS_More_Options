@@ -2,6 +2,7 @@ package com.moreoptions.prototype.gameEngine.util;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
+import com.moreoptions.prototype.gameEngine.components.DoorComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
@@ -52,6 +53,25 @@ public class EventFactory {
     public static void takeDamage(Entity player) {
         Event e = new Event(Consts.CONTACT_DAMAGE_EVENT);
         e.addData(Consts.SELF, player);
+        EventBus.getInstance().addEvent(e);
+    }
+
+    public static void changeLevel(DoorComponent door) {
+        System.out.println("Firing next level event");
+        Event e = new Event(Consts.ADVANCE_LEVEL_EVENT);
+        e.addData("door", door);
+        EventBus.getInstance().addEvent(e);
+
+    }
+
+    public static void saveGame() {
+        System.out.println("Saving game!");
+        Event e = new Event(Consts.SAVE_GAME);
+        EventBus.getInstance().addEvent(e);
+    }
+
+    public static void playSound(String coinPickup) {
+        Event e = new Event(coinPickup);
         EventBus.getInstance().addEvent(e);
     }
 }

@@ -3,6 +3,7 @@ package com.moreoptions.prototype.gameEngine.systems;
 import com.badlogic.ashley.core.EntitySystem;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
@@ -20,6 +21,31 @@ public class SoundSystem extends EntitySystem {
             @Override
             public boolean trigger(Event e) {
                 SoundDatabase.getInstance().playSound(Consts.Sound.GAME_OVER_SOUND);
+                return false;
+            }
+        });
+
+
+        soundSubscriber.subscribe(Consts.TITLE_MUSIC, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                SoundDatabase.getInstance().playMusic(Consts.Sound.TILE_MUSIC);
+                return false;
+            }
+        });
+
+        soundSubscriber.subscribe(Consts.Sound.COIN_PICKUP, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                SoundDatabase.getInstance().playSound(Consts.Sound.COIN_PICKUP);
+                return false;
+            }
+        });
+
+        soundSubscriber.subscribe(Consts.Sound.PURCHASE_ITEM, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                SoundDatabase.getInstance().playSound(Consts.Sound.PURCHASE_ITEM);
                 return false;
             }
         });
