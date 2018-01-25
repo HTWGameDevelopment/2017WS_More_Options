@@ -8,6 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Sensor;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
@@ -86,57 +87,56 @@ public class MovementSystem extends EntitySystem {
             boolean yCollsion = resolveYCollision(e,col.getOldX(), col.getOldY());
 
             //SMOOTH EDGE MOVEMENT
-/*
+
 
             if(vel.getVelX() > 0 && xCollision) {
 
                 if(!checkSensor(Sensor.TOP_RIGHT, e)) {
 
-                    vel.setVelY(vel.getVelY() + 3);
+                    vel.setVelY(vel.getVelY() + Consts.MOVE_DISPLACEMENT_TEST);
 
                 } else if(!checkSensor(Sensor.BOT_RIGHT, e)){
 
-                    vel.setVelY(vel.getVelY() - 3);
+                    vel.setVelY(vel.getVelY() - Consts.MOVE_DISPLACEMENT_TEST);
                 }
 
                 resolveYCollision(e,col.getOldX(), col.getOldY());
 
             } else if(vel.getVelX() < 0 && xCollision) {
                 if(!checkSensor(Sensor.TOP_LEFT, e)) {
-                    vel.setVelY(vel.getVelY() + 3);
+                    vel.setVelY(vel.getVelY() + Consts.MOVE_DISPLACEMENT_TEST);
 
                 } else if(!checkSensor(Sensor.BOT_LEFT, e)){
 
-                    vel.setVelY(vel.getVelY() - 3);
+                    vel.setVelY(vel.getVelY() - Consts.MOVE_DISPLACEMENT_TEST);
                 }
 
                 resolveYCollision(e,col.getOldX(), col.getOldY());
-            }
+            } else
 
 
 
 
             if(vel.getVelY() > 0 && yCollsion) {
 
-                if(!checkSensor(Sensor.TOP_LEFT, e)) {
+                col.setOldX(vel.getVelX());
 
-                    vel.setVelX(vel.getVelX() - 3);
+                if(!checkSensor(Sensor.TOP_LEFT, e)) {
+                    vel.setVelX(vel.getVelX() - Consts.MOVE_DISPLACEMENT_TEST);
 
                 } else if(!checkSensor(Sensor.TOP_RIGHT, e)){
-                    vel.setVelX(vel.getVelX() + 3);
+                    vel.setVelX(vel.getVelX() + Consts.MOVE_DISPLACEMENT_TEST);
                 }
+
 
             } else if(vel.getVelY() < 0 && yCollsion) {
+                col.setOldX(vel.getVelX());
                 if(!checkSensor(Sensor.BOT_LEFT, e)) {
-                    vel.setVelX(vel.getVelX() - 3);
+                    vel.setVelX(vel.getVelX() - Consts.MOVE_DISPLACEMENT_TEST);
                 } else if(!checkSensor(Sensor.BOT_RIGHT, e)){
-                    vel.setVelX(vel.getVelX() + 3);
+                    vel.setVelX(vel.getVelX() + Consts.MOVE_DISPLACEMENT_TEST);
                 }
             }
-
-            resolveXCollision(e,col.getOldX(), col.getOldY());
-*/
-
 
             if(dcMapper.has(e)) {
                 dcMapper.get(e).getDir().scl(0.9f);

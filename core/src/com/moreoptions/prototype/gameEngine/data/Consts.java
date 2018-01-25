@@ -32,6 +32,7 @@ public class Consts {
     public static final String ADVANCE_LEVEL_EVENT = "Advance";
     public static final String SAVE_GAME = "Save_Game";
     public static final String TITLE_MUSIC = "TitleMusic";
+    public static final float MOVE_DISPLACEMENT_TEST = 10;
     public static String SHOOT_EVENT = "Shoot";
     public static String ENTITY = "Entity";
     public static String DIRECTION = "Direction";
