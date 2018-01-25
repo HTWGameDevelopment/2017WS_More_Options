@@ -40,7 +40,6 @@ public class ItemDatabase {
         registerItem(new Item("Full Heart", Color.CHARTREUSE, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
-
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
                 if(stats.getCurrentHealth() + 1 < stats.getMaxHealth()) stats.setCurrentHealth(stats.getCurrentHealth() + 1);
                 else stats.setCurrentHealth(stats.getMaxHealth());
@@ -52,7 +51,6 @@ public class ItemDatabase {
         registerItem(new Item("Gold Coin", Color.YELLOW, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
-
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
                 if(stats.getMoney() + 1 < Consts.MAX_GOLD) stats.setMoney(stats.getMoney() + 1);
                 else stats.setMoney(Consts.MAX_GOLD);
@@ -63,7 +61,6 @@ public class ItemDatabase {
         registerItem(new Item("Half Heart", Color.RED, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
-
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
                 if(stats.getCurrentHealth() + 0.5f < stats.getMaxHealth()) stats.setCurrentHealth(stats.getCurrentHealth() + 0.5f);
                 else stats.setCurrentHealth(stats.getMaxHealth());
@@ -74,7 +71,6 @@ public class ItemDatabase {
         registerSpecialItem(new Item("Poison Heart", Color.OLIVE, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
-
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
                 stats.setMaxHealth(1);
                 stats.setCurrentHealth(1);
@@ -88,7 +84,6 @@ public class ItemDatabase {
         registerSpecialItem(new Item("Firerate up", Color.BLUE, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
-
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
                 if(stats.getFireRate() < 0.15f)
                 stats.setFireRate(stats.getFireRate() - stats.getFireRate()/10);
@@ -99,7 +94,6 @@ public class ItemDatabase {
         registerSpecialItem(new Item("Knockback", Color.GRAY, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
-
                 Statistics statistics = e.getComponent(StatsComponent.class).getStats();
                 statistics.setProjectileOnHit(new KnockBack());
                 return true;
@@ -109,7 +103,6 @@ public class ItemDatabase {
         registerSpecialItem(new Item("Blink Shot", Color.WHITE, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
-
                 Statistics statistics = e.getComponent(StatsComponent.class).getStats();
                 statistics.setProjectileOnHit(new BlinkShot());
                 return true;
@@ -120,7 +113,6 @@ public class ItemDatabase {
         registerSpecialItem(new Item("Speed Up", Color.GREEN, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
-
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
                 stats.setSpeed(stats.getSpeed() + 10);
 
@@ -146,11 +138,11 @@ public class ItemDatabase {
             }
         }), 100);
 
-        registerSpecialItem(new Item("Shoot Faster", Color.CYAN, new PickupEvent() {
+        registerSpecialItem(new Item("Health Up", Color.RED, new PickupEvent() {
             @Override
             public boolean onPickup(Entity e) {
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                stats.setFireRate(stats.getFireRate() - 0.1f);
+                stats.setMaxHealth(stats.getMaxHealth() + 1);
                 return true;
             }
         }), 100);
@@ -271,5 +263,9 @@ public class ItemDatabase {
         PickupComponent p = item.getComponent(PickupComponent.class);
         p.setShopItem(true);
         return item;
+    }
+
+    public Entity generateGold(Room room, float x, float y) {
+        return getItemEntity("Gold Coin", room, x, y);
     }
 }
