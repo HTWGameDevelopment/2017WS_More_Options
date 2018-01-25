@@ -33,6 +33,22 @@ public class SoundSystem extends EntitySystem {
                 return false;
             }
         });
+
+        soundSubscriber.subscribe(Consts.Sound.COIN_PICKUP, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                SoundDatabase.getInstance().playSound(Consts.Sound.COIN_PICKUP);
+                return false;
+            }
+        });
+
+        soundSubscriber.subscribe(Consts.Sound.PURCHASE_ITEM, new EventListener() {
+            @Override
+            public boolean trigger(Event e) {
+                SoundDatabase.getInstance().playSound(Consts.Sound.PURCHASE_ITEM);
+                return false;
+            }
+        });
     }
 
 }

@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.moreoptions.prototype.gameEngine.components.*;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
@@ -48,6 +49,7 @@ public class PickupSystem extends EntitySystem {
 
                                 itemText.add(new PositionComponent(pickup.getComponent(PositionComponent.class).getPosition().cpy()));
                                 getEngine().addEntity(itemText);
+                                EventFactory.playSound(Consts.Sound.PURCHASE_ITEM);
                             }
                         }
 

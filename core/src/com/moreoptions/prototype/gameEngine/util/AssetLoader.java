@@ -61,6 +61,7 @@ public class AssetLoader {
 
         FileHandle soundFolder = Gdx.files.internal("sound/");
         for(FileHandle f : soundFolder.list()) {
+            if(f.name().contains("Thumbs")) continue;
             String[] s = f.name().split("_");
             sounds.add(new Pair<String, String>(soundFolder.name() + "/" + f.name(),s[0]));
             assetManager.load(soundFolder.name() + "/" + f.name(), Sound.class);

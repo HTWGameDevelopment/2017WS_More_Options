@@ -41,6 +41,10 @@ public class Consts {
 
         public static final String GAME_OVER_SOUND = "gameOver";
         public static final String TILE_MUSIC = "TitleMusic";
+        public static final String COIN_PICKUP = "coin";
+        public static final String DUNGEON_MUSIC = "dungeon";
+        public static final String HIT = "hit";
+        public static final String PURCHASE_ITEM = "purchase";
     }
 
     public class Error {

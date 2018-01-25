@@ -54,6 +54,7 @@ public class ItemDatabase {
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
                 if(stats.getMoney() + 1 < Consts.MAX_GOLD) stats.setMoney(stats.getMoney() + 1);
                 else stats.setMoney(Consts.MAX_GOLD);
+                EventFactory.playSound(Consts.Sound.COIN_PICKUP);
                 return true;
             }
         }), 100);

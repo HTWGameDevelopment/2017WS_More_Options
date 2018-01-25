@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.moreoptions.prototype.gameEngine.GameWorld;
+import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.userInterface.UserInterface;
@@ -46,6 +47,7 @@ public class DungeonScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 paused = false;
+                SoundDatabase.getInstance().unpauseMusic();
                 engine.updateInput();
                 super.clicked(event, x, y);
             }
@@ -57,6 +59,7 @@ public class DungeonScreen implements Screen {
                 //TODO save
 
                 engine.updateInput();
+                SoundDatabase.getInstance().pauseMusic();
 
                 EventFactory.gameOver();
                 paused = false;
@@ -83,14 +86,16 @@ public class DungeonScreen implements Screen {
 
         engine.generateNewLevel();
 
-        SoundDatabase.getInstance().playMusic("exploration");
+        SoundDatabase.getInstance().playMusic(Consts.Sound.DUNGEON_MUSIC);
     }
 
     @Override
     public void render(float delta) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             paused = !paused;
+            SoundDatabase.getInstance().pauseMusic();
             if(paused) {
+
                 pauseScreen.getViewport().setScreenSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 Gdx.input.setInputProcessor(pauseScreen);
             }   else engine.updateInput();

@@ -69,4 +69,9 @@ public class EventFactory {
         Event e = new Event(Consts.SAVE_GAME);
         EventBus.getInstance().addEvent(e);
     }
+
+    public static void playSound(String coinPickup) {
+        Event e = new Event(coinPickup);
+        EventBus.getInstance().addEvent(e);
+    }
 }

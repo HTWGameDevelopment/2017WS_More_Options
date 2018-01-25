@@ -57,9 +57,17 @@ public class SoundDatabase {
             currentSong.stop();
         }
         if(musicMap.containsKey(sound)) {
+            musicMap.get(sound).setVolume(0.01f);
+            musicMap.get(sound).setLooping(true);
             musicMap.get(sound).play();
             currentSong = musicMap.get(sound);
+        } else {
+            System.out.println("music not found: " + sound);
         }
+    }
+
+    public void pauseMusic() {
+        currentSong.pause();
     }
 
     public void registerMusic(String tag, Music m) {
@@ -71,6 +79,14 @@ public class SoundDatabase {
 
             musicMap.put(tag, m);
         }
+
+
     }
 
+    public void unpauseMusic() {
+
+        if(currentSong != null) {
+            currentSong.play();
+        }
+    }
 }

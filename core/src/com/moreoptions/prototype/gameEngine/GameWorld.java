@@ -16,6 +16,7 @@ import com.moreoptions.prototype.gameEngine.components.DoorComponent;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Player;
+import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
@@ -70,6 +71,7 @@ public class GameWorld extends Engine {
         subscriber.subscribe(Consts.ADVANCE_LEVEL_EVENT, new EventListener() {
             @Override
             public boolean trigger(Event e) {
+                SoundDatabase.getInstance().playSound("completetask");
                 e.getData("door", DoorComponent.class).setState(DoorComponent.DOOR_CLOSED);
                 levelManager.generateNewLevel(10, 10, 14);
                 return false;
