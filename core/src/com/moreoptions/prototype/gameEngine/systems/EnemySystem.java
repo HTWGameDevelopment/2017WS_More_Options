@@ -77,7 +77,7 @@ public class EnemySystem extends EntitySystem{
         Random random = new Random();
         float percentage = random.nextFloat();
 
-        if (percentage >= 0.75) {
+        if (percentage >= 0.90) {
             PositionComponent epc = e.getComponent(PositionComponent.class);
             return ItemDatabase.getInstance().generateItem(room, epc.getX(), epc.getY());
         } else {

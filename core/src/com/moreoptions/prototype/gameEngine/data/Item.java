@@ -12,7 +12,7 @@ public class Item {
     private String name;
     private Color color;
     private PickupEvent pickupEvent;
-    private int price = 5;
+    private int price = 10;
 
     public Item(String name, Color color, PickupEvent pickupEvent) {
         this.name = name;

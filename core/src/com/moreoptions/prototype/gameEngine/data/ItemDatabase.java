@@ -41,7 +41,7 @@ public class ItemDatabase {
             @Override
             public boolean onPickup(Entity e) {
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                if(stats.getCurrentHealth() + 1 < stats.getMaxHealth()) stats.setCurrentHealth(stats.getCurrentHealth() + 1);
+                if(stats.getCurrentHealth() + 1 < stats.getMaxHealth()) stats.setCurrentHealth(stats.getCurrentHealth() + 2);
                 else stats.setCurrentHealth(stats.getMaxHealth());
                 return true;
             }
@@ -62,7 +62,7 @@ public class ItemDatabase {
             @Override
             public boolean onPickup(Entity e) {
                 Statistics stats = e.getComponent(StatsComponent.class).getStats();
-                if(stats.getCurrentHealth() + 0.5f < stats.getMaxHealth()) stats.setCurrentHealth(stats.getCurrentHealth() + 0.5f);
+                if(stats.getCurrentHealth() + 0.5f < stats.getMaxHealth()) stats.setCurrentHealth(stats.getCurrentHealth() + 1);
                 else stats.setCurrentHealth(stats.getMaxHealth());
                 return true;
             }
