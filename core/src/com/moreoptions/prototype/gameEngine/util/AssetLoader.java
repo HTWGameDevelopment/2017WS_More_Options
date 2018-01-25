@@ -3,6 +3,7 @@ package com.moreoptions.prototype.gameEngine.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -20,12 +21,16 @@ import com.moreoptions.prototype.gameEngine.level.RoomDefinition;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by denwe on 17.11.2017.
  */
 public class AssetLoader {
     private static AssetLoader ourInstance = new AssetLoader();
+    private HashMap<String, String> musics = new HashMap<String, String>()
+            ;
 
     public static AssetLoader getInstance() {
         return ourInstance;
@@ -48,6 +53,7 @@ public class AssetLoader {
         loadRooms();
         loadFonts();
         loadSounds();
+        loadMusic();
         assetManager.load("comic/skin/comic-ui.json", Skin.class);
     }
 
@@ -60,6 +66,16 @@ public class AssetLoader {
             assetManager.load(soundFolder.name() + "/" + f.name(), Sound.class);
         }
 
+    }
+
+    private void loadMusic() {
+        FileHandle musicFolder = Gdx.files.internal("music/");
+        for(FileHandle f : musicFolder.list()) {
+            String[] s = f.name().split("_");
+
+            musics.put(musicFolder.name() + "/" + f.name(),s[0]);
+            assetManager.load(musicFolder.name() + "/" + f.name(), Music.class);
+        }
     }
 
     private void loadFonts() {
@@ -101,6 +117,16 @@ public class AssetLoader {
                 String tag = p.getValue();
 
                 SoundDatabase.getInstance().registerSound(tag, assetManager.get(fileName, Sound.class));
+
+            }
+
+
+            for(Map.Entry<String, String> p : musics.entrySet()) {
+
+                String fileName = p.getKey();
+                String tag = p.getValue();
+
+                SoundDatabase.getInstance().registerMusic(tag, assetManager.get(fileName, Music.class));
 
             }
             return true;

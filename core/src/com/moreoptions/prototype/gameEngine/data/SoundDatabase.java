@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Random;
  */
 public class SoundDatabase {
     private static SoundDatabase ourInstance = new SoundDatabase();
+    private HashMap<String, Music> musicMap = new HashMap<String, Music>();
 
     public static SoundDatabase getInstance() {
         return ourInstance;
@@ -21,6 +23,8 @@ public class SoundDatabase {
     private Random random = new Random();
 
     private String TAG = "SOUNDSYSTEM";
+
+    private Music currentSong = null;
 
     private SoundDatabase() {
 
@@ -45,6 +49,28 @@ public class SoundDatabase {
             soundMap.put(tag, newSoundArrayList);
         }
 
+    }
+
+    public void playMusic(String sound) {
+
+        if(currentSong != null) {
+            currentSong.stop();
+        }
+        if(musicMap.containsKey(sound)) {
+            musicMap.get(sound).play();
+            currentSong = musicMap.get(sound);
+        }
+    }
+
+    public void registerMusic(String tag, Music m) {
+        if(musicMap.containsKey(tag)) {
+            //do nothing
+        } else {
+            System.out.println("Registered Music: " +tag);
+
+
+            musicMap.put(tag, m);
+        }
     }
 
 }

@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.google.gson.Gson;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.data.Strings;
 import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
 
@@ -40,6 +41,8 @@ public class StartGameScreen implements Screen {
     Image loginIndicatorRed;
     Image loginIndicatorGreen;
 
+    Image logo;
+
     Skin skin;
     Gson gson = new Gson();
 
@@ -53,6 +56,7 @@ public class StartGameScreen implements Screen {
 
         this.moreOptions = moreOptions;
         skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
+        logo = new Image(new Texture(Gdx.files.internal("images/more_options.png")));
         stage = new Stage();
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
@@ -80,6 +84,8 @@ public class StartGameScreen implements Screen {
             }
         });
 
+        table.add(logo);
+        table.row();
         table.add(newGameButton);
         table.row();
         table.add(exitGameButton);
@@ -101,7 +107,7 @@ public class StartGameScreen implements Screen {
 
     @Override
     public void show() {
-
+        SoundDatabase.getInstance().playMusic("intro");
         Gdx.input.setInputProcessor(stage);
     }
 

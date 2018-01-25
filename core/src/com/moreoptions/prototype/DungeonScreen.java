@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.moreoptions.prototype.gameEngine.GameWorld;
+import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.userInterface.UserInterface;
 
@@ -79,6 +80,7 @@ public class DungeonScreen implements Screen {
     @Override
     public void show() {
         engine.updateInput();
+        SoundDatabase.getInstance().playMusic("exploration");
     }
 
     @Override
