@@ -13,6 +13,7 @@ import com.moreoptions.prototype.gameEngine.data.*;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
+import com.sun.xml.internal.ws.dump.LoggingDumpTube;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -77,12 +78,17 @@ public class EnemySystem extends EntitySystem{
         Random random = new Random();
         float percentage = random.nextFloat();
 
-        if (percentage >= 0.90) {
+        if (percentage >= 0.99) {
+            PositionComponent epc = e.getComponent(PositionComponent.class);
+            return ItemDatabase.getInstance().generateSpecialItem(epc.getX(), epc.getY(), room);
+        } else if (percentage >= 0.9) {
             PositionComponent epc = e.getComponent(PositionComponent.class);
             return ItemDatabase.getInstance().generateItem(room, epc.getX(), epc.getY());
-        } else {
+        } else if (percentage >= 0.33) {
             PositionComponent epc = e.getComponent(PositionComponent.class);
             return ItemDatabase.getInstance().generateGold(room, epc.getX(), epc.getY());
+        } else {
+            return null;
         }
     }
 }
