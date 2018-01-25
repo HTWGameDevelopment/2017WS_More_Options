@@ -16,6 +16,7 @@ public class MoreOptions extends Game {
 	private StartGameScreen screen;
 	private DungeonScreen dungeonScreen;
 	private LoginScreen loginScreen;
+	private GameOverScreen gameOverScreen;
 
 	EventSubscriber subscriber;
 
@@ -26,11 +27,15 @@ public class MoreOptions extends Game {
 		subscriber.subscribe(Consts.GAME_OVER, new EventListener() {
 			@Override
 			public boolean trigger(Event e) {
-				showStartScreen();
+				showGameOverScreen();
 				return false;
 			}
 		});
 
+	}
+
+	private void showGameOverScreen() {
+		setScreen(gameOverScreen);
 	}
 
 	public void create() {
@@ -44,6 +49,7 @@ public class MoreOptions extends Game {
 		screen = new StartGameScreen(this);
 		dungeonScreen = new DungeonScreen(this);
 		loginScreen = new LoginScreen(this);
+		gameOverScreen = new GameOverScreen(this);
 		setScreen(screen);
 	}
 
