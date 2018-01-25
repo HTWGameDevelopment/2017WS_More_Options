@@ -28,7 +28,7 @@ public class KnockBack implements HitEvent {
         Vector2 v2 = new Vector2(xEnm - xPla, yEnm - yPla);
         v2 = v2.nor();
 
-        hit.getComponent(DisplacableComponent.class).applyForce(v2, 6);
+        hit.getComponent(DisplacableComponent.class).applyForce(v2, 3);
 
 
         EventFactory.projectileHit(self, hit);
