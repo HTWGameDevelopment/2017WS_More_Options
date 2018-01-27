@@ -12,9 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
+import com.moreoptions.prototype.gameEngine.data.Strings;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 
 /**
- * Created by Dennis on 25.01.2018.
+ * Screen that is displayed after the player dies.
  */
 public class GameOverScreen implements Screen {
 
@@ -27,12 +29,12 @@ public class GameOverScreen implements Screen {
         stage = new Stage();
 
         this.moreOptions = moreOptions;
-        Skin skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
+        Skin skin = AssetLoader.getInstance().getSkin();
 
         mainTable = new Table();
-        Label gameOverText = new Label("You died! Better luck next time!", skin);
+        Label gameOverText = new Label(Strings.Menu.GO_YOU_DIED, skin);
         gameOverText.getStyle().fontColor = Color.WHITE;
-        TextButton backToMainMenu = new TextButton("Back to Main Menu", skin);
+        TextButton backToMainMenu = new TextButton(Strings.Menu.DS_BACK_TO_MAIN_MENU, skin);
         backToMainMenu.addListener(new ClickListener() {
 
             @Override
@@ -55,10 +57,8 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void show() {
-
         Gdx.input.setInputProcessor(stage);
         SoundDatabase.getInstance().pauseMusic();
-
     }
 
     @Override

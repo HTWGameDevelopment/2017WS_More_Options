@@ -14,4 +14,11 @@ public class Strings {
     public static String PREFERENCES = "default";
     public static String PREFERENCES_PROFILE = "profile";
 
+    public class Menu {
+        public static final String DS_BACK_TO_MAIN_MENU = "Back to Main Menu";
+        public static final String DS_CONTINUE = "Continue";
+        public static final String GO_YOU_DIED = "You died! Better luck next time!";
+        public static final String NEW_GAME = "New Game";
+        public static final String EXIT_GAME = "Exit";
+    }
 }

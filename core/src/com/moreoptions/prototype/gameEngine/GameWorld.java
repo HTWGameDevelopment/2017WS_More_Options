@@ -39,14 +39,13 @@ public class GameWorld extends Engine {
     private FitViewport fv;
     private LevelManager levelManager;
     private GameInputProcessor processor;
-    private GameState gameState;
     private Stage stage;
     private UserInterface userInterface;
-    BitmapFont font;
+    private BitmapFont font;
 
-    EventSubscriber subscriber = new EventSubscriber();
+    private EventSubscriber subscriber = new EventSubscriber();
 
-    ProgressBar healthBar;
+    private ProgressBar healthBar;
     private DungeonScreen parentScreen;
 
 
@@ -54,16 +53,11 @@ public class GameWorld extends Engine {
         uiSetup();
         demoSetup();
 
-        gameState = GameState.getInstance();
-
         subscriber.subscribe(Consts.GAME_OVER, new EventListener() {
             @Override
             public boolean trigger(Event e) {
-
                 removeAllEntities();
                 GameState.getInstance().reset();
-
-
                 return false;
             }
         });
@@ -81,8 +75,6 @@ public class GameWorld extends Engine {
     }
 
 
-
-
     private void uiSetup() {
 
         stage = new Stage();
@@ -91,7 +83,6 @@ public class GameWorld extends Engine {
         healthBar.setValue(3);
         stage.addActor(healthBar);
         stage.setDebugAll(true);
-
 
     }
 
@@ -120,7 +111,6 @@ public class GameWorld extends Engine {
 
         userInterface = new UserInterface(fv, batch, p);
         GameState.getInstance().addPlayer(p);
-
 
         addSystem(InputSystem.getInstance());
         addSystem(new MovementSystem());

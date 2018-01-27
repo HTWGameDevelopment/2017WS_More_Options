@@ -17,12 +17,11 @@ public class MoreOptions extends Game {
 	private DungeonScreen dungeonScreen;
 	private LoginScreen loginScreen;
 	private GameOverScreen gameOverScreen;
+	private LoadingScreen loadingScreen;
 
-	EventSubscriber subscriber;
+	private EventSubscriber subscriber;
 
 	public MoreOptions() {
-
-
 		subscriber = new EventSubscriber();
 		subscriber.subscribe(Consts.GAME_OVER, new EventListener() {
 			@Override
@@ -31,7 +30,6 @@ public class MoreOptions extends Game {
 				return false;
 			}
 		});
-
 	}
 
 	private void showGameOverScreen() {
@@ -39,18 +37,13 @@ public class MoreOptions extends Game {
 	}
 
 	public void create() {
+		//Preload skin!
+		AssetLoader.getInstance().loadSkin();
+		AssetLoader.getInstance().getAssetManager().finishLoading();
+		loadingScreen = new LoadingScreen(AssetLoader.getInstance().getSkin(), this);
 
-
-		AssetLoader.getInstance().loadAll();
-
-		while(!AssetLoader.getInstance().update()) {
-
-		}
-		screen = new StartGameScreen(this);
-		dungeonScreen = new DungeonScreen(this);
-		loginScreen = new LoginScreen(this);
-		gameOverScreen = new GameOverScreen(this);
-		setScreen(screen);
+		//Everything prepared to show loadingscreen.
+		setScreen(loadingScreen);
 	}
 
 	public void showDungeon() {
@@ -59,7 +52,6 @@ public class MoreOptions extends Game {
 	}
 
 	public void showStartScreen() {
-
 		setScreen(screen);
 	}
 
@@ -69,6 +61,13 @@ public class MoreOptions extends Game {
 
 	public void showLoginScreen() {
 		setScreen(loginScreen);
-		System.out.println("Showing loginscreen");
+	}
+
+	public void startGame() {
+		screen = new StartGameScreen(this);
+		dungeonScreen = new DungeonScreen( this);
+		loginScreen = new LoginScreen( this);
+		gameOverScreen = new GameOverScreen( this);
+		setScreen(screen);
 	}
 }

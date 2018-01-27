@@ -10,27 +10,28 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.google.gson.Gson;
 import com.moreoptions.prototype.gameEngine.data.Strings;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
 
 import java.util.HashMap;
 
 /**
- * Created by denwe on 22.01.2018.
+ * A screen that helps user with login in.
  */
 public class LoginScreen implements Screen {
 
-    Stage stage;
+    private Stage stage;
 
-    Table loginFrame;
-    Skin skin;
-    Label errorMessage;
+    private Table loginFrame;
+    private Skin skin;
+    private Label errorMessage;
 
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
 
-    MoreOptions moreOptions;
+    private MoreOptions moreOptions;
 
     public LoginScreen(MoreOptions moreOptions) {
-        skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
+        skin = AssetLoader.getInstance().getSkin();
         stage = new Stage();
         setupLoginDialog(stage);
         this.moreOptions = moreOptions;
@@ -142,7 +143,7 @@ public class LoginScreen implements Screen {
     }
 
 
-    public void register(final String name, final String password) {
+    private void register(final String name, final String password) {
         ApiRequest.register(name, password, new Net.HttpResponseListener() {
 
             @Override

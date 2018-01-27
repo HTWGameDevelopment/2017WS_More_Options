@@ -25,12 +25,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by denwe on 17.11.2017.
+ * Singleton that handles all assets and their databaseregistration
+ * TODO: fracture loading into steps to easier display progress
  */
 public class AssetLoader {
     private static AssetLoader ourInstance = new AssetLoader();
-    private HashMap<String, String> musics = new HashMap<String, String>()
-            ;
+    private HashMap<String, String> musics = new HashMap<String, String>();
 
     public static AssetLoader getInstance() {
         return ourInstance;
@@ -54,7 +54,6 @@ public class AssetLoader {
         loadFonts();
         loadSounds();
         loadMusic();
-        assetManager.load("comic/skin/comic-ui.json", Skin.class);
     }
 
     private void loadSounds() {
@@ -105,7 +104,6 @@ public class AssetLoader {
             System.out.println("Done pre - loading");
             System.out.println("Loaded "+assetManager.getAll(TiledMap.class, new Array<TiledMap>()).size + " assets.");
             System.out.println("Loading items");
-            ItemDatabase.getInstance();
             for(TiledMap t : assetManager.getAll(TiledMap.class, new Array<TiledMap>())) {
                 RoomDefinition r = new RoomDefinition(t);
                 definitions.add(r);
@@ -134,13 +132,15 @@ public class AssetLoader {
         } return false;
     }
 
+
+
     public ArrayList<RoomDefinition> definition(boolean hasDoorTop, boolean hasDoorBottom, boolean hasDoorLeft, boolean hasDoorRight, int kind) {
         ArrayList<RoomDefinition> fits = new ArrayList<RoomDefinition>();
         for(RoomDefinition def : definitions) {
-            if((def.isDoorNorth() == hasDoorTop || hasDoorTop == false)
-                && (def.isDoorSouth() == hasDoorBottom || hasDoorBottom == false)
-                && (def.isDoorWest() == hasDoorLeft || hasDoorLeft == false)
-                && (def.isDoorEast() == hasDoorRight || hasDoorRight== false)
+            if((def.isDoorNorth() == hasDoorTop || !hasDoorTop)
+                && (def.isDoorSouth() == hasDoorBottom || !hasDoorBottom)
+                && (def.isDoorWest() == hasDoorLeft || !hasDoorLeft)
+                && (def.isDoorEast() == hasDoorRight || !hasDoorRight)
                     && (def.getRoomKind() == kind)) {
                 fits.add(def);
             }
@@ -163,5 +163,9 @@ public class AssetLoader {
 
     public Skin getSkin() {
         return assetManager.get("comic/skin/comic-ui.json", Skin.class);
+    }
+
+    public void loadSkin() {
+        assetManager.load("comic/skin/comic-ui.json", Skin.class);
     }
 }

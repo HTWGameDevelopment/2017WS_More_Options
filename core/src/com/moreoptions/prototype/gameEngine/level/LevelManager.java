@@ -14,7 +14,8 @@ import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import java.util.ArrayList;
 
 /**
- * Created by denwe on 15.11.2017.
+ * A manager that handles level-generation and room transition.
+ * TODO: Has to be completely redone, as requirements have changed.
  */
 public class LevelManager {
 
@@ -32,7 +33,6 @@ public class LevelManager {
         this.levelGenerator = new StandardLevelGenerator();
         this.world = world;
 
-        //generateNewLevel(10,10,10);
     }
 
     public boolean changeRoom(Room targetRoom, Offset offset) {
@@ -71,7 +71,7 @@ public class LevelManager {
     }
 
 
-    public void addPlayerEntities(Offset offset, Room targetroom) {
+    private void addPlayerEntities(Offset offset, Room targetroom) {
         ArrayList<Player> players = GameState.getInstance().getPlayerList();    //GET ALL Players
         for (Player p : players) {
             Entity playerEntity = p.getEntity(offset);

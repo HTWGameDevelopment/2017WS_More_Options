@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.data.Strings;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
 
 import java.util.HashMap;
@@ -38,13 +39,13 @@ public class StartGameScreen implements Screen {
 
     private Table loginFrame;
 
-    Image loginIndicatorRed;
-    Image loginIndicatorGreen;
+    private Image loginIndicatorRed;
+    private Image loginIndicatorGreen;
 
-    Image logo;
+    private Image logo;
 
-    Skin skin;
-    Gson gson = new Gson();
+    private Skin skin;
+    private Gson gson = new Gson();
 
 
     Label errorMessage;
@@ -55,7 +56,7 @@ public class StartGameScreen implements Screen {
     public StartGameScreen(final MoreOptions moreOptions) {
 
         this.moreOptions = moreOptions;
-        skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
+        skin = AssetLoader.getInstance().getSkin();
         logo = new Image(new Texture(Gdx.files.internal("images/more_options.png")));
         stage = new Stage();
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
@@ -64,7 +65,7 @@ public class StartGameScreen implements Screen {
         table.setFillParent(true);
         table.setDebug(true, true);
 
-        TextButton newGameButton = new TextButton("New Game", skin);
+        TextButton newGameButton = new TextButton(Strings.Menu.NEW_GAME, skin);
 
         newGameButton.addListener(new ChangeListener() {
                                       @Override
@@ -74,7 +75,7 @@ public class StartGameScreen implements Screen {
                                   }
         );
 
-        TextButton exitGameButton = new TextButton("Exit", skin);
+        TextButton exitGameButton = new TextButton(Strings.Menu.EXIT_GAME, skin);
 
         exitGameButton.addListener(new ClickListener() {
             @Override

@@ -13,22 +13,22 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
+import com.moreoptions.prototype.gameEngine.data.Strings;
+import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.userInterface.UserInterface;
 
 /**
- * Created by denwe on 12.11.2017.
+ * Screen where World + GameUI is displayed
  */
 public class DungeonScreen implements Screen {
 
-    GameWorld engine;
-    MoreOptions moreOptions;
-    Stage pauseScreen;
+    private GameWorld engine;
+    private MoreOptions moreOptions;
+    private Stage pauseScreen;
     private boolean paused = false;
 
-
     public DungeonScreen(MoreOptions moreOptions) {
-
         setupPauseScreen();
         engine = GameWorld.getInstance();
         this.moreOptions = moreOptions;
@@ -37,11 +37,11 @@ public class DungeonScreen implements Screen {
     private void setupPauseScreen() {
         pauseScreen = new Stage();
 
-        Skin skin = new Skin(Gdx.files.internal("comic/skin/comic-ui.json"));
+        Skin skin = AssetLoader.getInstance().getSkin();
 
         Table pauseTable = new Table();
-        TextButton backButton = new TextButton("Back to Main Menu", skin);
-        TextButton continueButton = new TextButton("Continue", skin);
+        TextButton backButton = new TextButton(Strings.Menu.DS_BACK_TO_MAIN_MENU, skin);
+        TextButton continueButton = new TextButton(Strings.Menu.DS_CONTINUE, skin);
 
         continueButton.addListener(new ClickListener() {
             @Override
@@ -91,6 +91,8 @@ public class DungeonScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             paused = !paused;
             SoundDatabase.getInstance().pauseMusic();
@@ -100,8 +102,7 @@ public class DungeonScreen implements Screen {
                 Gdx.input.setInputProcessor(pauseScreen);
             }   else engine.updateInput();
         }
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         if(paused) {
             pauseScreen.act();
             pauseScreen.draw();
