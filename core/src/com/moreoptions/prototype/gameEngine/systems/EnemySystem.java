@@ -13,13 +13,12 @@ import com.moreoptions.prototype.gameEngine.data.*;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
-import com.sun.xml.internal.ws.dump.LoggingDumpTube;
 
 import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Created by Dennis on 06.12.2017.
+ * System that manages enemy-creation and death.
  */
 public class EnemySystem extends EntitySystem{
 
@@ -28,7 +27,7 @@ public class EnemySystem extends EntitySystem{
     private ComponentMapper<EnemyComponent> ecMapper = ComponentMapper.getFor(EnemyComponent.class);
     private ComponentMapper<StatsComponent> statMapper = ComponentMapper.getFor(StatsComponent.class);
 
-    EventSubscriber enemySpawner = new EventSubscriber();
+    private EventSubscriber enemySpawner = new EventSubscriber();
 
     public EnemySystem() {
         enemySpawner.subscribe(Consts.SPAWN_ENEMY, new EventListener() {
@@ -43,10 +42,6 @@ public class EnemySystem extends EntitySystem{
                 return true;
             }
         });
-
-
-
-
     }
 
     @Override

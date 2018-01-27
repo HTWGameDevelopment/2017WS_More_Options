@@ -2,7 +2,6 @@ package com.moreoptions.prototype.gameEngine.data;
 
 import com.badlogic.gdx.graphics.Color;
 import com.moreoptions.prototype.gameEngine.data.callback.PickupEvent;
-import sun.security.util.ObjectIdentifier;
 
 /**
  * Created by denwe on 07.01.2018.
