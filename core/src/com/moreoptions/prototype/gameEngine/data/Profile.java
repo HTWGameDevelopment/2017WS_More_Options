@@ -17,13 +17,10 @@ public class Profile {
     private Achievements achievements;
     private String name;
     private Date date;
+    private HashMap<String, Float> stats;
 
     Profile(String name) {
         createNewProfile(name);
-    }
-
-    public Profile() {
-
     }
 
     @Override
@@ -37,7 +34,7 @@ public class Profile {
 
         initDefaultHotkeys();
         achievements = new Achievements();
-
+        stats = new HashMap<String, Float>();
         saveProfile();
 
     }
@@ -55,9 +52,9 @@ public class Profile {
         gameHotkeys.put(Input.Keys.A, Hotkey.GameHotkey.P1_MOVE_LEFT);
         gameHotkeys.put(Input.Keys.D, Hotkey.GameHotkey.P1_MOVE_RIGHT);
 
-        gameHotkeys.put(Input.Keys.SPACE, Hotkey.GameHotkey.P1_USE_ITEM);
-        gameHotkeys.put(Input.Keys.Q, Hotkey.GameHotkey.P1_USE_PICKUP);
-        gameHotkeys.put(Input.Keys.E, Hotkey.GameHotkey.P1_USE_BOMB);
+        //gameHotkeys.put(Input.Keys.SPACE, Hotkey.GameHotkey.P1_USE_ITEM);
+        //gameHotkeys.put(Input.Keys.Q, Hotkey.GameHotkey.P1_USE_PICKUP);
+        //gameHotkeys.put(Input.Keys.E, Hotkey.GameHotkey.P1_USE_BOMB);
 
     }
 
@@ -65,9 +62,9 @@ public class Profile {
     private void saveProfile() {
         Gson gson = new Gson();
         this.date = new Date();         //Sign with current date
-        Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES_PROFILE);
+        Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES);
         prefs.putString(name, gson.toJson(this));
-        System.out.println("Creating profile");
+        System.out.println("Saved Profile!");
         prefs.flush();
     }
 
@@ -87,5 +84,9 @@ public class Profile {
 
     public Date getDate() {
         return date;
+    }
+
+    public HashMap<String, Float> getStats() {
+        return stats;
     }
 }

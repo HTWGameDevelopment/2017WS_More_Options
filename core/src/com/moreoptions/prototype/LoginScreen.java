@@ -184,8 +184,9 @@ public class LoginScreen implements Screen {
         preferences.flush();
     }
 
-    private void login(String text, String text1) {
-        ApiRequest.login(text, text1, new Net.HttpResponseListener() {
+    private void login(String name, String password) {
+        String passwordHash = ApiRequest.hash(name, password);
+        ApiRequest.login(name, passwordHash, new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 if(httpResponse.getStatus().getStatusCode() == 400) {

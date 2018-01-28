@@ -20,6 +20,7 @@ import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.input.GameInputProcessor;
 import com.moreoptions.prototype.gameEngine.systems.*;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
+import com.moreoptions.prototype.gameEngine.util.DataTracker;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventBus;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
@@ -48,6 +49,7 @@ public class GameWorld extends Engine {
     private ProgressBar healthBar;
     private DungeonScreen parentScreen;
 
+    int currentLevel = 0;
 
     private GameWorld() {
         uiSetup();
@@ -65,9 +67,11 @@ public class GameWorld extends Engine {
         subscriber.subscribe(Consts.ADVANCE_LEVEL_EVENT, new EventListener() {
             @Override
             public boolean trigger(Event e) {
+                currentLevel += 1;
                 SoundDatabase.getInstance().playSound("completetask");
                 e.getData("door", DoorComponent.class).setState(DoorComponent.DOOR_CLOSED);
-                levelManager.generateNewLevel(10, 10, 14);
+                DataTracker.trackFloatData(Consts.Data.HIGHEST_LEVEL, currentLevel);
+                levelManager.generateNewLevel(10, 10, 10 + currentLevel);
                 return false;
             }
         });
@@ -140,6 +144,7 @@ public class GameWorld extends Engine {
     }
 
     public void updateInput() {
+        getSystem(AchievementSystem.class).init(GameState.getInstance().getGameProfile().getStats());
         Gdx.input.setInputProcessor(processor);
         GameState.getInstance().clearInput();
     }

@@ -33,6 +33,8 @@ public class Consts {
     public static final String SAVE_GAME = "Save_Game";
     public static final String TITLE_MUSIC = "TitleMusic";
     public static final float MOVE_DISPLACEMENT_TEST = 10;
+    public static final String FLOAT = "float";
+    public static final String ENEMY_DATA = "enemy_data";
     public static String SHOOT_EVENT = "Shoot";
     public static String ENTITY = "Entity";
     public static String DIRECTION = "Direction";
@@ -61,5 +63,16 @@ public class Consts {
         public static final String SALT = "ENTER_CUSTOM_SALT";
         public static final String SERVER_ADRESS = "http://localhost:8080";
         public static final int SUCCESS = 200;
+    }
+
+    public class Data {
+
+        public static final String DOOR_STAT = "Doors entered";
+        public static final String DAMAGE_DONE = "Damage dealt";
+        public static final String DAMAGE_TAKEN = "Damage taken";
+        public static final String ENEMIES_KILLED = "Enemies killed";
+        public static final String HIGHEST_LEVEL = "Highest Level reached";
+        public static final String ENEMY_KILLED = "Enemies killed";
+        public static final String DISTANCE_WALKED = "Distance walked";
     }
 }

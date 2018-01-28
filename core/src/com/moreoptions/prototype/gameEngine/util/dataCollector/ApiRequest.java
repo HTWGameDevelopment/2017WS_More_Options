@@ -1,6 +1,7 @@
 package com.moreoptions.prototype.gameEngine.util.dataCollector;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.net.HttpRequestBuilder;
@@ -48,13 +49,35 @@ public class ApiRequest {
 
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("username", name);
+
         data.put("password", password);
+
+
 
         final Net.HttpRequest request = b.newRequest().method(Net.HttpMethods.POST).url(serverAdress + "/login/").header("Content-Type","application/json").build();
         request.setContent(gson.toJson(data));
         Gdx.net.sendHttpRequest(request, listener);
     }
 
+
+    public static void getLatestSaveGame(Profile gameProfile, Net.HttpResponseListener listener) {
+        if(isLoggedIn()) {
+            Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES);
+            String username = prefs.getString(Strings.USER_ACCOUNT);
+            String pw = prefs.getString(Strings.USER_PASSWORD_HASH);
+            HashMap<String, String> data = new HashMap<String, String>();
+            data.put("profile", gson.toJson(gameProfile));
+            data.put("username", username);
+            data.put("password", pw);
+
+
+            System.out.println(username + " | " + pw);
+
+            final Net.HttpRequest request = b.newRequest().method(Net.HttpMethods.POST).url(serverAdress + "/stateRequest/").header("Content-Type","application/json").build();
+            request.setContent(gson.toJson(data));
+            Gdx.net.sendHttpRequest(request, listener);
+        }
+    }
 
     public static void saveGame(Profile gameProfile) {
 
@@ -97,5 +120,9 @@ public class ApiRequest {
     public static boolean isLoggedIn() {
         Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES);
         return prefs.contains(Strings.USER_ACCOUNT) && prefs.contains(Strings.USER_PASSWORD_HASH);
+    }
+
+    public static void getProfile(String name, String password, Net.HttpResponseListener listener) {
+
     }
 }

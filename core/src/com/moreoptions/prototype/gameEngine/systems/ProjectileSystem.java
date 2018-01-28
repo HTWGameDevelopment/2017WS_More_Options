@@ -10,6 +10,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Statistics;
+import com.moreoptions.prototype.gameEngine.util.DataTracker;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
@@ -33,6 +34,7 @@ public class ProjectileSystem extends EntitySystem {
     private ComponentMapper<CollisionComponent> ccMapper = ComponentMapper.getFor(CollisionComponent.class);
     private ComponentMapper<ProjectileComponent> pcMapper = ComponentMapper.getFor(ProjectileComponent.class);
     private ComponentMapper<CircleCollisionComponent> cccMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
+    private ComponentMapper<PlayerComponent> plMapper = ComponentMapper.getFor(PlayerComponent.class);
 
 
     public ProjectileSystem() {
@@ -71,6 +73,14 @@ public class ProjectileSystem extends EntitySystem {
                     EventFactory.createDamageText(hit, pc.getDmg());
 
                     statistics.setTimeSinceLastHit(0);
+                }
+
+                if(plMapper.has(pc.getOwner())) {
+                    DataTracker.trackFloatData(Consts.Data.DAMAGE_DONE, pc.getDmg());
+                }
+
+                if(plMapper.has(hit)) {
+                    DataTracker.trackFloatData(Consts.Data.DAMAGE_TAKEN, pc.getDmg());
                 }
 
                 return true;

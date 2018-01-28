@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.google.gson.Gson;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.data.Strings;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
@@ -41,6 +42,7 @@ public class StartGameScreen implements Screen {
 
     private Image loginIndicatorRed;
     private Image loginIndicatorGreen;
+    private Image currentLoginIndicator;
 
     private Image logo;
 
@@ -81,6 +83,7 @@ public class StartGameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
+                //Gdx.app.exit();
                 super.clicked(event, x, y);
             }
         });
@@ -109,7 +112,7 @@ public class StartGameScreen implements Screen {
     @Override
     public void show() {
         SoundDatabase.getInstance().playMusic("intro");
-
+        verifyLogin();
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -178,8 +181,11 @@ public class StartGameScreen implements Screen {
 
         stage.addActor(loginIndicatorRed);
 
-        //First, we check if user has existing account data
+        verifyLogin();
 
+    }
+
+    private void verifyLogin() {
         Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES);
         if(prefs.contains(Strings.USER_ACCOUNT) && prefs.contains(Strings.USER_PASSWORD_HASH)) {
             //Yes, lets launch a thread to verify.
@@ -188,7 +194,6 @@ public class StartGameScreen implements Screen {
 
             disableUserInput();
             showLoadingText(table);
-            System.out.println("ALLES DRIN");
             //we dont want player to do something else while verifying
 
             ApiRequest.login(username, pwHash, new Net.HttpResponseListener() {
@@ -200,13 +205,14 @@ public class StartGameScreen implements Screen {
                         enableUserInput();
                         System.out.println("-------");
                     } else {
-
+                        showRedLight();
                     }
                 }
 
                 @Override
                 public void failed(Throwable t) {
                     enableUserInput();
+                    showRedLight();
 
                 }
 
@@ -221,6 +227,12 @@ public class StartGameScreen implements Screen {
         }
     }
 
+    private void showRedLight() {
+        currentLoginIndicator = loginIndicatorRed;
+        currentLoginIndicator.remove();
+        stage.addActor(loginIndicatorRed);
+    }
+
     private void showLoadingText(Table table) {
 
     }
@@ -230,11 +242,30 @@ public class StartGameScreen implements Screen {
     }
 
     private void showGreenLight() {
-        loginIndicatorRed.remove();
+        currentLoginIndicator = loginIndicatorGreen;
+        currentLoginIndicator.remove();
         stage.addActor(loginIndicatorGreen);
     }
 
     private void verifyLocalSavegame() {
+        ApiRequest.getLatestSaveGame(GameState.getInstance().getGameProfile(), new Net.HttpResponseListener() {
+            @Override
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                System.out.println(httpResponse.getStatus().getStatusCode());
+                System.out.println(httpResponse.getResultAsString());
+
+            }
+
+            @Override
+            public void failed(Throwable t) {
+                System.out.println("___");
+            }
+
+            @Override
+            public void cancelled() {
+
+            }
+        });
         //TODO impl
     }
 

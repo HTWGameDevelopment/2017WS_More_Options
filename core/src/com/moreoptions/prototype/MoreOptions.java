@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.moreoptions.prototype.gameEngine.GameWorld;
+import com.moreoptions.prototype.gameEngine.HotkeyScreen;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
@@ -70,4 +71,5 @@ public class MoreOptions extends Game {
 		gameOverScreen = new GameOverScreen( this);
 		setScreen(screen);
 	}
+
 }

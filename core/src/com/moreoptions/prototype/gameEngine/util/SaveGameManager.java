@@ -1,11 +1,13 @@
 package com.moreoptions.prototype.gameEngine.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Preferences;
 import com.google.gson.Gson;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Profile;
 import com.moreoptions.prototype.gameEngine.data.Strings;
+import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
 
 /**
  * Created by denwe on 18.01.2018.
@@ -13,18 +15,17 @@ import com.moreoptions.prototype.gameEngine.data.Strings;
 public class SaveGameManager {
 
 
-    public Profile getMostRecent(GameState b) {
+    public static void getMostRecentSaveGame(String name, String password, Net.HttpResponseListener listener) {
 
-        Gson gson = new Gson();
-
-        //First, get local Profile if its there
-
-        Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES);
-
-        if(prefs.contains(Strings.PREFERENCES_PROFILE));
-        return null;
+        ApiRequest.getProfile(name, password, listener);
 
     }
+
+    public static void verifyLoginData(String name, String password, Net.HttpResponseListener listener) {
+        ApiRequest.login(name, password, listener);
+    }
+
+
 
 
 

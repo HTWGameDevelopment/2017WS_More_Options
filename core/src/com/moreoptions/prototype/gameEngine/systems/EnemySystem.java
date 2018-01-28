@@ -10,6 +10,7 @@ import com.moreoptions.prototype.gameEngine.components.EnemyComponent;
 import com.moreoptions.prototype.gameEngine.components.PositionComponent;
 import com.moreoptions.prototype.gameEngine.components.StatsComponent;
 import com.moreoptions.prototype.gameEngine.data.*;
+import com.moreoptions.prototype.gameEngine.util.DataTracker;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
@@ -60,6 +61,9 @@ public class EnemySystem extends EntitySystem{
                     ec.getOnDeath().onTrigger(e, null);
                     if (itemDrop != null) GameWorld.getInstance().addEntity(itemDrop);
                 }
+
+                DataTracker.trackFloatData(Consts.Data.ENEMIES_KILLED, 1);
+                DataTracker.trackEnemyKills(Consts.Data.ENEMY_KILLED, e);
 
                 ec.getRoom().checkForClear();
                 GameWorld.getInstance().removeEntity(e);

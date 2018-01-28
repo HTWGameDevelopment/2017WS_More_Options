@@ -11,6 +11,7 @@ import com.moreoptions.prototype.gameEngine.components.*;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.Sensor;
 import com.moreoptions.prototype.gameEngine.util.CollisionUtil;
+import com.moreoptions.prototype.gameEngine.util.DataTracker;
 import com.moreoptions.prototype.gameEngine.util.EntityTools;
 import com.moreoptions.prototype.gameEngine.util.EventFactory;
 import javafx.util.Pair;
@@ -86,6 +87,12 @@ public class MovementSystem extends EntitySystem {
             if(cMapper.has(e)) cMapper.get(e).getHitbox().setPosition(pos.getX(),pos.getY());
             boolean yCollsion = resolveYCollision(e,col.getOldX(), col.getOldY());
 
+
+
+            if(playMapper.has(e)) {
+                float distanceWalked = Math.signum(col.getOldX() - pos.getX()) + Math.signum(col.getOldY() - pos.getY());
+                DataTracker.trackFloatData(Consts.Data.DISTANCE_WALKED, distanceWalked);
+            }
             //SMOOTH EDGE MOVEMENT
 
 
@@ -171,6 +178,7 @@ public class MovementSystem extends EntitySystem {
             }
 
         }
+
     }
 
     private boolean checkSensor(Sensor sensor, Entity e) {

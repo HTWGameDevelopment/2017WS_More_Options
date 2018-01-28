@@ -25,7 +25,7 @@ public class GameState {
         Preferences pref = Gdx.app.getPreferences(Strings.PREFERENCES);
         if(!pref.contains(Strings.PREFERENCES_PROFILE)) {
             System.out.println("No profile found! Creating new one!");
-            gameProfile = new Profile("Test");
+            gameProfile = new Profile(Strings.PREFERENCES_PROFILE);
 
         } else {
             Gson gson = new Gson();
@@ -33,8 +33,7 @@ public class GameState {
             gameProfile = profile;
             //
             System.out.println("load profile from memory" + gameProfile.toString());
-            gameProfile.getAchievements().bosskiller = true;
-            gameProfile.save();
+
         }
     }
 
