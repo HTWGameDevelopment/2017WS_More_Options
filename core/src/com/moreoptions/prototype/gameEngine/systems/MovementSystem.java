@@ -90,7 +90,7 @@ public class MovementSystem extends EntitySystem {
 
 
             if(playMapper.has(e)) {
-                float distanceWalked = Math.signum(col.getOldX() - pos.getX()) + Math.signum(col.getOldY() - pos.getY());
+                float distanceWalked = Math.abs(col.getOldX() - pos.getX()) + Math.abs(col.getOldY() - pos.getY());
                 DataTracker.trackFloatData(Consts.Data.DISTANCE_WALKED, distanceWalked);
             }
             //SMOOTH EDGE MOVEMENT

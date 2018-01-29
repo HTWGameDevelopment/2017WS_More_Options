@@ -134,7 +134,7 @@ public class LoginScreen implements Screen {
         loginFrame.add(registerButton);
 
 
-        errorMessage = new Label("TEST",skin);
+        errorMessage = new Label("",skin);
         errorMessage.getStyle().fontColor = Color.WHITE;
         loginFrame.row();
         loginFrame.add(backButton);
@@ -184,15 +184,16 @@ public class LoginScreen implements Screen {
         preferences.flush();
     }
 
-    private void login(String name, String password) {
-        String passwordHash = ApiRequest.hash(name, password);
+    private void login(final String name, String password) {
+        final String passwordHash = ApiRequest.hash(name, password);
         ApiRequest.login(name, passwordHash, new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 if(httpResponse.getStatus().getStatusCode() == 400) {
                     showErrorText(httpResponse.getResultAsString());
-                } else {
 
+                } else {
+                    updateData(name, passwordHash);
                     showErrorText(httpResponse.getResultAsString());
                 }
             }

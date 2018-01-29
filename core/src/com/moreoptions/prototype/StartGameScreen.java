@@ -18,10 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.google.gson.Gson;
-import com.moreoptions.prototype.gameEngine.data.Consts;
-import com.moreoptions.prototype.gameEngine.data.GameState;
-import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
-import com.moreoptions.prototype.gameEngine.data.Strings;
+import com.moreoptions.prototype.gameEngine.data.*;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
 
@@ -251,8 +248,17 @@ public class StartGameScreen implements Screen {
         ApiRequest.getLatestSaveGame(GameState.getInstance().getGameProfile(), new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                System.out.println("----CHECKED SERVER-----");
                 System.out.println(httpResponse.getStatus().getStatusCode());
-                System.out.println(httpResponse.getResultAsString());
+
+                HashMap<String, String> p = gson.fromJson(httpResponse.getResultAsString(), HashMap.class);
+                System.out.println("Server!!" + p.get("serverprofile"));
+
+                Profile profile = gson.fromJson(p.get("serverprofile"), Profile.class);
+                GameState.getInstance().setGameProfile(profile);
+
+                System.out.println("----CHECKED SERVER");
+
 
             }
 

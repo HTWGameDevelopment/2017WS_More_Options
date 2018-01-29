@@ -17,7 +17,33 @@ public class Profile {
     private Achievements achievements;
     private String name;
     private Date date;
+
+    public void setStats(HashMap<String, Float> stats) {
+        this.stats = stats;
+    }
+
+    public void setGameHotkeys(HashMap<Integer, Hotkey.GameHotkey> gameHotkeys) {
+        this.gameHotkeys = gameHotkeys;
+    }
+
+    public void setAchievements(Achievements achievements) {
+        this.achievements = achievements;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     private HashMap<String, Float> stats;
+    private boolean ignored;
 
     Profile(String name) {
         createNewProfile(name);
@@ -29,14 +55,13 @@ public class Profile {
     }
 
     private void createNewProfile(String name) {
-
+        this.ignored = true;
         this.name = name;
 
         initDefaultHotkeys();
         achievements = new Achievements();
         stats = new HashMap<String, Float>();
         saveProfile();
-
     }
 
     private void initDefaultHotkeys() {
@@ -88,5 +113,13 @@ public class Profile {
 
     public HashMap<String, Float> getStats() {
         return stats;
+    }
+
+    public boolean isIgnored() {
+        return ignored;
+    }
+
+    public void setIgnored(boolean ignored) {
+        this.ignored = ignored;
     }
 }

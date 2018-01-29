@@ -30,10 +30,10 @@ public class GameState {
         } else {
             Gson gson = new Gson();
             Profile profile = gson.fromJson(pref.getString(Strings.PREFERENCES_PROFILE), Profile.class);
+            profile.setIgnored(false);
             gameProfile = profile;
             //
             System.out.println("load profile from memory" + gameProfile.toString());
-
         }
     }
 
@@ -67,5 +67,9 @@ public class GameState {
         for(Player p : playerList) {
             p.getInputState().reset();
         }
+    }
+
+    public void setGameProfile(Profile gameProfile) {
+        this.gameProfile = gameProfile;
     }
 }
