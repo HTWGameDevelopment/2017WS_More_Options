@@ -186,15 +186,18 @@ public class LoginScreen implements Screen {
 
     private void login(final String name, String password) {
         final String passwordHash = ApiRequest.hash(name, password);
+        System.out.println("Logging in: "+ name);
         ApiRequest.login(name, passwordHash, new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 if(httpResponse.getStatus().getStatusCode() == 400) {
                     showErrorText(httpResponse.getResultAsString());
+                    System.out.println("Error");
 
                 } else {
                     updateData(name, passwordHash);
                     showErrorText(httpResponse.getResultAsString());
+                    System.out.println("Success");
                 }
             }
 
@@ -205,7 +208,7 @@ public class LoginScreen implements Screen {
 
             @Override
             public void cancelled() {
-
+                System.out.println("CANCELLED");
             }
         });
     }
