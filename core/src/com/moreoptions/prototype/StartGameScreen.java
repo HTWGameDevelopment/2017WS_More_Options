@@ -85,9 +85,22 @@ public class StartGameScreen implements Screen {
             }
         });
 
+        TextButton statsButton = new TextButton("Stats", skin);
+
+        statsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                moreOptions.showStatsScreen();
+                super.clicked(event, x, y);
+            }
+        });
+
+
         table.add(logo);
         table.row();
         table.add(newGameButton);
+        table.row();
+        table.add(statsButton);
         table.row();
         table.add(exitGameButton);
         stage.addActor(table);

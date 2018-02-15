@@ -19,6 +19,7 @@ public class MoreOptions extends Game {
 	private LoginScreen loginScreen;
 	private GameOverScreen gameOverScreen;
 	private LoadingScreen loadingScreen;
+	private StatsScreen statsScreen;
 
 	private EventSubscriber subscriber;
 
@@ -56,6 +57,10 @@ public class MoreOptions extends Game {
 		setScreen(screen);
 	}
 
+	public void showStatsScreen(){
+		setScreen(statsScreen);
+	}
+
 	public StartGameScreen getMainMenu() {
 		return screen;
 	}
@@ -69,6 +74,7 @@ public class MoreOptions extends Game {
 		dungeonScreen = new DungeonScreen( this);
 		loginScreen = new LoginScreen( this);
 		gameOverScreen = new GameOverScreen( this);
+		statsScreen = new StatsScreen(this);
 		setScreen(screen);
 	}
 
