@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.HotkeyScreen;
 import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
@@ -20,7 +21,7 @@ public class MoreOptions extends Game {
 	private GameOverScreen gameOverScreen;
 	private LoadingScreen loadingScreen;
 	private StatsScreen statsScreen;
-
+	private FirstStartupScreen firstStartScreen;
 	private EventSubscriber subscriber;
 
 	public MoreOptions() {
@@ -54,7 +55,13 @@ public class MoreOptions extends Game {
 	}
 
 	public void showStartScreen() {
-		setScreen(screen);
+
+		if(GameState.getInstance().doesLocalGameStateExist()) {
+			GameState.getInstance().loadLocalGameState();
+			setScreen(screen);
+		} else {
+			setScreen(firstStartScreen);
+		}
 	}
 
 	public void showStatsScreen(){
@@ -75,7 +82,8 @@ public class MoreOptions extends Game {
 		loginScreen = new LoginScreen( this);
 		gameOverScreen = new GameOverScreen( this);
 		statsScreen = new StatsScreen(this);
-		setScreen(screen);
+		firstStartScreen = new FirstStartupScreen(this);
+		showStartScreen();
 	}
 
 }

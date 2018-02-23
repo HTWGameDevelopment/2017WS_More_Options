@@ -21,7 +21,7 @@ public class GameState {
         return ourInstance;
     }
 
-    private GameState() {
+    private GameState() {/*
         Preferences pref = Gdx.app.getPreferences(Strings.PREFERENCES);
         if(!pref.contains(Strings.PREFERENCES_PROFILE)) {
             System.out.println("No profile found! Creating new one!");
@@ -34,7 +34,33 @@ public class GameState {
             gameProfile = profile;
             //
             System.out.println("load profile from memory" + gameProfile.toString());
-        }
+        }*/
+    }
+
+    public boolean doesLocalGameStateExist() {
+        Preferences pref = Gdx.app.getPreferences(Strings.PREFERENCES);
+        return (pref.contains(Strings.PREFERENCES_PROFILE));
+    }
+
+    public void loadLocalGameState() {
+        Preferences pref = Gdx.app.getPreferences(Strings.PREFERENCES);
+        Gson gson = new Gson();
+        Profile profile = gson.fromJson(pref.getString(Strings.PREFERENCES_PROFILE), Profile.class);
+        profile.setIgnored(false);
+        gameProfile = profile;
+        System.out.println("load profile from memory" + gameProfile.toString());
+    }
+
+    public void loadCloudProfile(String s) {
+        Gson gson = new Gson();
+        Profile profile = gson.fromJson(s, Profile.class);
+        profile.setIgnored(false);
+        gameProfile = profile;
+        System.out.println("load profile from cloud" + gameProfile.toString());
+    }
+
+    public void createNewProfile() {
+        gameProfile = new Profile(Strings.PREFERENCES_PROFILE);
     }
 
     private GameState(Profile p) {
@@ -71,5 +97,9 @@ public class GameState {
 
     public void setGameProfile(Profile gameProfile) {
         this.gameProfile = gameProfile;
+    }
+
+    public void disableOnlineFeatures() {
+        //TODO: IMPL
     }
 }

@@ -51,10 +51,6 @@ public class LoginScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            moreOptions.showStartScreen();
-        }
-
     }
 
     @Override

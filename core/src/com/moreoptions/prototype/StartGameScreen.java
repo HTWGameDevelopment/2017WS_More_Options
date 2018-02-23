@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -48,7 +49,6 @@ public class StartGameScreen implements Screen {
 
 
     Label errorMessage;
-    private Table greenFrame;
     private Table table;
 
 
@@ -107,14 +107,6 @@ public class StartGameScreen implements Screen {
 
         errorMessage = new Label("",skin);
         //setupLoginDialog();
-        setupGreenFrame();
-
-        setupOnlineFeatures(table);
-    }
-
-    private void setupGreenFrame() {
-        greenFrame = new Table();
-        greenFrame.add(new Label("ALLES KLAR!", skin));
 
     }
 
@@ -165,35 +157,6 @@ public class StartGameScreen implements Screen {
         moreOptions.showDungeon();
     }
 
-    public void setupOnlineFeatures(final Table table) {
-
-        loginIndicatorRed = new Image(new Texture(Gdx.files.internal("images/RoundCircle.png")));
-        loginIndicatorRed.setSize(15,15);
-        loginIndicatorRed.setAlign(Align.bottomRight);
-        loginIndicatorRed.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                moreOptions.showLoginScreen();
-                super.clicked(event, x, y);
-            }
-        });
-
-        loginIndicatorGreen = new Image(new Texture(Gdx.files.internal("images/RoundCircleGreen.png")));
-        loginIndicatorGreen.setSize(15,15);
-        loginIndicatorGreen.setAlign(Align.bottomRight);
-        loginIndicatorGreen.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                moreOptions.showLoginScreen();
-                super.clicked(event, x, y);
-            }
-        });
-
-        stage.addActor(loginIndicatorRed);
-
-        verifyLogin();
-
-    }
 
     private void verifyLogin() {
         Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES);
@@ -209,20 +172,18 @@ public class StartGameScreen implements Screen {
             ApiRequest.login(username, pwHash, new Net.HttpResponseListener() {
                 @Override
                 public void handleHttpResponse(Net.HttpResponse httpResponse) {
-                    if(httpResponse.getStatus().getStatusCode() == Consts.Network.SUCCESS) {
+                    if(httpResponse.getStatus().getStatusCode() == HttpStatus.SC_OK) {
                         verifyLocalSavegame();
-                        showGreenLight();
                         enableUserInput();
                         System.out.println("-------");
                     } else {
-                        showRedLight();
+
                     }
                 }
 
                 @Override
                 public void failed(Throwable t) {
                     enableUserInput();
-                    showRedLight();
 
                 }
 
@@ -237,11 +198,6 @@ public class StartGameScreen implements Screen {
         }
     }
 
-    private void showRedLight() {
-        currentLoginIndicator = loginIndicatorRed;
-        currentLoginIndicator.remove();
-        stage.addActor(loginIndicatorRed);
-    }
 
     private void showLoadingText(Table table) {
 
@@ -249,12 +205,6 @@ public class StartGameScreen implements Screen {
 
     private void showLoginDialog(Table stage) {
         stage.add(loginFrame).bottom();
-    }
-
-    private void showGreenLight() {
-        currentLoginIndicator = loginIndicatorGreen;
-        currentLoginIndicator.remove();
-        stage.addActor(loginIndicatorGreen);
     }
 
     private void verifyLocalSavegame() {
@@ -356,7 +306,6 @@ public class StartGameScreen implements Screen {
                 } else {
                     showErrorText(httpResponse.getResultAsString());
                     updateData(name, ApiRequest.hash(name,password));
-                    showGreenLight();
 
 
                 }

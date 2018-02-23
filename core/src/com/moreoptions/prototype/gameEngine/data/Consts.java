@@ -62,7 +62,8 @@ public class Consts {
     public class Network {
         public static final String SALT = "ENTER_CUSTOM_SALT";
         public static final String SERVER_ADRESS = "http://localhost:8080";
-        public static final int SUCCESS = 200;
+        public static final String BODY = "message";
+
     }
 
     public class Data {
