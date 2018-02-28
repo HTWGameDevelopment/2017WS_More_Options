@@ -139,6 +139,9 @@ public class GameWorld extends Engine {
     public void update(float deltaTime) {
         super.update(deltaTime);
         //stage.draw();
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        processor.render(renderer);
+        renderer.end();
         userInterface.update();
         userInterface.draw();
     }

@@ -1,7 +1,10 @@
 package com.moreoptions.prototype.gameEngine.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.InputState;
@@ -16,8 +19,26 @@ public class GameInputProcessor implements InputProcessor {
     private OrthographicCamera camera;
     private InputState p1;
 
+    private Vector2 touchFirstDownPosition;
+    private Vector2 touchFirstDragPosition;
+    private Vector2 touchSecondDownPosition;
+    private Vector2 touchSecondDownDragPosition;
+    private Vector2 touchDragPosition = new Vector2();
+
+    private boolean touchFirstDownPositionPressed;
+    private boolean touchSecondDownPositionPressed;
+
     public GameInputProcessor(OrthographicCamera camera) {
         this.camera = camera;
+        touchFirstDownPosition = new Vector2();
+        touchFirstDragPosition = new Vector2();
+        touchFirstDownPositionPressed = false;
+        touchSecondDownPosition = new Vector2();
+        touchSecondDownDragPosition = new Vector2();
+    }
+
+    public void render(ShapeRenderer renderer) {
+        renderer.line(touchFirstDownPosition, touchDragPosition);
     }
 
     private int playerCount = 0;
@@ -130,16 +151,67 @@ public class GameInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        Vector3 screencords = new Vector3(screenX, screenY, 0);
+
+        screencords = camera.unproject(screencords);
+
+
+        if(touchFirstDownPositionPressed) {
+            touchSecondDownPosition.set(screencords.x,screencords.y);
+            touchSecondDownPositionPressed = true;
+        } else {
+            if(screenX <= Gdx.graphics.getWidth() /2) {
+                touchFirstDownPositionPressed = true;
+                touchFirstDownPosition.set(screencords.x,screencords.y);
+            }
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        if(screenX <= Gdx.graphics.getWidth()/2) {
+            if(touchFirstDownPositionPressed) touchFirstDownPositionPressed = false;
+        } else if(touchSecondDownPositionPressed) {
+                touchSecondDownPositionPressed = false;
+            }
+        else if(touchSecondDownPositionPressed) touchSecondDownPositionPressed = false;
+        else {
+            touchFirstDownPositionPressed = false;
+        }
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+
+
+
+        Vector3 screencords = new Vector3(screenX, screenY, 0);
+
+        screencords = camera.unproject(screencords);
+        if(touchFirstDownPositionPressed) {
+
+            touchDragPosition.set(screencords.x,screencords.y);
+
+            System.out.println("LEFTDRAG");
+            System.out.println(Math.atan(touchFirstDownPosition.dot(touchDragPosition)));
+            System.out.println(touchFirstDownPosition);
+            System.out.println(touchDragPosition);
+
+        }
+
+        screencords = camera.unproject(screencords);
+
+        if(touchSecondDownPositionPressed) {
+            touchDragPosition.set(screencords.x,screencords.y);
+            System.out.println("RIGHTDRAG");
+            System.out.println(Math.atan(touchFirstDownPosition.dot(touchDragPosition)));
+            System.out.println(touchFirstDownPosition);
+            System.out.println(touchDragPosition);
+        }
         return false;
     }
 

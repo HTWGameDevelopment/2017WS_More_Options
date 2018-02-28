@@ -55,11 +55,9 @@ public class AchievementSystem extends EntitySystem {
         subscriber.subscribe(Consts.ACHIEVEMENT_EVENT_ID, new EventListener() {
             @Override
             public boolean trigger(Event e) {
-                System.out.println("Tracking: test");
                 String id = e.getData(AchievementSystem.ByteID, String.class);
                 if(dataProcessors.containsKey(id)) {
                     dataProcessors.get(id).handle(e);
-                    System.out.println("Tracking: " + id);
                 } else {
                     try {
                         throw new AchievementException("Untracked Data! Please add a dataprocessor for "+e.getData("id", String.class));

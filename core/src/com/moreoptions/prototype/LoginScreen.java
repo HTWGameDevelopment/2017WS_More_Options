@@ -3,12 +3,16 @@ package com.moreoptions.prototype;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.google.gson.Gson;
+import com.moreoptions.prototype.gameEngine.data.Consts;
+import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Strings;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
@@ -24,7 +28,15 @@ public class LoginScreen implements Screen {
 
     private Table loginFrame;
     private Skin skin;
+
+    //Parts
     private Label errorMessage;
+    private TextButton backButton;
+    private TextButton registerButton;
+    private TextButton loginButton;
+
+    private TextField email;
+    private TextField pw;
 
     private Gson gson = new Gson();
 
@@ -33,9 +45,84 @@ public class LoginScreen implements Screen {
     public LoginScreen(MoreOptions moreOptions) {
         skin = AssetLoader.getInstance().getSkin();
         stage = new Stage();
-        setupLoginDialog(stage);
+        setupTextFields();
+        setupButtons();
+        stitchUITogether();
         this.moreOptions = moreOptions;
 
+    }
+
+    private void setupTextFields() {
+        email = new TextField("", skin);
+        email.setMessageText("Email");
+
+        pw = new TextField("", skin);
+        pw.setPasswordCharacter('*');
+        pw.setMessageText("Password");
+        pw.setPasswordMode(true);
+    }
+
+    private void setupButtons() {
+        backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            moreOptions.showStartScreen();
+            super.clicked(event, x, y);
+        }
+        });
+
+        registerButton = new TextButton("Register",skin);
+        registerButton.setName("Register");
+
+
+        loginButton = new TextButton("Login", skin);
+        registerButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                register(email.getText(), pw.getText());
+                disableInput();
+
+                showErrorText("Processing Register!");
+                super.clicked(event, x, y);
+            }
+        });
+
+        loginButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                login(email.getText(), pw.getText());
+                disableInput();
+                showErrorText("Processing Login!");
+                super.clicked(event, x, y);
+            }
+        });
+
+        loginButton.setName("Login");
+    }
+
+    private void disableInput() {
+        Gdx.input.setInputProcessor(null);
+    }
+
+
+    private void stitchUITogether() {
+        loginFrame = new Table();
+        loginFrame.debug();
+        loginFrame.setFillParent(true);
+
+        loginFrame.add(email);
+        loginFrame.add(pw);
+        loginFrame.row();
+        loginFrame.add(loginButton);
+        loginFrame.add(registerButton);
+
+        errorMessage = new Label("",skin);
+        errorMessage.getStyle().fontColor = Color.WHITE;
+        loginFrame.row();
+        loginFrame.add(backButton);
+        loginFrame.add(errorMessage).padTop(50).align(Align.center);
+        stage.addActor(loginFrame);
     }
 
 
@@ -78,65 +165,6 @@ public class LoginScreen implements Screen {
 
     }
 
-    private void setupLoginDialog(Stage stage) {
-        loginFrame = new Table();
-        loginFrame.debug();
-        loginFrame.setFillParent(true);
-
-
-        final TextField email = new TextField("", skin);
-        email.setMessageText("Email");
-        final TextField pw = new TextField("", skin);
-        pw.setPasswordCharacter('*');
-        pw.setMessageText("Password");
-        pw.setPasswordMode(true);
-
-        TextButton backButton = new TextButton("Back", skin);
-
-        backButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                moreOptions.showStartScreen();
-                super.clicked(event, x, y);
-            }
-        });
-
-        TextButton registerButton = new TextButton("Register",skin);
-        registerButton.setName("Register");
-
-
-        TextButton loginButton = new TextButton("Login", skin);
-        registerButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                register(email.getText(), pw.getText());
-                super.clicked(event, x, y);
-            }
-        });
-
-        loginButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                login(email.getText(), pw.getText());
-                super.clicked(event, x, y);
-            }
-        });
-
-        loginButton.setName("Login");
-        loginFrame.add(email);
-        loginFrame.add(pw);
-        loginFrame.row();
-        loginFrame.add(loginButton);
-        loginFrame.add(registerButton);
-
-
-        errorMessage = new Label("",skin);
-        errorMessage.getStyle().fontColor = Color.WHITE;
-        loginFrame.row();
-        loginFrame.add(backButton);
-        loginFrame.add(errorMessage).padTop(50).align(Align.center);
-        stage.addActor(loginFrame);
-    }
 
 
     private void register(final String name, final String password) {
@@ -144,32 +172,31 @@ public class LoginScreen implements Screen {
 
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
-                if(httpResponse.getStatus().getStatusCode() == 400) {
+                if(httpResponse.getStatus().getStatusCode() != HttpStatus.SC_OK) {
                     showErrorText(httpResponse.getResultAsString());
-
+                    enableInput();
                 } else {
                     showErrorText(httpResponse.getResultAsString());
                     updateData(name, ApiRequest.hash(name,password));
-                    showGreenLight();
 
+                    enableInput();
 
                 }
+
             }
 
             @Override
             public void failed(Throwable t) {
                 showErrorText("Couldn't reach server.");
+                enableInput();
             }
 
             @Override
             public void cancelled() {
                 showErrorText("Couldn't reach server.");
+                enableInput();
             }
         });
-    }
-
-    private void showGreenLight() {
-        //moreOptions.getMainMenu().showGreenLight();
     }
 
 
@@ -178,6 +205,7 @@ public class LoginScreen implements Screen {
         preferences.putString(Strings.USER_ACCOUNT, username);
         preferences.putString(Strings.USER_PASSWORD_HASH, passwordhash);
         preferences.flush();
+
     }
 
     private void login(final String name, String password) {
@@ -185,30 +213,66 @@ public class LoginScreen implements Screen {
         ApiRequest.login(name, passwordHash, new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
-                if(httpResponse.getStatus().getStatusCode() == 400) {
+                if(httpResponse.getStatus().getStatusCode() != HttpStatus.SC_OK) {
                     showErrorText(httpResponse.getResultAsString());
+                    enableInput();
 
                 } else {
-                    updateData(name, passwordHash);
+                    updateData(name, passwordHash);                                                                     //This updates the local login data. When starting the game, first, we compare local data to cloud. if doesnt match, we show a login screen.
+                    updateSaveGame();                                                                                   //This checks if the online state is more recent than the local state.
                     showErrorText(httpResponse.getResultAsString());
+                    enableInput();
                 }
             }
 
             @Override
             public void failed(Throwable t) {
                 showErrorText("Couldn't reach server.");
+                enableInput();
             }
 
             @Override
             public void cancelled() {
-
+                showErrorText("Couldn't reach server.");
+                enableInput();
             }
         });
     }
 
-    private void showErrorText(String s) {
-        HashMap<String, String> results = gson.fromJson(s, HashMap.class);
+    private void updateSaveGame() {
+        ApiRequest.getLatestSaveGame(null, new Net.HttpResponseListener() {
+            @Override
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                if (httpResponse.getStatus().getStatusCode() == HttpStatus.SC_OK) {
+                    GameState.getInstance().loadCloudProfile(httpResponse.getResultAsString());
+                } else {
+                    showErrorText("Couldn't update local savegame.");
+                }
+            }
 
-        errorMessage.setText(results.get("error"));
+            @Override
+            public void failed(Throwable t) {
+                showErrorText("Couldn't update local savegame.");
+            }
+
+            @Override
+            public void cancelled() {
+                showErrorText("Couldn't update local savegame.");
+            }
+        });
+    }
+
+    private void enableInput() {
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    private void showErrorText(String s) {
+        errorMessage.setText(s);
+    }
+
+    private String parseMessage(String s) {
+
+        HashMap<String, String> results = gson.fromJson(s, HashMap.class);
+        return results.get(Consts.Network.BODY);
     }
 }

@@ -80,7 +80,6 @@ public class StartGameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
-                //Gdx.app.exit();
                 super.clicked(event, x, y);
             }
         });

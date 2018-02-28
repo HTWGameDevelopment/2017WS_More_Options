@@ -58,7 +58,7 @@ public class MoreOptions extends Game {
 
 		if(GameState.getInstance().doesLocalGameStateExist()) {
 			GameState.getInstance().loadLocalGameState();
-			setScreen(screen);
+			setScreen(loginScreen);
 		} else {
 			setScreen(firstStartScreen);
 		}

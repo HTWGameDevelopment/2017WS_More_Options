@@ -162,10 +162,10 @@ public class AssetLoader {
     }
 
     public Skin getSkin() {
-        return assetManager.get("comic/skin/comic-ui.json", Skin.class);
+        return assetManager.get("comic/skin2/uiskin.json", Skin.class);
     }
 
     public void loadSkin() {
-        assetManager.load("comic/skin/comic-ui.json", Skin.class);
+        assetManager.load("comic/skin2/uiskin.json", Skin.class);
     }
 }

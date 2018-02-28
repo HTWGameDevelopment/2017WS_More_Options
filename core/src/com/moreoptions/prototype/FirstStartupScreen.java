@@ -62,7 +62,6 @@ public class FirstStartupScreen implements Screen {
                 GameState.getInstance().createNewProfile();
                 GameState.getInstance().disableOnlineFeatures();
                 moreOptions.showStartScreen();
-                System.out.println("CLICKED NO");
                 super.clicked(event, x, y);
             }
         });
