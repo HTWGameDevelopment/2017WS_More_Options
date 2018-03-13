@@ -17,6 +17,8 @@ public class GameState {
     private ArrayList<Player> playerList = new ArrayList<Player>();
     private boolean debugMode = true;
 
+    Gson gson = new Gson();
+
     public static GameState getInstance() {
         return ourInstance;
     }
@@ -39,12 +41,14 @@ public class GameState {
 
     public boolean doesLocalGameStateExist() {
         Preferences pref = Gdx.app.getPreferences(Strings.PREFERENCES);
+        System.out.println("Checking if local state exists!" + pref.contains(Strings.PREFERENCES_PROFILE));
+
         return (pref.contains(Strings.PREFERENCES_PROFILE));
     }
 
     public void loadLocalGameState() {
         Preferences pref = Gdx.app.getPreferences(Strings.PREFERENCES);
-        Gson gson = new Gson();
+
         Profile profile = gson.fromJson(pref.getString(Strings.PREFERENCES_PROFILE), Profile.class);
         profile.setIgnored(false);
         gameProfile = profile;
@@ -52,6 +56,7 @@ public class GameState {
     }
 
     public void loadCloudProfile(String s) {
+        //Todo check if more recent
         Gson gson = new Gson();
         Profile profile = gson.fromJson(s, Profile.class);
         profile.setIgnored(false);
@@ -61,6 +66,13 @@ public class GameState {
 
     public void createNewProfile() {
         gameProfile = new Profile(Strings.PREFERENCES_PROFILE);
+        saveProfile();
+    }
+
+    private void saveProfile() {
+        Preferences pref = Gdx.app.getPreferences(Strings.PREFERENCES);
+        pref.putString(Strings.PREFERENCES_PROFILE, gson.toJson(gameProfile));
+        pref.flush();
     }
 
     private GameState(Profile p) {

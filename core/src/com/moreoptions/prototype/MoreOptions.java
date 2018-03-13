@@ -1,6 +1,7 @@
 package com.moreoptions.prototype;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.moreoptions.prototype.gameEngine.GameWorld;
@@ -8,6 +9,7 @@ import com.moreoptions.prototype.gameEngine.HotkeyScreen;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
+import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventListener;
 import com.moreoptions.prototype.gameEngine.util.eventBus.EventSubscriber;
@@ -54,16 +56,6 @@ public class MoreOptions extends Game {
 		setScreen(dungeonScreen);
 	}
 
-	public void showStartScreen() {
-
-		if(GameState.getInstance().doesLocalGameStateExist()) {
-			GameState.getInstance().loadLocalGameState();
-			setScreen(loginScreen);
-		} else {
-			setScreen(firstStartScreen);
-		}
-	}
-
 	public void showStatsScreen(){
 		setScreen(statsScreen);
 	}
@@ -83,7 +75,13 @@ public class MoreOptions extends Game {
 		gameOverScreen = new GameOverScreen( this);
 		statsScreen = new StatsScreen(this);
 		firstStartScreen = new FirstStartupScreen(this);
-		showStartScreen();
 	}
 
+    public void showFirstScreen() {
+        setScreen(firstStartScreen);
+    }
+
+    public void showMenuScreen() {
+        setScreen(screen);
+    }
 }

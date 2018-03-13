@@ -16,6 +16,7 @@ import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.data.Strings;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
+import com.moreoptions.prototype.gameEngine.util.dataCollector.LoginDetails;
 
 import java.util.HashMap;
 
@@ -67,7 +68,7 @@ public class LoginScreen implements Screen {
         backButton.addListener(new ClickListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            moreOptions.showStartScreen();
+            moreOptions.showFirstScreen();
             super.clicked(event, x, y);
         }
         });
@@ -102,7 +103,7 @@ public class LoginScreen implements Screen {
     }
 
     private void disableInput() {
-        Gdx.input.setInputProcessor(null);
+        //Gdx.input.setInputProcessor(null);
     }
 
 
@@ -210,18 +211,17 @@ public class LoginScreen implements Screen {
 
     private void login(final String name, String password) {
         final String passwordHash = ApiRequest.hash(name, password);
-        ApiRequest.login(name, passwordHash, new Net.HttpResponseListener() {
+        ApiRequest.login(new LoginDetails(name, passwordHash), new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 if(httpResponse.getStatus().getStatusCode() != HttpStatus.SC_OK) {
-                    showErrorText(httpResponse.getResultAsString());
-                    enableInput();
+                    showErrorText(httpResponse.getResultAsString() + "| " + httpResponse.getStatus().getStatusCode());
+
 
                 } else {
-                    updateData(name, passwordHash);                                                                     //This updates the local login data. When starting the game, first, we compare local data to cloud. if doesnt match, we show a login screen.
-                    updateSaveGame();                                                                                   //This checks if the online state is more recent than the local state.
+                    updateData(name, passwordHash);                                                                   //This checks if the online state is more recent than the local state.
                     showErrorText(httpResponse.getResultAsString());
-                    enableInput();
+                    moreOptions.showMenuScreen();
                 }
             }
 
@@ -246,7 +246,7 @@ public class LoginScreen implements Screen {
                 if (httpResponse.getStatus().getStatusCode() == HttpStatus.SC_OK) {
                     GameState.getInstance().loadCloudProfile(httpResponse.getResultAsString());
                 } else {
-                    showErrorText("Couldn't update local savegame.");
+                    showErrorText("Couldn't update local savegame." + httpResponse.getStatus().getStatusCode());
                 }
             }
 
@@ -263,7 +263,7 @@ public class LoginScreen implements Screen {
     }
 
     private void enableInput() {
-        Gdx.input.setInputProcessor(stage);
+        //Gdx.input.setInputProcessor(stage);
     }
 
     private void showErrorText(String s) {

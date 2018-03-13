@@ -39,7 +39,7 @@ public class GameOverScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                moreOptions.showStartScreen();
+                moreOptions.showMenuScreen();
                 super.clicked(event, x, y);
             }
 

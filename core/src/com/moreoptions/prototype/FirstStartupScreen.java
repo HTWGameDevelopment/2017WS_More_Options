@@ -36,13 +36,13 @@ public class FirstStartupScreen implements Screen {
 
         setupText();
         setupButtons();
-        setupUI();;
+        setupUI();
     }
 
     private void setupUI() {
         Table table = new Table();
         table.setFillParent(true);
-        table.add(label);
+        table.add(label).center().fill();
         table.row();
         table.add(onlineFeaturesButton);
         table.add(denyOnlineFeaturesButton);
@@ -61,7 +61,7 @@ public class FirstStartupScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 GameState.getInstance().createNewProfile();
                 GameState.getInstance().disableOnlineFeatures();
-                moreOptions.showStartScreen();
+                moreOptions.showMenuScreen();
                 super.clicked(event, x, y);
             }
         });
@@ -70,6 +70,7 @@ public class FirstStartupScreen implements Screen {
         onlineFeaturesButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                GameState.getInstance().createNewProfile();
                 moreOptions.showLoginScreen();
                 super.clicked(event, x, y);
             }

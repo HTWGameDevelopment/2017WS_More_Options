@@ -45,14 +45,11 @@ public class ApiRequest {
         return q;
     }
 
-    public static void login(String name, String password, Net.HttpResponseListener listener) {
+    public static void login(LoginDetails details, Net.HttpResponseListener listener) {
 
         HashMap<String, String> data = new HashMap<String, String>();
-        data.put("username", name);
-
-        data.put("password", password);
-
-
+        data.put("username", details.getUsername());
+        data.put("password", details.getPassword());
 
         final Net.HttpRequest request = b.newRequest().method(Net.HttpMethods.POST).url(serverAdress + "/login/").header("Content-Type","application/json").build();
         request.setContent(gson.toJson(data));
@@ -94,12 +91,12 @@ public class ApiRequest {
 
             System.out.println(username + " | " + pw);
 
-            final Net.HttpRequest request = b.newRequest().method(Net.HttpMethods.POST).url(serverAdress + "/state/").header("Content-Type","application/json").build();
+            final Net.HttpRequest request = b.newRequest().method(Net.HttpMethods.POST).url(serverAdress + "/updateGamestate/").header("Content-Type","application/json").build();
             request.setContent(gson.toJson(data));
             Gdx.net.sendHttpRequest(request, new Net.HttpResponseListener() {
                 @Override
                 public void handleHttpResponse(Net.HttpResponse httpResponse) {
-                    System.out.println(httpResponse.getStatus().getStatusCode());
+                    System.out.println("Saved game!: " + httpResponse.getStatus().getStatusCode());
                 }
 
                 @Override
@@ -112,6 +109,8 @@ public class ApiRequest {
 
                 }
             });
+        } else {
+            System.out.println("Saving only locally, not logged in");
         }
 
 

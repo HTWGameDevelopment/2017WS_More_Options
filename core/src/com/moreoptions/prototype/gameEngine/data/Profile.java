@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.google.gson.Gson;
+import com.moreoptions.prototype.gameEngine.util.dataCollector.LoginDetails;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class Profile {
     private Achievements achievements;
     private String name;
     private Date date;
+    private boolean onlineFeaturesEnabled;
 
     public void setStats(HashMap<String, Float> stats) {
         this.stats = stats;
@@ -121,5 +123,24 @@ public class Profile {
 
     public void setIgnored(boolean ignored) {
         this.ignored = ignored;
+    }
+
+    public boolean isLoginSet() {
+        Preferences preferences = Gdx.app.getPreferences(Strings.PREFERENCES);
+
+        return preferences.contains(Strings.USER_ACCOUNT) && preferences.contains(Strings.USER_PASSWORD_HASH);
+    }
+
+    public LoginDetails getLoginDetails() {
+
+        Preferences preferences = Gdx.app.getPreferences(Strings.PREFERENCES);
+        String username = preferences.getString(Strings.USER_ACCOUNT);
+        String password = preferences.getString(Strings.USER_PASSWORD_HASH);
+        return new LoginDetails(username, password);
+
+    }
+
+    public boolean isOnlineFeaturesEnabled() {
+        return onlineFeaturesEnabled;
     }
 }
