@@ -13,6 +13,7 @@ public class Strings {
     public static final String USER_PASSWORD_HASH ="PASSWORD";
     public static String PREFERENCES = "default";
     public static String PREFERENCES_PROFILE = "profile";
+    public static String ONLINE_FEATURES = "online-features";
 
     public class Menu {
         public static final String DS_BACK_TO_MAIN_MENU = "Back to Main Menu";

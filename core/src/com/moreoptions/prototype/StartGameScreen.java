@@ -88,6 +88,16 @@ public class StartGameScreen implements Screen {
             }
         });
 
+        TextButton logout = new TextButton("Logout", skin);
+
+        logout.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                moreOptions.deleteEverything();
+                super.clicked(event, x, y);
+            }
+        });
+
 
         table.add(logo);
         table.row();
@@ -96,6 +106,8 @@ public class StartGameScreen implements Screen {
         table.add(statsButton);
         table.row();
         table.add(exitGameButton);
+        table.row();
+        table.add(logout);
         stage.addActor(table);
 
         errorMessage = new Label("",skin);

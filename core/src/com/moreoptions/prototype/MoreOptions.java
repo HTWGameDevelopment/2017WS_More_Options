@@ -1,13 +1,12 @@
 package com.moreoptions.prototype;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.moreoptions.prototype.gameEngine.GameWorld;
 import com.moreoptions.prototype.gameEngine.HotkeyScreen;
 import com.moreoptions.prototype.gameEngine.data.Consts;
 import com.moreoptions.prototype.gameEngine.data.GameState;
+import com.moreoptions.prototype.gameEngine.data.Strings;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
 import com.moreoptions.prototype.gameEngine.util.eventBus.Event;
@@ -84,4 +83,11 @@ public class MoreOptions extends Game {
     public void showMenuScreen() {
         setScreen(screen);
     }
+
+	public void deleteEverything() {
+		Preferences prefs = Gdx.app.getPreferences(Strings.PREFERENCES);
+		prefs.clear();
+		prefs.flush();
+		showFirstScreen();
+	}
 }

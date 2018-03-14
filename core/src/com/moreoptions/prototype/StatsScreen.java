@@ -2,6 +2,7 @@ package com.moreoptions.prototype;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.Align;
 import com.google.gson.Gson;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
+import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +32,12 @@ public class StatsScreen implements Screen {
     private Table utilTable = new Table();
     private Skin skin;
     private Label errorMessage;
+    private TextField searchField;
+
+    boolean dataReady = false;
 
     private MoreOptions moreOptions;
+    private HashMap<String, String> data;
 
     public StatsScreen(MoreOptions moreOptions){
         skin = AssetLoader.getInstance().getSkin();
@@ -56,6 +62,11 @@ public class StatsScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
+        if(dataReady) {
+            dataReady = false;
+            setupCompareTable(data);
+        }
 
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             moreOptions.showMenuScreen();
@@ -98,8 +109,6 @@ public class StatsScreen implements Screen {
         statsTable.add(stats);
         statsTable.row();
 
-
-
         for(Map.Entry<String,Float> e : hm.entrySet()){
             //if(statsTable.getRows() != 0) statsTable.row();
             statsTable.row();
@@ -126,14 +135,15 @@ public class StatsScreen implements Screen {
             }
         });
 
-        final TextField searchField = new TextField("",skin);
+       searchField = new TextField("",skin);
 
         TextButton searchButton = new TextButton("Search", skin);
 
-        searchButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                setupCompareTable(ownData);
+                searchButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        if(!searchField.getText().isEmpty())
+                        requestStats(searchField.getText());
                 super.clicked(event, x, y);
             }
         });
@@ -141,12 +151,11 @@ public class StatsScreen implements Screen {
         errorMessage = new Label("",skin);
         errorMessage.getStyle().fontColor = Color.WHITE;
         statsTable.row();
-        statsTable.add(backButton);
-        statsTable.row();
         statsTable.add(searchField);
-        statsTable.row();
         statsTable.add(searchButton);
         statsTable.add(errorMessage).padTop(50).align(Align.center);
+        statsTable.row();
+        statsTable.add(backButton);
         stage.addActor(statsTable);
     }
 
@@ -154,8 +163,9 @@ public class StatsScreen implements Screen {
 
     }
 
-    private void setupCompareTable(HashMap<String, Float> theirData) {
+    private void setupCompareTable(HashMap<String, String> theirData) {
         if(!ownData.isEmpty()) {
+            System.out.println("Comparing our Data:" + ownData.entrySet().size() + "to their" + theirData.entrySet().size());
 
             statsTable.clear();
             statsTable.row();
@@ -172,12 +182,12 @@ public class StatsScreen implements Screen {
 
             for(Map.Entry<String, Float> e : ownData.entrySet()) {
 
-                float valueTheir = theirData.get(e.getKey());
+                String valueTheir = String.valueOf(theirData.get(e.getKey()));
                 float ourData = e.getValue();
                 String ourName = e.getKey();
                 statsTable.add(new Label(ourName, skin));
                 statsTable.add(new Label(String.valueOf(ourData), skin));
-                statsTable.add(new Label(String.valueOf(valueTheir), skin));
+                statsTable.add(new Label(valueTheir, skin));
                 statsTable.row();
             }
 
@@ -195,6 +205,36 @@ public class StatsScreen implements Screen {
             statsTable.add(backButton);
 
         }
+    }
+
+    public void requestStats(String name) {
+        ApiRequest.getStats(name, new Net.HttpResponseListener() {
+            @Override
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                if(httpResponse.getStatus().getStatusCode() == 200) {
+
+                    Gson gson = new Gson();
+                    HashMap<String, String> map = gson.fromJson(httpResponse.getResultAsString(), HashMap.class);
+                    System.out.println(map.get("message"));
+                    HashMap<String, String> smap = gson.fromJson(map.get("message"), HashMap.class);
+                    System.out.println(smap.size());
+                    data = smap;
+                    dataReady = true;
+
+                }
+            }
+
+            @Override
+            public void failed(Throwable t) {
+
+                System.out.println("alles" + t.getMessage());
+            }
+
+            @Override
+            public void cancelled() {
+
+            }
+        });
     }
 
 }

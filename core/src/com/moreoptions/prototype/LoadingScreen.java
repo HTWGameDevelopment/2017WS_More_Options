@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.moreoptions.prototype.gameEngine.data.GameOptions;
 import com.moreoptions.prototype.gameEngine.data.GameState;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
 import com.moreoptions.prototype.gameEngine.util.dataCollector.ApiRequest;
@@ -90,15 +91,14 @@ public class LoadingScreen implements Screen {
     }
 
     private void checkOnlineFeatures() {
-
-        //First, reset progress bar
+        //First, check if local game exists
         if(GameState.getInstance().doesLocalGameStateExist()) {
-            //If yes, load Game State
+            //If yes, load Game State for later comparision
             GameState.getInstance().loadLocalGameState();
             //Check if online-features are enabled
-            if(GameState.getInstance().getGameProfile().isOnlineFeaturesEnabled()) {
+            if(GameOptions.isOnlineEnabled()) {
                 //Check if data is correct
-                if(GameState.getInstance().getGameProfile().isLoginSet()) {
+                if(GameOptions.hasLoginDetails()) {
                     LoginDetails details = GameState.getInstance().getGameProfile().getLoginDetails();
                     progressText.setText("Logging in!");
                     ApiRequest.login(details, new LoginResponseListener());
@@ -143,7 +143,7 @@ public class LoadingScreen implements Screen {
         @Override
         public void handleHttpResponse(Net.HttpResponse httpResponse) {
             if(httpResponse.getStatus().getStatusCode() == 200) {
-                moreOptions.showMenuScreen();
+                updateSaveGame();
             }
         }
 
@@ -156,6 +156,32 @@ public class LoadingScreen implements Screen {
         public void cancelled() {
 
         }
+    }
+
+    private void updateSaveGame() {
+        ApiRequest.getLatestSaveGame(null, new Net.HttpResponseListener() {
+            @Override
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                if (httpResponse.getStatus().getStatusCode() == HttpStatus.SC_OK) {
+                    GameState.getInstance().loadCloudProfile(httpResponse.getResultAsString());
+                    moreOptions.showMenuScreen();
+                } else if(httpResponse.getStatus().getStatusCode() == HttpStatus.SC_SERVICE_UNAVAILABLE){
+                    System.out.println("error");
+                } else {
+                    System.out.println("error");
+                }
+            }
+
+            @Override
+            public void failed(Throwable t) {
+                System.out.println("error11");
+            }
+
+            @Override
+            public void cancelled() {
+                System.out.println("error");
+            }
+        });
     }
 
 }

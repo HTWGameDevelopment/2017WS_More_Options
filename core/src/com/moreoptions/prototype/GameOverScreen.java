@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.moreoptions.prototype.gameEngine.data.SoundDatabase;
 import com.moreoptions.prototype.gameEngine.data.Strings;
 import com.moreoptions.prototype.gameEngine.util.AssetLoader;
+import com.moreoptions.prototype.gameEngine.util.EventFactory;
 
 /**
  * Screen that is displayed after the player dies.
@@ -59,6 +60,9 @@ public class GameOverScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         SoundDatabase.getInstance().pauseMusic();
+
+
+        EventFactory.saveGame();
     }
 
     @Override

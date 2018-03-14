@@ -129,7 +129,9 @@ public class LoginScreen implements Screen {
 
     @Override
     public void show() {
+
         Gdx.input.setInputProcessor(stage);
+        showErrorText("");
     }
 
     @Override
@@ -205,6 +207,7 @@ public class LoginScreen implements Screen {
         Preferences preferences = Gdx.app.getPreferences(Strings.PREFERENCES);
         preferences.putString(Strings.USER_ACCOUNT, username);
         preferences.putString(Strings.USER_PASSWORD_HASH, passwordhash);
+        preferences.putBoolean(Strings.ONLINE_FEATURES, true);
         preferences.flush();
 
     }
@@ -220,14 +223,14 @@ public class LoginScreen implements Screen {
 
                 } else {
                     updateData(name, passwordHash);                                                                   //This checks if the online state is more recent than the local state.
-                    showErrorText(httpResponse.getResultAsString());
-                    moreOptions.showMenuScreen();
+                    showErrorText("Updating local savegame");
+                    updateSaveGame();
                 }
             }
 
             @Override
             public void failed(Throwable t) {
-                showErrorText("Couldn't reach server.");
+                showErrorText("Couldn't reach server. " + t.getMessage());
                 enableInput();
             }
 
@@ -245,14 +248,18 @@ public class LoginScreen implements Screen {
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 if (httpResponse.getStatus().getStatusCode() == HttpStatus.SC_OK) {
                     GameState.getInstance().loadCloudProfile(httpResponse.getResultAsString());
+                    moreOptions.showMenuScreen();
+                    showErrorText("Load success");
+                } else if(httpResponse.getStatus().getStatusCode() == HttpStatus.SC_SERVICE_UNAVAILABLE){
+                    showErrorText("Couldn't update local savegame. No savegame" + httpResponse.getStatus().getStatusCode());
                 } else {
-                    showErrorText("Couldn't update local savegame." + httpResponse.getStatus().getStatusCode());
+                    showErrorText("no" + httpResponse.getStatus().getStatusCode());
                 }
             }
 
             @Override
             public void failed(Throwable t) {
-                showErrorText("Couldn't update local savegame.");
+                showErrorText("Couldn't update local savegame." + t);
             }
 
             @Override

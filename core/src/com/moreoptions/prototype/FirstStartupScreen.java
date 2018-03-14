@@ -70,7 +70,6 @@ public class FirstStartupScreen implements Screen {
         onlineFeaturesButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GameState.getInstance().createNewProfile();
                 moreOptions.showLoginScreen();
                 super.clicked(event, x, y);
             }

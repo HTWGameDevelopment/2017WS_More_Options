@@ -5,6 +5,7 @@ import com.badlogic.gdx.Preferences;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Current gameconfig | gamedata
@@ -56,12 +57,25 @@ public class GameState {
     }
 
     public void loadCloudProfile(String s) {
-        //Todo check if more recent
+
         Gson gson = new Gson();
-        Profile profile = gson.fromJson(s, Profile.class);
-        profile.setIgnored(false);
-        gameProfile = profile;
-        System.out.println("load profile from cloud" + gameProfile.toString());
+        System.out.println(s);
+        HashMap<String, String> json = gson.fromJson(s,HashMap.class);
+        Profile profile = gson.fromJson(json.get("profile"), Profile.class);
+
+        if(doesLocalGameStateExist()) {
+            if(!profile.getDate().before(gameProfile.getDate())) {
+                profile.setIgnored(false);
+                gameProfile = profile;
+                System.out.println("load profile from cloud" + gameProfile.toString());
+            }
+        } else {
+            gameProfile = profile;
+
+            System.out.println("load profile from cloud because no local" + gameProfile.toString());
+        }
+
+        saveProfile();
     }
 
     public void createNewProfile() {

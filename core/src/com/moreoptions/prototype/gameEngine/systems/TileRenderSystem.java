@@ -49,8 +49,9 @@ public class TileRenderSystem extends EntitySystem{
         tilebatch.begin();
         for(Entity ex : sorted) {
             TextureRegion rx = ex.getComponent(TileGraphicComponent.class).getTextureRegion();
+
             PositionComponent p = posMapper.get(ex);
-            tilebatch.draw(rx,p.getX(),p.getY());
+            if(rx != null) tilebatch.draw(rx,p.getX(),p.getY());
         }
         tilebatch.end();
 
